@@ -1,21 +1,45 @@
 package com.backendgip.model;
+import java.io.Serializable;
+import javax.persistence.*;
 
-public class Estimaciones {
-    private Long id; // Campo de identificación único
 
+@Entity
+@Table(name = "estimaciones")
+public class Estimaciones implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pk_estimacion")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_proyecto")
     private Proyecto proyecto;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_cliente")
     private Cliente cliente;
-    private String estadoestimacion;
 
+    @Column(name = "estado_estimacion")
+    private String estadoEstimacion;
 
-
-    public Estimaciones(Proyecto proyecto, Cliente cliente, String estadoestimacion) {
-        this.proyecto = proyecto;
-        this.cliente = cliente;
-        this.estadoestimacion = estadoestimacion;
+    public Estimaciones() {
     }
 
-    // Getters y setters para el campo de identificación único
+    public Estimaciones(Proyecto proyecto, Cliente cliente, String estadoEstimacion) {
+        this.proyecto = proyecto;
+        this.cliente = cliente;
+        this.estadoEstimacion = estadoEstimacion;
+    }
+
+    public Estimaciones(Long id, Proyecto proyecto, Cliente cliente, String estadoEstimacion) {
+        this.id = id;
+        this.proyecto = proyecto;
+        this.cliente = cliente;
+        this.estadoEstimacion = estadoEstimacion;
+    }
+
     public Long getId() {
         return id;
     }
@@ -40,11 +64,11 @@ public class Estimaciones {
         this.cliente = cliente;
     }
 
-    public String getEstadoestimacion() {
-        return estadoestimacion;
+    public String getEstadoEstimacion() {
+        return estadoEstimacion;
     }
 
-    public void setEstadoestimacion(String estadoestimacion) {
-        this.estadoestimacion = estadoestimacion;
+    public void setEstadoEstimacion(String estadoEstimacion) {
+        this.estadoEstimacion = estadoEstimacion;
     }
 }
