@@ -7,6 +7,8 @@ public class Estimaciones {
     private Cliente cliente;
     private String estadoestimacion;
 
+
+
     public Estimaciones(Proyecto proyecto, Cliente cliente, String estadoestimacion) {
         this.proyecto = proyecto;
         this.cliente = cliente;
