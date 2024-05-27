@@ -1,6 +1,6 @@
 package com.backendgip.service;
 
-import com.backendgip.model.estimaciones;
+import com.backendgip.model.Estimaciones;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,13 +9,13 @@ import java.util.List;
 @Service
 public class EstimacionesService {
 
-    private List<estimaciones> estimacionesList = new ArrayList<>();
+    private List<Estimaciones> estimacionesList = new ArrayList<>();
 
-    public List<estimaciones> listarEstimaciones() {
+    public List<Estimaciones> listarEstimaciones() {
         return estimacionesList;
     }
 
-    public estimaciones save(estimaciones estimacion) {
+    public Estimaciones save(Estimaciones estimacion) {
               return estimacion;
     }
 
@@ -23,7 +23,7 @@ public class EstimacionesService {
         estimacionesList.removeIf(estimacion -> estimacion.getId().equals(id));
     }
 
-    public estimaciones actualizarEstimacion(Long id, estimaciones estimacionActualizada) {
+    public Estimaciones actualizarEstimacion(Long id, Estimaciones estimacionActualizada) {
         for (int i = 0; i < estimacionesList.size(); i++) {
             if (estimacionesList.get(i).getId().equals(id)) {
                 estimacionesList.set(i, estimacionActualizada);

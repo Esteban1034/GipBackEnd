@@ -1,13 +1,13 @@
 package com.backendgip.model;
 
-public class estimaciones {
+public class Estimaciones {
     private Long id; // Campo de identificación único
 
     private Proyecto proyecto;
     private Cliente cliente;
     private String estadoestimacion;
 
-    public estimaciones(Proyecto proyecto, Cliente cliente, String estadoestimacion) {
+    public Estimaciones(Proyecto proyecto, Cliente cliente, String estadoestimacion) {
         this.proyecto = proyecto;
         this.cliente = cliente;
         this.estadoestimacion = estadoestimacion;

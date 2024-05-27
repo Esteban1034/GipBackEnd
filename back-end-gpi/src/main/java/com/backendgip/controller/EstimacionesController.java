@@ -2,7 +2,7 @@ package com.backendgip.controller;
 
 import com.backendgip.model.Cliente;
 import com.backendgip.model.Proyecto;
-import com.backendgip.model.estimaciones;
+import com.backendgip.model.Estimaciones;
 import com.backendgip.service.ClienteService;
 import com.backendgip.service.EstimacionesService;
 import com.backendgip.service.ProyectoService;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estimaciones")
+@RequestMapping("/Estimaciones")
 public class EstimacionesController {
 
     @Autowired
@@ -30,19 +30,19 @@ public class EstimacionesController {
 
     // Supongamos que tienes un método en cada servicio para obtener todos los registros
     @GetMapping("/listar")
-    public List<estimaciones> listarEstimaciones() {
+    public List<Estimaciones> listarEstimaciones() {
         // Obtener la lista de todos los proyectos y clientes
         List<Proyecto> proyectos = proyectoService.getProyectos();
         List<Cliente> clientes = clienteService.getClientes();
 
         // Crear una lista para almacenar todas las estimaciones
-        List<estimaciones> estimacionesList = new ArrayList<>();
+        List<Estimaciones> estimacionesList = new ArrayList<>();
 
         // Iterar sobre la lista de proyectos y clientes para crear las estimaciones
         for (Proyecto proyecto : proyectos) {
             for (Cliente cliente : clientes) {
                 // Crear una nueva estimación con el proyecto y cliente actuales
-                estimaciones estimacion = new estimaciones(proyecto, cliente, "Estado de estimación");
+                Estimaciones estimacion = new Estimaciones(proyecto, cliente, "Estado de estimación");
                 estimacionesList.add(estimacion);
             }
         }
@@ -51,7 +51,7 @@ public class EstimacionesController {
         return estimacionesList;
     }
     @PostMapping("/crear")
-    public estimaciones crearEstimacion(@RequestBody estimaciones estimacion) {
+    public Estimaciones crearEstimacion(@RequestBody Estimaciones estimacion) {
             return estimacionesService.save(estimacion);
     }
 
