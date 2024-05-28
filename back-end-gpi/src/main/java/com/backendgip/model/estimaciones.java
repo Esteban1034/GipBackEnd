@@ -1,6 +1,15 @@
+
 package com.backendgip.model;
+import com.backendgip.model.EstadoPropuesta;
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 @Entity
@@ -11,7 +20,7 @@ public class Estimaciones implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_estimacion")
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "fk_proyecto")
@@ -21,30 +30,21 @@ public class Estimaciones implements Serializable {
     @JoinColumn(name = "fk_cliente")
     private Cliente cliente;
 
-    @Column(name = "estado_estimacion")
-    private String estadoEstimacion;
+    @Column(name = "fk_estado_propuesta")
+    private EstadoPropuesta estadoPropuesta;
 
     public Estimaciones() {
     }
 
-    public Estimaciones(Proyecto proyecto, Cliente cliente, String estadoEstimacion) {
-        this.proyecto = proyecto;
-        this.cliente = cliente;
-        this.estadoEstimacion = estadoEstimacion;
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
-    public Estimaciones(Long id, Proyecto proyecto, Cliente cliente, String estadoEstimacion) {
-        this.id = id;
-        this.proyecto = proyecto;
-        this.cliente = cliente;
-        this.estadoEstimacion = estadoEstimacion;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -64,11 +64,20 @@ public class Estimaciones implements Serializable {
         this.cliente = cliente;
     }
 
-    public String getEstadoEstimacion() {
-        return estadoEstimacion;
+    public EstadoPropuesta getEstadoPropuesta() {
+        return estadoPropuesta;
     }
 
-    public void setEstadoEstimacion(String estadoEstimacion) {
-        this.estadoEstimacion = estadoEstimacion;
+    public void setEstadoPropuesta(EstadoPropuesta estadoPropuesta) {
+        this.estadoPropuesta = estadoPropuesta;
     }
+
+    public Estimaciones(Integer id, Proyecto proyecto, Cliente cliente, EstadoPropuesta estadoPropuesta) {
+        this.id = id;
+        this.proyecto = proyecto;
+        this.cliente = cliente;
+        this.estadoPropuesta = estadoPropuesta;
+    }
+
+    
 }
