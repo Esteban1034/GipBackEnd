@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EstimacionesServiceImp implements EstimacionesService {
+	
+	
 	@Autowired
 	private EstimacionesRepository estimacionesRepository;
 
@@ -25,7 +27,17 @@ public class EstimacionesServiceImp implements EstimacionesService {
 	}
 
 	public List<Estimaciones> getEstimaciones() {
-		return (List) this.estimacionesRepository.findAll();
-	}
+		return (List) this.estimacionesRepository.findAll();}
+
+	
+
+	public Estimaciones saveEstimaciones(Estimaciones estimaciones) {
+		        return estimacionesRepository.save(estimaciones);  }
+
+	public void deleteEstimaciones(Estimaciones estimaciones) {
+				this.estimacionesRepository.delete(estimaciones);}
+
+	
+
 
 }

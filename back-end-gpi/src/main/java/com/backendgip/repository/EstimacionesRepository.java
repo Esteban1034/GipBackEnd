@@ -7,6 +7,7 @@ package com.backendgip.repository;
 
 import com.backendgip.model.Actividad;
 import com.backendgip.model.ActividadAsignada;
+import com.backendgip.model.Cliente;
 import com.backendgip.model.Estimaciones;
 import com.backendgip.model.Proyecto;
 import java.util.List;

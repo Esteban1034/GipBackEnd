@@ -30,7 +30,8 @@ public class Estimaciones implements Serializable {
     @JoinColumn(name = "fk_cliente")
     private Cliente cliente;
 
-    @Column(name = "fk_estado_propuesta")
+    @ManyToOne
+    @JoinColumn(name = "fk_estado_propuesta")
     private EstadoPropuesta estadoPropuesta;
 
     public Estimaciones() {
