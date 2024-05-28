@@ -47,8 +47,10 @@ public class Empleado {
 	public Empleado() {
 	}
 
-	public Empleado(String numeroDoc, String nombre, String email, String nombreUsuario, String password,
-			TipoDocumento tipoDoc, DependenciaEmpleado dependencia, Cargo cargo, EstadoEmpleado estado) {
+	public Empleado(Integer id, String numeroDoc, String nombre, String email, String nombreUsuario,
+			String password, TipoDocumento tipoDoc, DependenciaEmpleado dependencia, Cargo cargo,
+			EstadoEmpleado estado) {
+		this.id = id;
 		this.numeroDoc = numeroDoc;
 		this.nombre = nombre;
 		this.email = email;
@@ -140,12 +142,12 @@ public class Empleado {
 		this.estado = estado;
 	}
 
+	@Override
 	public String toString() {
-		return "Empleado [id=" + this.id + ", numeroDoc=" + this.numeroDoc + ", nombre=" + this.nombre + ", email="
-				+ this.email + ", nombreUsuario=" + this.nombreUsuario + ", password=" + this.password + ", tipoDoc="
-				+ this.tipoDoc + ", dependencia="
-				+ Optional.ofNullable(this.dependencia != null ? this.dependencia.getDependencia() : null).orElse(null) + ", cargo="
-				+ Optional.ofNullable(this.cargo != null ? this.cargo.getCargo() : null).orElse(null) + ", estado="
-				+ Optional.ofNullable(this.estado != null ? this.estado.getEstado() : null).orElse(null) + "]";
+		return "Empleado [id=" + id + ", numeroDoc=" + numeroDoc + ", nombre=" + nombre + ", email=" + email
+				+ ", nombreUsuario=" + nombreUsuario + ", password=" + password
+				+ ", tipoDoc=" + tipoDoc + ", dependencia=" + dependencia + ", cargo=" + cargo + ", estado=" + estado
+				+ "]";
 	}
+
 }
