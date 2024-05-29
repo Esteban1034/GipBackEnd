@@ -17,8 +17,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EstimacionesRepository  extends JpaRepository<Estimaciones, Integer> {
+public interface EstimacionesRepository extends JpaRepository<Estimaciones, Integer> {
 
- 
-  
 }

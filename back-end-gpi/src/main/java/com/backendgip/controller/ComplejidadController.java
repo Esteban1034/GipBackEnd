@@ -76,10 +76,6 @@ public class ComplejidadController {
 		Complejidad complejidad = (Complejidad) this.complejidadRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("Complejidad no existe con id: " + id);
 		});
-		if (this.complejidadRepository.existsByNombre(complejidadDetails.getNombre())
-				&& complejidad.getId() != complejidadDetails.getId()) {
-			return ResponseEntity.badRequest().body(new ResourceAlreadyExistsException("Nombre existente"));
-		} else {
 			LogSistema log = new LogSistema();
 			log.setAccion("UPDATE");
 			log.setDescripcion(complejidad.toString());
@@ -91,7 +87,6 @@ public class ComplejidadController {
 			complejidad.setPeso(complejidadDetails.getPeso());
 			Complejidad updatedComplejidad = this.complejidadService.saveComplejidad(complejidad);
 			return ResponseEntity.ok(updatedComplejidad);
-		}
 	}
 
 	@GetMapping({ "/complejidad/{id}" })
@@ -105,7 +100,7 @@ public class ComplejidadController {
 	@DeleteMapping({ "/complejidad/{id}" })
 	public ResponseEntity<?> deleteComplejidad(@PathVariable Integer id) {
 		Complejidad complejidad = (Complejidad) this.complejidadRepository.findById(id).orElseThrow(() -> {
-			return new ResourceNotFoundException("Complejidad no exite con el id:" + id);
+			return new ResourceNotFoundException("Complejidad no existe con el id:" + id);
 		});
 		/* 
 		if (this.proyectoRepository.existsByCliente(cliente)) {
