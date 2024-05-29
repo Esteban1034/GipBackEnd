@@ -18,4 +18,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstimacionesRepository  extends JpaRepository<Estimaciones, Integer> {
+
+ 
+  
 }

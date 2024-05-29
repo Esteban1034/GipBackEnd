@@ -4,48 +4,31 @@ import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.Cliente;
 import com.backendgip.model.Estimaciones;
 import com.backendgip.model.LogSistema;
-import com.backendgip.model.Proyecto;
-import com.backendgip.repository.ClienteRepository;
 import com.backendgip.repository.EstimacionesRepository;
-import com.backendgip.service.ClienteService;
 import com.backendgip.service.EstimacionesService;
 import com.backendgip.service.LogSistemaService;
-import com.backendgip.service.ProyectoService;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class EstimacionesController {
 
     @Autowired
-    private ProyectoService proyectoService;
-
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
     private EstimacionesService estimacionesService;
 
-	@Autowired
-	private LogSistemaService logService;
-	@Autowired
-	private EstimacionesRepository estimacionesRepository;
+    @Autowired
+    private LogSistemaService logService;
 
+    @Autowired
+    private EstimacionesRepository estimacionesRepository;
 
-    @GetMapping({"/estimaciones"})
+    @GetMapping("/estimaciones")
     public ResponseEntity<List<Estimaciones>> getEstimaciones() {
         List<Estimaciones> estimaciones = estimacionesService.getEstimaciones();
         return ResponseEntity.ok(estimaciones);
@@ -67,10 +50,9 @@ public class EstimacionesController {
         return ResponseEntity.ok(createdEstimaciones);
     }
 
- 
     @DeleteMapping("/estimaciones/{id}")
     public ResponseEntity<?> deleteEstimaciones(@PathVariable Integer id) {
-        Estimaciones estimacion =  (Estimaciones) this.estimacionesRepository.findById(id)
+        Estimaciones estimacion = estimacionesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
 
         LogSistema log = new LogSistema();
@@ -83,21 +65,37 @@ public class EstimacionesController {
 
         estimacionesService.deleteEstimaciones(estimacion);
 
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/estimaciones/{id}")
     public ResponseEntity<Estimaciones> getEstimacionesById(@PathVariable Integer id) {
-        Estimaciones estimacion = (Estimaciones) this.estimacionesRepository.findById(id)
+        Estimaciones estimacion = estimacionesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
         return ResponseEntity.ok(estimacion);
     }
 
-    
-    
+    @PutMapping("/estimaciones/{id}")
+    public ResponseEntity<Estimaciones> updateEstimaciones(@PathVariable Integer id, @RequestBody Estimaciones estimacionesDetails) {
+        Estimaciones estimaciones = this.estimacionesRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con id: " + id));
+        
+        LogSistema log = new LogSistema();
+        log.setAccion("PUT");
+        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+        log.setTabla(Estimaciones.class.toString());
+        log.setIdAccion(estimaciones.getId());
+        log.setDescripcion(estimaciones.toString());
+        logService.saveLog(log);
+        
+        estimaciones.setProyecto(estimacionesDetails.getProyecto());
+        estimaciones.setCliente(estimacionesDetails.getCliente());
+        estimaciones.setEstadoPropuesta(estimacionesDetails.getEstadoPropuesta());
+        
+        estimacionesService.saveEstimaciones(estimaciones);
+        
+        return ResponseEntity.ok(estimaciones);
+    }
+
 }
-
-
 
