@@ -14,21 +14,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actividades_estimacion")
-public class ActividadesEstimacion implements Serializable {
+@Table(name = "esfuerzo")
+public class Esfuerzo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_actividad_estimacion")
+	@Column(name = "pk_esfuerzo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "nombre")
 	private String nombre;
-	@Column(name = "horas")
-	private Integer horas;
 	@Column(name = "porcentaje")
 	private Integer porcentaje;
+    @Column(name = "total_horas_con_ajuste")
+	private Integer totalHorasConAjuste;
+    @Column(name = "total_horas_sin_ajuste")
+	private Integer totalHorasSinAjuste;
 
-	public ActividadesEstimacion() {
+	public Esfuerzo() {
 	}
 
     public Integer getId() {
@@ -47,14 +49,6 @@ public class ActividadesEstimacion implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getHoras() {
-        return horas;
-    }
-
-    public void setHoras(Integer horas) {
-        this.horas = horas;
-    }
-
     public Integer getPorcentaje() {
         return porcentaje;
     }
@@ -63,10 +57,30 @@ public class ActividadesEstimacion implements Serializable {
         this.porcentaje = porcentaje;
     }
 
-    public ActividadesEstimacion(Integer id, String nombre, Integer horas, Integer porcentaje) {
+    public Integer getTotalHorasConAjuste() {
+        return totalHorasConAjuste;
+    }
+
+    public void setTotalHorasConAjuste(Integer totalHorasConAjuste) {
+        this.totalHorasConAjuste = totalHorasConAjuste;
+    }
+
+    public Integer getTotalHorasSinAjuste() {
+        return totalHorasSinAjuste;
+    }
+
+    public void setTotalHorasSinAjuste(Integer totalHorasSinAjuste) {
+        this.totalHorasSinAjuste = totalHorasSinAjuste;
+    }
+
+    public Esfuerzo(Integer id, String nombre, Integer porcentaje, Integer totalHorasConAjuste,
+            Integer totalHorasSinAjuste) {
         this.id = id;
         this.nombre = nombre;
-        this.horas = horas;
         this.porcentaje = porcentaje;
+        this.totalHorasConAjuste = totalHorasConAjuste;
+        this.totalHorasSinAjuste = totalHorasSinAjuste;
     }
+
+    
 }

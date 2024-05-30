@@ -14,11 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actividades_estimacion")
-public class ActividadesEstimacion implements Serializable {
+@Table(name = "analisis_diseno")
+public class AnalisisDiseno implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_actividad_estimacion")
+	@Column(name = "pk_analisis_diseno")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "nombre")
@@ -28,7 +28,7 @@ public class ActividadesEstimacion implements Serializable {
 	@Column(name = "porcentaje")
 	private Integer porcentaje;
 
-	public ActividadesEstimacion() {
+	public AnalisisDiseno() {
 	}
 
     public Integer getId() {
@@ -63,7 +63,7 @@ public class ActividadesEstimacion implements Serializable {
         this.porcentaje = porcentaje;
     }
 
-    public ActividadesEstimacion(Integer id, String nombre, Integer horas, Integer porcentaje) {
+    public AnalisisDiseno(Integer id, String nombre, Integer horas, Integer porcentaje) {
         this.id = id;
         this.nombre = nombre;
         this.horas = horas;

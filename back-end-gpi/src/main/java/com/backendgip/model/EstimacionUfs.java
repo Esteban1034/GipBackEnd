@@ -6,6 +6,8 @@
 package com.backendgip.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,39 +22,97 @@ import javax.persistence.Table;
 public class EstimacionUfs implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_estimacion_ufs")
+	@Column(name = "pk_contenido_ufs")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@ManyToOne
+    @Column(name = "fecha_creacion")
+    private LocalDate fechaCreacion;
+    @ManyToOne
+    @JoinColumn(name = "fk_proyecto")
+    private Proyecto proyecto;
+    @ManyToOne
+    @JoinColumn(name = "fk_actividades")
+    private ActividadesComplementarias actividadesComplementarias;
+    @ManyToOne
+    @JoinColumn(name = "fk_modelo")
+    private Modelo modelo;
+    @ManyToOne
+    @JoinColumn(name = "fk_empleado")
+    private Empleado recurso;
+    @ManyToOne
     @JoinColumn(name = "fk_ufs")
     private Ufs ufs;
 
 	public EstimacionUfs() {
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
 
-	public Ufs getUfs() {
-		return ufs;
-	}
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
 
-	public void setUfs(Ufs ufs) {
-		this.ufs = ufs;
-	}
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
 
-	public EstimacionUfs(Integer id, Ufs ufs) {
-		this.id = id;
-		this.ufs = ufs;
-	}
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public ActividadesComplementarias getActividadesComplementarias() {
+        return actividadesComplementarias;
+    }
+
+    public void setActividadesComplementarias(ActividadesComplementarias actividadesComplementarias) {
+        this.actividadesComplementarias = actividadesComplementarias;
+    }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
+
+    public Empleado getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(Empleado recurso) {
+        this.recurso = recurso;
+    }
+
+    public Ufs getUfs() {
+        return ufs;
+    }
+
+    public void setUfs(Ufs ufs) {
+        this.ufs = ufs;
+    }
+
+    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
+            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, Ufs ufs) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.proyecto = proyecto;
+        this.actividadesComplementarias = actividadesComplementarias;
+        this.modelo = modelo;
+        this.recurso = recurso;
+        this.ufs = ufs;
+    }
+
+    
 
 }
