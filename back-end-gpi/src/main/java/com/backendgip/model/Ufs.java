@@ -23,19 +23,13 @@ public class Ufs implements Serializable {
 	@Column(name = "pk_ufs")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "funcion")
-	private String funcion;
-	@Column(name = "nombre_caso")
-	private String nombreCaso;
+	@Column(name = "nombre")
+	private String nombre;
 	@ManyToOne
-    @JoinColumn(name = "fk_complejidad")
-    private Complejidad complejidad;
+    @JoinColumn(name = "fk_contenido_ufs")
+    private ContenidoUfs contenidoUfs;
 
 	public Ufs() {
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public Integer getId() {
@@ -46,35 +40,26 @@ public class Ufs implements Serializable {
 		this.id = id;
 	}
 
-	public String getFuncion() {
-		return funcion;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setFuncion(String funcion) {
-		this.funcion = funcion;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getNombreCaso() {
-		return nombreCaso;
+	public ContenidoUfs getContenidoUfs() {
+		return contenidoUfs;
 	}
 
-	public void setNombreCaso(String nombreCaso) {
-		this.nombreCaso = nombreCaso;
+	public void setContenidoUfs(ContenidoUfs contenidoUfs) {
+		this.contenidoUfs = contenidoUfs;
 	}
 
-	public Complejidad getComplejidad() {
-		return complejidad;
-	}
-
-	public void setComplejidad(Complejidad complejidad) {
-		this.complejidad = complejidad;
-	}
-
-	public Ufs(Integer id, String funcion, String nombreCaso, Complejidad complejidad) {
+	public Ufs(Integer id, String nombre, ContenidoUfs contenidoUfs) {
 		this.id = id;
-		this.funcion = funcion;
-		this.nombreCaso = nombreCaso;
-		this.complejidad = complejidad;
+		this.nombre = nombre;
+		this.contenidoUfs = contenidoUfs;
 	}
 
 }
