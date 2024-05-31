@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class EstimacionUfs implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_contenido_ufs")
+	@Column(name = "pk_estimacion")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
     @Column(name = "fecha_creacion")
