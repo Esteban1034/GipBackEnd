@@ -28,6 +28,9 @@ public class ContenidoUfs implements Serializable {
 	@Column(name = "nombre_caso")
 	private String nombreCaso;
     @ManyToOne
+    @JoinColumn(name = "fk_esfuerzo")
+    private Esfuerzo esfuerzo;
+    @ManyToOne
     @JoinColumn(name = "fk_mantenimiento_unidad")
     private MantenimientoUnidad mantenimientoUnidad;
     @Column(name = "porcentaje_diseño")
