@@ -42,6 +42,7 @@ public class EstimacionUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_ufs")
     private Ufs ufs;
+  
 
 	public EstimacionUfs() {
 	}
@@ -53,14 +54,15 @@ public class EstimacionUfs implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
     public LocalDate getFechaCreacion() {
-        return fechaCreacion;
+        return this.fechaCreacion;
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+
 
     public Proyecto getProyecto() {
         return proyecto;
@@ -112,6 +114,8 @@ public class EstimacionUfs implements Serializable {
         this.recurso = recurso;
         this.ufs = ufs;
     }
+
+
 
     
 
