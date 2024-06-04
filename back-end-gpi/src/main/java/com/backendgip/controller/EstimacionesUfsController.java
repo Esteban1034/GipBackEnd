@@ -43,9 +43,8 @@ public class EstimacionesUfsController {
             return ResponseEntity.badRequest().body("Nomenclatura existente");
         } else {        
             LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-            estimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
-    
-            // Registro de la creación
+            estimaciones.setFechaCreacion(fechaCreacion);
+            
             LogSistema log = new LogSistema();
             log.setAccion("CREATE");
             log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
@@ -53,7 +52,7 @@ public class EstimacionesUfsController {
             log.setIdAccion(createdEstimaciones.getId());
             log.setDescripcion(createdEstimaciones.toString());
             logService.saveLog(log);
-    
+        
             return ResponseEntity.ok(createdEstimaciones);
         }
     }
@@ -106,4 +105,5 @@ public class EstimacionesUfsController {
         return ResponseEntity.ok(estimaciones);
     }
 
+    
 }
