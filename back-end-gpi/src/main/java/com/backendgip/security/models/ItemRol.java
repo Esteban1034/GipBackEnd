@@ -2,12 +2,16 @@ package com.backendgip.security.models;
 
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -26,6 +30,10 @@ public class ItemRol {
 
 	    @ManyToOne
 	    private SubmenuRol submenuRol;
+
+		@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "itemRol")
+	  //  @JsonIgnore
+	    private List<SubItemRol> subItemRol;
 
 
 		public Long getId() {
@@ -56,6 +64,18 @@ public class ItemRol {
 		public void setSubmenuRol(SubmenuRol submenuRol) {
 			this.submenuRol = submenuRol;
 		}
+
+
+		public List<SubItemRol> getSubItemRol() {
+			return subItemRol;
+		}
+
+
+		public void setSubItemRol(List<SubItemRol> subItemRol) {
+			this.subItemRol = subItemRol;
+		}
+
+		
 
 
 	/*	@Override
