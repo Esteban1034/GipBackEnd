@@ -58,10 +58,10 @@ public class EstimacionesUfsController {
         System.out.println(estimaciones.getActividadesComplementarias());
         System.out.println(estimaciones.getUfs());
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimaciones(estimaciones);
-        System.out.println(createdEstimaciones);
+        System.out.println(createdEstimaciones.getRecurso().getId());
         //
         LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-        createdEstimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
+     //   createdEstimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
 
         // Registro de la creación
         LogSistema log = new LogSistema();
