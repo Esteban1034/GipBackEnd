@@ -1,11 +1,18 @@
 package com.backendgip.controller;
 
 import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.ComponenteDesarrollo;
+import com.backendgip.model.Empleado;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
+import com.backendgip.model.Proyecto;
+import com.backendgip.repository.EmpleadoRepository;
 import com.backendgip.repository.EstimacionesUfsRepository;
+import com.backendgip.service.EmpleadoService;
 import com.backendgip.service.EstimacionesUfsService;
 import com.backendgip.service.LogSistemaService;
+import com.backendgip.service.ProyectoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,35 +36,46 @@ public class EstimacionesUfsController {
     @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
 
+    @Autowired
+    private ProyectoService proyectoService;
+
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    private EmpleadoService empleadoService;
+
     @GetMapping("/estimaciones")
     public ResponseEntity<List<EstimacionUfs>> getEstimaciones() {
         List<EstimacionUfs> estimaciones = estimacionesUfsService.getEstimaciones();
         return ResponseEntity.ok(estimaciones);
     }
-    
+
     @PostMapping("/estimaciones")
-    public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfs estimaciones) {        
+    public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfs estimaciones) {
+        estimaciones.setActividadesComplementarias(null);
+        estimaciones.setUfs(null);
+        System.out.println(estimaciones.getActividadesComplementarias());
+        System.out.println(estimaciones.getUfs());
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimaciones(estimaciones);
-    
-        if (createdEstimaciones == null) {
-            return ResponseEntity.badRequest().body("Nomenclatura existente");
-        } else {        
-            LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-            estimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
-    
-            // Registro de la creación
-            LogSistema log = new LogSistema();
-            log.setAccion("CREATE");
-            log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-            log.setTabla(EstimacionUfs.class.toString());
-            log.setIdAccion(createdEstimaciones.getId());
-            log.setDescripcion(createdEstimaciones.toString());
-            logService.saveLog(log);
-    
-            return ResponseEntity.ok(createdEstimaciones);
-        }
+        System.out.println(createdEstimaciones.getRecurso().getId());
+        //
+        LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+     //   createdEstimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
+
+        // Registro de la creación
+        LogSistema log = new LogSistema();
+        log.setAccion("CREATE");
+        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+        log.setTabla(EstimacionUfs.class.toString());
+        log.setIdAccion(createdEstimaciones.getId());
+        log.setDescripcion(createdEstimaciones.toString());
+        logService.saveLog(log);
+
+        return ResponseEntity.ok(createdEstimaciones);
+
     }
-    
+
     @DeleteMapping("/estimaciones/{id}")
     public ResponseEntity<?> deleteEstimaciones(@PathVariable Integer id) {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
@@ -84,10 +102,11 @@ public class EstimacionesUfsController {
     }
 
     @PutMapping("/estimaciones/{id}")
-    public ResponseEntity<EstimacionUfs> updateEstimaciones(@PathVariable Integer id, @RequestBody EstimacionUfs estimacionesDetails) {
+    public ResponseEntity<EstimacionUfs> updateEstimaciones(@PathVariable Integer id,
+            @RequestBody EstimacionUfs estimacionesDetails) {
         EstimacionUfs estimaciones = this.estimacionesUfsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con id: " + id));
-        
+
         LogSistema log = new LogSistema();
         log.setAccion("UPDATE");
         log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
@@ -95,15 +114,14 @@ public class EstimacionesUfsController {
         log.setIdAccion(estimaciones.getId());
         log.setDescripcion(estimaciones.toString());
         logService.saveLog(log);
-        
+
         estimaciones.setProyecto(estimacionesDetails.getProyecto());
         estimaciones.setActividadesComplementarias(estimacionesDetails.getActividadesComplementarias());
         estimaciones.setRecurso(estimacionesDetails.getRecurso());
         estimaciones.setUfs(estimacionesDetails.getUfs());
         estimaciones.setFechaCreacion(estimacionesDetails.getFechaCreacion());
         estimacionesUfsService.saveEstimaciones(estimaciones);
-        
+
         return ResponseEntity.ok(estimaciones);
     }
-
 }

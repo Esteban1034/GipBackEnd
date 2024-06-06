@@ -25,7 +25,11 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
         return estimacionesUfsRepository.findAll();
     }
 
- 
+
+    public EstimacionUfs saveEstimacionIn(EstimacionUfs estimacionUfs) {
+        return estimacionesUfsRepository.save(estimacionUfs);
+    }
+
     public EstimacionUfs saveEstimaciones(EstimacionUfs estimacionUfs) {
         return estimacionesUfsRepository.save(estimacionUfs);
     }

@@ -11,6 +11,7 @@ import com.backendgip.model.Empleado;
 import com.backendgip.model.EstadoProyecto;
 import com.backendgip.model.Proyecto;
 import com.backendgip.model.TipoProyecto;
+import com.backendgip.model.EtapaProyecto;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,6 @@ public interface ProyectoRepository extends CrudRepository<Proyecto, Integer> {
 	List<Proyecto> findByInterno(Boolean interno);
 
 	List<Proyecto> findByLider(Empleado lider);
+
+	List<Proyecto> findByEtapa(EtapaProyecto etapa);
 }
