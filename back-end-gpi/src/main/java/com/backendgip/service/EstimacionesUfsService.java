@@ -11,7 +11,7 @@ public interface EstimacionesUfsService {
     
 	List<EstimacionUfs> getEstimaciones();  
 
-    EstimacionUfs saveEstimaciones(EstimacionUfs estimacionesUfs);
+    EstimacionUfs saveEstimacionIn(EstimacionUfs estimacionesUfs);
 
     void deleteEstimaciones(EstimacionUfs estimacionesUfs);
 }

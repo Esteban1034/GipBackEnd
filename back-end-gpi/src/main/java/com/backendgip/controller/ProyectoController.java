@@ -11,6 +11,8 @@ import com.backendgip.model.ComponenteDesarrollo;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EmpleadoRol;
 import com.backendgip.model.EstadoProyecto;
+import com.backendgip.model.EstimacionUfs;
+import com.backendgip.model.EtapaProyecto;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Proyecto;
 import com.backendgip.repository.ActividadAsignadaRepository;
@@ -755,4 +757,14 @@ public class ProyectoController {
                 + proyecto.getDescripcion() + "</td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n";
         return Table;
     }
+
+    @GetMapping({"/proyectos/proyectos-by-Etapa/{idEtapa}"})
+    public ResponseEntity<?> findByEtapa(@PathVariable Integer idEtapa){
+        EtapaProyecto etapa = this.etapaService.getEtapaById(idEtapa);
+     //   System.out.println(etapa);
+      //  System.out.println(idEtapa);
+       return ResponseEntity.ok(this.proyectoService.findByEtapa(etapa));
+      //  return ResponseEntity.ok(this.etapaService.getEtapaById(idEtapa));
+    }
+
 }
