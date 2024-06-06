@@ -23,13 +23,14 @@ public class ContenidoUfs implements Serializable {
 	@Column(name = "pk_contenido_ufs")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "funcion")
-	private String funcion;
 	@Column(name = "nombre_caso")
 	private String nombreCaso;
     @ManyToOne
     @JoinColumn(name = "fk_esfuerzo")
     private Esfuerzo esfuerzo;
+    @ManyToOne
+	@JoinColumn(name = "fk_funcion")
+	private Funcion funcion;
     @ManyToOne
     @JoinColumn(name = "fk_mantenimiento_unidad")
     private MantenimientoUnidad mantenimientoUnidad;
@@ -46,8 +47,28 @@ public class ContenidoUfs implements Serializable {
     @Column(name = "total_pruebas")
 	private Integer totalPruebas;
     
-	public ContenidoUfs() {
-	}
+    public ContenidoUfs() {
+    }
+
+    public ContenidoUfs(Integer id, String nombreCaso, Esfuerzo esfuerzo, Funcion funcion,
+            MantenimientoUnidad mantenimientoUnidad, Integer porcentajeDiseno, Integer porcentajeConstruccion,
+            Integer porcentajePruebas, Integer totalDiseno, Integer totalConstruccion, Integer totalPruebas) {
+        this.id = id;
+        this.nombreCaso = nombreCaso;
+        this.esfuerzo = esfuerzo;
+        this.funcion = funcion;
+        this.mantenimientoUnidad = mantenimientoUnidad;
+        this.porcentajeDiseno = porcentajeDiseno;
+        this.porcentajeConstruccion = porcentajeConstruccion;
+        this.porcentajePruebas = porcentajePruebas;
+        this.totalDiseno = totalDiseno;
+        this.totalConstruccion = totalConstruccion;
+        this.totalPruebas = totalPruebas;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;
@@ -57,20 +78,28 @@ public class ContenidoUfs implements Serializable {
         this.id = id;
     }
 
-    public String getFuncion() {
-        return funcion;
-    }
-
-    public void setFuncion(String funcion) {
-        this.funcion = funcion;
-    }
-
     public String getNombreCaso() {
         return nombreCaso;
     }
 
     public void setNombreCaso(String nombreCaso) {
         this.nombreCaso = nombreCaso;
+    }
+
+    public Esfuerzo getEsfuerzo() {
+        return esfuerzo;
+    }
+
+    public void setEsfuerzo(Esfuerzo esfuerzo) {
+        this.esfuerzo = esfuerzo;
+    }
+
+    public Funcion getFuncion() {
+        return funcion;
+    }
+
+    public void setFuncion(Funcion subfuncion) {
+        this.funcion = subfuncion;
     }
 
     public MantenimientoUnidad getMantenimientoUnidad() {
@@ -129,21 +158,14 @@ public class ContenidoUfs implements Serializable {
         this.totalPruebas = totalPruebas;
     }
 
-    public ContenidoUfs(Integer id, String funcion, String nombreCaso, MantenimientoUnidad mantenimientoUnidad,
-            Integer porcentajeDiseno, Integer porcentajeConstruccion, Integer porcentajePruebas, Integer totalDiseno,
-            Integer totalConstruccion, Integer totalPruebas) {
-        this.id = id;
-        this.funcion = funcion;
-        this.nombreCaso = nombreCaso;
-        this.mantenimientoUnidad = mantenimientoUnidad;
-        this.porcentajeDiseno = porcentajeDiseno;
-        this.porcentajeConstruccion = porcentajeConstruccion;
-        this.porcentajePruebas = porcentajePruebas;
-        this.totalDiseno = totalDiseno;
-        this.totalConstruccion = totalConstruccion;
-        this.totalPruebas = totalPruebas;
+    @Override
+    public String toString() {
+        return "ContenidoUfs [id=" + id + ", nombreCaso=" + nombreCaso + ", esfuerzo=" + esfuerzo + ", funcion="
+                + funcion + ", mantenimientoUnidad=" + mantenimientoUnidad + ", porcentajeDiseno=" + porcentajeDiseno
+                + ", porcentajeConstruccion=" + porcentajeConstruccion + ", porcentajePruebas=" + porcentajePruebas
+                + ", totalDiseno=" + totalDiseno + ", totalConstruccion=" + totalConstruccion + ", totalPruebas="
+                + totalPruebas + "]";
     }
 
-    
-    
+
 }

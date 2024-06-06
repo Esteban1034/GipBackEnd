@@ -38,13 +38,11 @@ public class EstimacionesUfsController {
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfs estimaciones) {        
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimaciones(estimaciones);
-    
         if (createdEstimaciones == null) {
             return ResponseEntity.badRequest().body("Nomenclatura existente");
         } else {        
             LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
             estimaciones.setFechaCreacion(fechaCreacion);
-            
             LogSistema log = new LogSistema();
             log.setAccion("CREATE");
             log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
@@ -52,7 +50,6 @@ public class EstimacionesUfsController {
             log.setIdAccion(createdEstimaciones.getId());
             log.setDescripcion(createdEstimaciones.toString());
             logService.saveLog(log);
-        
             return ResponseEntity.ok(createdEstimaciones);
         }
     }

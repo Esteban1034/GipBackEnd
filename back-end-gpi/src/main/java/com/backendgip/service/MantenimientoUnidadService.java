@@ -1,10 +1,17 @@
 package com.backendgip.service;
+
+import com.backendgip.model.Cliente;
+import com.backendgip.model.EstadoCliente;
+import com.backendgip.model.MantenimientoUnidad;
 import java.util.List;
 
-import com.backendgip.model.MantenimientoUnidad;
 
 public interface MantenimientoUnidadService {
+
+    MantenimientoUnidad getMantenimientoUndById(Integer idMantenimientoUnd);
     
-    List<MantenimientoUnidad> getMantenimiento();
-    
+    List<MantenimientoUnidad> getMantenimientos();
+
+    MantenimientoUnidad saveMantenimientoUnd(MantenimientoUnidad mantenimientoUnidad);
+
 }
