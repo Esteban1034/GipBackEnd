@@ -22,7 +22,7 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
 
   
     public List<EstimacionUfs> getEstimaciones() {
-        return estimacionesUfsRepository.findAll();
+        return (List<EstimacionUfs>) estimacionesUfsRepository.findAll();
     }
 
 
@@ -37,5 +37,4 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
     public void deleteEstimaciones(EstimacionUfs estimacionUfs) {
         estimacionesUfsRepository.delete(estimacionUfs);
     }
-
 }

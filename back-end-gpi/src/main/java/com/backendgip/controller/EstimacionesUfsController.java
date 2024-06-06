@@ -57,23 +57,21 @@ public class EstimacionesUfsController {
         estimaciones.setUfs(null);
         System.out.println(estimaciones.getActividadesComplementarias());
         System.out.println(estimaciones.getUfs());
-        EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimaciones(estimaciones);
-        System.out.println(createdEstimaciones.getRecurso().getId());
-        //
-        LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-     //   createdEstimaciones.setFechaCreacion(fechaCreacion); // Asegúrate de que este método exista en la clase EstimacionUfs
-
-        // Registro de la creación
-        LogSistema log = new LogSistema();
-        log.setAccion("CREATE");
-        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-        log.setTabla(EstimacionUfs.class.toString());
-        log.setIdAccion(createdEstimaciones.getId());
-        log.setDescripcion(createdEstimaciones.toString());
-        logService.saveLog(log);
-
-        return ResponseEntity.ok(createdEstimaciones);
-
+        EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
+        if (createdEstimaciones == null) {
+            return ResponseEntity.badRequest().body("Nomenclatura existente");
+        } else {        
+            LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+            estimaciones.setFechaCreacion(fechaCreacion);
+            LogSistema log = new LogSistema();
+            log.setAccion("CREATE");
+            log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+            log.setTabla(EstimacionUfs.class.toString());
+            log.setIdAccion(createdEstimaciones.getId());
+            log.setDescripcion(createdEstimaciones.toString());
+            logService.saveLog(log);
+            return ResponseEntity.ok(createdEstimaciones);
+        }
     }
 
     @DeleteMapping("/estimaciones/{id}")
@@ -120,8 +118,10 @@ public class EstimacionesUfsController {
         estimaciones.setRecurso(estimacionesDetails.getRecurso());
         estimaciones.setUfs(estimacionesDetails.getUfs());
         estimaciones.setFechaCreacion(estimacionesDetails.getFechaCreacion());
-        estimacionesUfsService.saveEstimaciones(estimaciones);
+        estimacionesUfsService.saveEstimacionIn(estimaciones);
 
         return ResponseEntity.ok(estimaciones);
     }
+    
 }
+
