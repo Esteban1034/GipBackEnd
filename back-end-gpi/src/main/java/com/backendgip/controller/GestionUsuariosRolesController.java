@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.backendgip.security.models.ItemRol;
 import com.backendgip.security.models.RolSeg;
 import com.backendgip.security.models.SubItemRol;
 import com.backendgip.security.models.Submenu;
+import com.backendgip.security.models.Usuario;
 import com.backendgip.security.services.ArmaMenuRol;
 import com.backendgip.security.services.IRolService;
 import com.backendgip.security.services.ISubmenuService;
@@ -224,6 +226,22 @@ public class GestionUsuariosRolesController {
 
 		response.put("mensaje", "El usuario ha sido creado con éxito!");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
+
+	@GetMapping("/empleadorol/{idEmpleado}")
+	public ResponseEntity<?> obtenerRolUsuario(@PathVariable Integer idEmpleado) {
+		RolSeg rol = new RolSeg();
+		try {
+			Usuario usuario = usuarioService.buscaPorEmpleadoAsociado(idEmpleado);
+			rol.setRolNombre(usuario.getUsuarioRoles().get(0).getRol().getRolNombre());
+			rol.setRolDescripcion(usuario.getUsuarioRoles().get(0).getRol().getRolDescripcion());
+			rol.setSubmenuRoles(null);
+			rol.setUsuarioRoles(null);
+	        return ResponseEntity.ok(rol);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener el rol del usuario");
+	    }
 	}
 
 	@GetMapping("/listarRoles")
