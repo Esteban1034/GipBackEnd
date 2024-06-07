@@ -25,7 +25,7 @@ public class MantenimientoUnidadController {
 
     @GetMapping({"/mantenimiento-unidad"})
     public List<MantenimientoUnidad> getMantenimiento() {
-        return mantenimientoUnidadService.obtenerMantenimientoUnidad();
+        return mantenimientoUnidadService.getMantenimientos();
     }
 
     @GetMapping({"/peso-hora"})

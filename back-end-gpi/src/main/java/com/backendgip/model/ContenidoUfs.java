@@ -66,6 +66,14 @@ public class ContenidoUfs implements Serializable {
         this.nombreCaso = nombreCaso;
     }
 
+    public Esfuerzo getEsfuerzo() {
+        return esfuerzo;
+    }
+
+    public void setEsfuerzo(Esfuerzo esfuerzo) {
+        this.esfuerzo = esfuerzo;
+    }
+
     public MantenimientoUnidad getMantenimientoUnidad() {
         return mantenimientoUnidad;
     }

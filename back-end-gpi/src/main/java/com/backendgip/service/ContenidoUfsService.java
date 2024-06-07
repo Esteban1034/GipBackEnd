@@ -1,23 +1,18 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.backendgip.service;
 
-import com.backendgip.model.ContenidoUfs;
-import com.backendgip.model.MantenimientoUnidad;
-import java.time.LocalDate;
 import java.util.List;
 
+import com.backendgip.model.ContenidoUfs;
+import com.backendgip.model.EstadoCliente;
+
 public interface ContenidoUfsService {
-	List<ContenidoUfs> getContenidoUfs();
 
-	ContenidoUfs saveContenidoUfs(ContenidoUfs contenidoUfs);
+    List<ContenidoUfs> getContenidoUfs();
 
-	ContenidoUfs getContenidoUfsById(Integer idContenidUfs);
+    ContenidoUfs saveContenidoUfs(ContenidoUfs contenidoUfs);
 
-	void deleteContenidoUfs(ContenidoUfs contenidoUfs);
+    void deleteContenidoUfs(ContenidoUfs contenidoUfs);
+
+    ContenidoUfs getContenidoUfsById(Integer idContenidoUfs);
 
 }
-

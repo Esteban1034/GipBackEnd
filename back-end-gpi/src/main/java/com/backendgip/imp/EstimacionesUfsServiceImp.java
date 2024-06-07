@@ -23,6 +23,7 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
         return (List<EstimacionUfs>) estimacionesUfsRepository.findAll();
     }
 
+
     public EstimacionUfs saveEstimacionIn(EstimacionUfs estimacionUfs) {
         return estimacionesUfsRepository.save(estimacionUfs);
     }
