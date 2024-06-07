@@ -23,8 +23,9 @@ public class ContenidoUfs implements Serializable {
 	@Column(name = "pk_contenido_ufs")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "funcion")
-	private String funcion;
+    @ManyToOne
+	@JoinColumn(name = "fk_funcion")
+	private Subfuncion subfuncion;
 	@Column(name = "nombre_caso")
 	private String nombreCaso;
     @ManyToOne
@@ -57,12 +58,12 @@ public class ContenidoUfs implements Serializable {
         this.id = id;
     }
 
-    public String getFuncion() {
-        return funcion;
+    public Subfuncion getSubfuncion() {
+        return subfuncion;
     }
 
-    public void setFuncion(String funcion) {
-        this.funcion = funcion;
+    public void setSubfuncion(Subfuncion subfuncion) {
+        this.subfuncion = subfuncion;
     }
 
     public String getNombreCaso() {
@@ -129,11 +130,12 @@ public class ContenidoUfs implements Serializable {
         this.totalPruebas = totalPruebas;
     }
 
-    public ContenidoUfs(Integer id, String funcion, String nombreCaso, MantenimientoUnidad mantenimientoUnidad,
+
+    public ContenidoUfs(Integer id, Subfuncion subfuncion, String nombreCaso, MantenimientoUnidad mantenimientoUnidad,
             Integer porcentajeDiseno, Integer porcentajeConstruccion, Integer porcentajePruebas, Integer totalDiseno,
             Integer totalConstruccion, Integer totalPruebas) {
         this.id = id;
-        this.funcion = funcion;
+        this.subfuncion = subfuncion;
         this.nombreCaso = nombreCaso;
         this.mantenimientoUnidad = mantenimientoUnidad;
         this.porcentajeDiseno = porcentajeDiseno;
