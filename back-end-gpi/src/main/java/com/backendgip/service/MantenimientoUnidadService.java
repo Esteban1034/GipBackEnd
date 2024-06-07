@@ -16,5 +16,5 @@ public interface MantenimientoUnidadService {
 
 	// void eliminarMantenimientoUnidad(MantenimientoUnidad mantenimientounidad);
 
-	// MantenimientoUnidadService obtenerMantenimientoUnidadById(Integer idMantenimientoUnidad);
+	// MantenimientoUnidad obtenerMantenimientoUnidadById(Integer idMantenimientoUnidad);
 }

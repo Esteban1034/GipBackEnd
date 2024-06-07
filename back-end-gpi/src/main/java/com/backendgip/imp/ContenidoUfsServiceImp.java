@@ -19,24 +19,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContenidoUfsServiceImp implements ContenidoUfsService {
 	@Autowired
-	private ContenidoUfsRepository contenidoUfsRepository;
+	private ContenidoUfsRepository contenidoufsRepository;
 
 	public List<ContenidoUfs> getContenidoUfs() {
-		return (List) this.contenidoUfsRepository.findAll();
+		return (List) this.contenidoufsRepository.findAll();
 	}
 
 	public ContenidoUfs saveContenidoUfs(ContenidoUfs contenidoUfs) {
-		return (ContenidoUfs) this.contenidoUfsRepository.save(contenidoUfs);
+		return (ContenidoUfs) this.contenidoufsRepository.save(contenidoUfs);
 	}
 
 	public ContenidoUfs getContenidoUfsById(Integer idContenidoUfs) {
-		return (ContenidoUfs) this.contenidoUfsRepository.findById(idContenidoUfs).orElseThrow(() -> {
-			return new ResourceNotFoundException("La estimacion no existe" + idContenidoUfs);
+		return (ContenidoUfs) this.contenidoufsRepository.findById(idContenidoUfs).orElseThrow(() -> {
+			return new ResourceNotFoundException("Contenido no existe con el ID" + idContenidoUfs);
 		});
 	}
 
 	public void deleteContenidoUfs(ContenidoUfs contenidoUfs) {
-		this.contenidoUfsRepository.delete(contenidoUfs);
+		this.contenidoufsRepository.delete(contenidoUfs);
 	}
 }
 

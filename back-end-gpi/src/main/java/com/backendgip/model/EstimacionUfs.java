@@ -42,8 +42,16 @@ public class EstimacionUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_ufs")
     private Ufs ufs;
-  
 
+    @ManyToOne
+    @JoinColumn(name = "fk_etapa_proyecto")
+    private EtapaProyecto etapaProyecto;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_tipo_proyecto")
+    private TipoProyecto tipoProyecto;
+    
+  
 	public EstimacionUfs() {
 	}
 
@@ -104,8 +112,25 @@ public class EstimacionUfs implements Serializable {
         this.ufs = ufs;
     }
 
+    public EtapaProyecto getEtapaProyecto() {
+        return etapaProyecto;
+    }
+
+    public void setEtapaProyecto(EtapaProyecto etapaProyecto) {
+        this.etapaProyecto = etapaProyecto;
+    }
+
+    public TipoProyecto getTipoProyecto() {
+        return tipoProyecto;
+    }
+
+    public void setTipoProyecto(TipoProyecto tipoProyecto) {
+        this.tipoProyecto = tipoProyecto;
+    }
+
     public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
-            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, Ufs ufs) {
+            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, Ufs ufs,
+            EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.proyecto = proyecto;
@@ -113,7 +138,10 @@ public class EstimacionUfs implements Serializable {
         this.modelo = modelo;
         this.recurso = recurso;
         this.ufs = ufs;
+        this.etapaProyecto=etapaProyecto;
+        this.tipoProyecto=tipoProyecto;
     }
+
 
 
 

@@ -10,6 +10,7 @@ import com.backendgip.model.Cliente;
 import com.backendgip.model.ComponenteDesarrollo;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EstadoProyecto;
+import com.backendgip.model.EtapaProyecto;
 import com.backendgip.model.ProjectStatusReport;
 import com.backendgip.model.Proyecto;
 import com.backendgip.model.RecursoActividad;
@@ -175,4 +176,9 @@ public class ProyectoServImp implements ProyectoService {
 	public boolean existsByNombre(String nombre) {
 		return this.proyectoRepository.existsByNombre(nombre);
 	}
+
+	public List<Proyecto> findByEtapa(EtapaProyecto etapa) {
+		return this.proyectoRepository.findByEtapa(etapa);
+	}
+
 }

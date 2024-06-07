@@ -9,9 +9,9 @@ package com.backendgip.repository;
 import com.backendgip.model.EstimacionUfs;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 @Repository
-public interface EstimacionesUfsRepository extends JpaRepository<EstimacionUfs, Integer> {
+public interface EstimacionesUfsRepository extends CrudRepository<EstimacionUfs, Integer> {
 	
 }

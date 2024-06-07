@@ -24,7 +24,7 @@ public class MantenimientoPesoHora implements Serializable {
 	@Column(name = "peso")
 	private String peso;
 	@Column(name = "hora")
-	private Integer hora;
+	private Double hora;
 
 	public MantenimientoPesoHora() {
 	}
@@ -45,15 +45,15 @@ public class MantenimientoPesoHora implements Serializable {
         this.peso = peso;
     }
 
-    public Integer getHora() {
+    public Double getHora() {
         return hora;
     }
 
-    public void setHora(Integer hora) {
+    public void setHora(Double hora) {
         this.hora = hora;
     }
 
-    public MantenimientoPesoHora(Integer id, String peso, Integer hora) {
+    public MantenimientoPesoHora(Integer id, String peso, Double hora) {
         this.id = id;
         this.peso = peso;
         this.hora = hora;

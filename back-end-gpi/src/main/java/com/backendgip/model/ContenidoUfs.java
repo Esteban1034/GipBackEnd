@@ -18,37 +18,37 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "contenido_ufs")
 public class ContenidoUfs implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "pk_contenido_ufs")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-    @ManyToOne
-	@JoinColumn(name = "fk_funcion")
-	private Subfuncion subfuncion;
-	@Column(name = "nombre_caso")
-	private String nombreCaso;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "pk_contenido_ufs")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "nombre_caso")
+    private String nombreCaso;
     @ManyToOne
     @JoinColumn(name = "fk_esfuerzo")
     private Esfuerzo esfuerzo;
     @ManyToOne
+    @JoinColumn(name = "fk_funcion")
+    private Funcion funcion;
+    @ManyToOne
     @JoinColumn(name = "fk_mantenimiento_unidad")
     private MantenimientoUnidad mantenimientoUnidad;
     @Column(name = "porcentaje_diseño")
-	private Integer porcentajeDiseno;
+    private Integer porcentajeDiseno;
     @Column(name = "porcentaje_construccion")
-	private Integer porcentajeConstruccion;
+    private Integer porcentajeConstruccion;
     @Column(name = "porcentaje_Pruebas")
-	private Integer porcentajePruebas;
+    private Integer porcentajePruebas;
     @Column(name = "total_diseno")
-	private Integer totalDiseno;
+    private Integer totalDiseno;
     @Column(name = "total_construccion")
-	private Integer totalConstruccion;
+    private Integer totalConstruccion;
     @Column(name = "total_pruebas")
-	private Integer totalPruebas;
-    
-	public ContenidoUfs() {
-	}
+    private Integer totalPruebas;
+
+    public ContenidoUfs() {
+    }
 
     public Integer getId() {
         return id;
@@ -56,14 +56,6 @@ public class ContenidoUfs implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Subfuncion getSubfuncion() {
-        return subfuncion;
-    }
-
-    public void setSubfuncion(Subfuncion subfuncion) {
-        this.subfuncion = subfuncion;
     }
 
     public String getNombreCaso() {
@@ -130,13 +122,21 @@ public class ContenidoUfs implements Serializable {
         this.totalPruebas = totalPruebas;
     }
 
+    public Funcion getFuncion() {
+        return funcion;
+    }
 
-    public ContenidoUfs(Integer id, Subfuncion subfuncion, String nombreCaso, MantenimientoUnidad mantenimientoUnidad,
-            Integer porcentajeDiseno, Integer porcentajeConstruccion, Integer porcentajePruebas, Integer totalDiseno,
-            Integer totalConstruccion, Integer totalPruebas) {
+    public void setFuncion(Funcion funcion) {
+        this.funcion = funcion;
+    }
+
+    public ContenidoUfs(Integer id, String nombreCaso, Esfuerzo esfuerzo, Funcion funcion,
+            MantenimientoUnidad mantenimientoUnidad, Integer porcentajeDiseno, Integer porcentajeConstruccion,
+            Integer porcentajePruebas, Integer totalDiseno, Integer totalConstruccion, Integer totalPruebas) {
         this.id = id;
-        this.subfuncion = subfuncion;
         this.nombreCaso = nombreCaso;
+        this.esfuerzo = esfuerzo;
+        this.funcion = funcion;
         this.mantenimientoUnidad = mantenimientoUnidad;
         this.porcentajeDiseno = porcentajeDiseno;
         this.porcentajeConstruccion = porcentajeConstruccion;
@@ -146,6 +146,4 @@ public class ContenidoUfs implements Serializable {
         this.totalPruebas = totalPruebas;
     }
 
-    
-    
 }

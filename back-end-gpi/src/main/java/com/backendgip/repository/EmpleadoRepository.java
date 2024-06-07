@@ -20,7 +20,7 @@ public interface EmpleadoRepository extends CrudRepository<Empleado, Integer> {
 
 	boolean existsByCargo(Cargo cargo);
 
-	boolean existsByNombreUsuario(String nombreUsuario);
+	boolean existsByNombreUsuario(String nombreUsuario);	
 
 	boolean existsByEmail(String email);
 

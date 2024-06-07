@@ -1,11 +1,10 @@
 package com.backendgip.repository;
 
+import com.backendgip.model.Modelo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.backendgip.model.MantenimientoUnidad;
-
 @Repository
-public interface MantenimientoUnidadRepository extends CrudRepository<MantenimientoUnidad, Integer> {
-    
+public interface ModeloRepository extends CrudRepository<Modelo, Integer> {   
 }
+
