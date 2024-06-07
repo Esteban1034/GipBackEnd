@@ -206,6 +206,12 @@ public class EmpleadoController {
 		Empleado empleado = (Empleado) this.empleadoRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("No se ha encontrado el recurso solicitado" + id);
 		});
+		Usuario usuario = usuarioService.buscaPorEmpleadoAsociado(id);
+		if(usuario != null){
+			
+			usuarioService.eliminar(usuario);
+		}
+
 		if (this.novedadRepository.existsByEmpleado(empleado)) {
 			return ResponseEntity.badRequest().body("No se puede eliminar el empleado, Tiene relacion con Novedades");
 		} else if (this.recursoActRepository.existsByEmpleado(empleado)) {
