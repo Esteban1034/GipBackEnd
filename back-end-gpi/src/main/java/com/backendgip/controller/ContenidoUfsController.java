@@ -18,7 +18,7 @@ import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.LogSistemaService;
 import com.backendgip.service.MantenimientoPesoHoraService;
-import com.backendgip.service.MantenimientoUnidadService;
+import com.backendgip.service.FuncionService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +50,7 @@ public class ContenidoUfsController {
     @Autowired
     ContenidoUfsService contenidoUfsService;
     @Autowired
-    MantenimientoUnidadService mantenimientoUnidadService;
+    FuncionService mantenimientoUnidadService;
     @Autowired
 	private LogSistemaService logService;
     @Autowired

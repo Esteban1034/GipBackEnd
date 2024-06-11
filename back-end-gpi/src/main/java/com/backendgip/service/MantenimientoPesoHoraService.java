@@ -7,4 +7,5 @@ import com.backendgip.model.MantenimientoPesoHora;
 public interface MantenimientoPesoHoraService {
     
     List<MantenimientoPesoHora> getPesoHora();
+    
 }

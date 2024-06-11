@@ -1,8 +1,15 @@
 package com.backendgip.service;
 
+import java.util.List;
+
 import com.backendgip.model.Esfuerzo;
 
 public interface EsfuerzoService {
 
-    Esfuerzo getEsfuerzoById(Integer idEsfuerzo);
+
+    List<Esfuerzo> gEsfuerzos();  
+
+    Esfuerzo sEsfuerzo(Esfuerzo esfuerzo);
+
+    void deleteEsfuerzo(Esfuerzo esfuerzo);
 }
