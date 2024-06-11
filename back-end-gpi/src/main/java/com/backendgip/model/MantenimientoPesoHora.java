@@ -29,6 +29,12 @@ public class MantenimientoPesoHora implements Serializable {
 	public MantenimientoPesoHora() {
 	}
 
+    public MantenimientoPesoHora(Integer id, String peso, Double hora) {
+        this.id = id;
+        this.peso = peso;
+        this.hora = hora;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -53,10 +59,11 @@ public class MantenimientoPesoHora implements Serializable {
         this.hora = hora;
     }
 
-    public MantenimientoPesoHora(Integer id, String peso, Double hora) {
-        this.id = id;
-        this.peso = peso;
-        this.hora = hora;
+    @Override
+    public String toString() {
+        return "MantenimientoPesoHora [id=" + id + ", peso=" + peso + ", hora=" + hora + "]";
     }
+
+    
 
 }

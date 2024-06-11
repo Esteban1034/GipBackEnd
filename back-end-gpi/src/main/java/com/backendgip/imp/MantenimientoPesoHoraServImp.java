@@ -16,11 +16,18 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
     @Autowired
     private MantenimientoPesoHoraRepository mantenimientoPesoHoraRepository;
 
+    @Override
     public List<MantenimientoPesoHora> getPesoHora(){
         return (List<MantenimientoPesoHora>) this.mantenimientoPesoHoraRepository.findAll();
     }
 
+    @Override
     public MantenimientoPesoHora saveMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora) {
 		return (MantenimientoPesoHora) this.mantenimientoPesoHoraRepository.save(mantenimientoPesoHora);
 	}
+
+    @Override
+    public MantenimientoPesoHora buscarPeso(String peso) {
+      return this.mantenimientoPesoHoraRepository.findByPeso(peso);
+    }
 }
