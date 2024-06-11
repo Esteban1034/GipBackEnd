@@ -9,6 +9,7 @@ import com.backendgip.model.Cliente;
 import com.backendgip.model.ComponenteDesarrollo;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EstadoProyecto;
+//import com.backendgip.model.EtapaProyecto;
 import com.backendgip.model.Proyecto;
 import com.backendgip.model.TipoProyecto;
 import com.backendgip.model.EtapaProyecto;
@@ -21,6 +22,8 @@ public interface ProyectoRepository extends CrudRepository<Proyecto, Integer> {
 	List<Proyecto> findByEstadoProyecto(EstadoProyecto estado);
 
 	boolean existsByCliente(Cliente cliente);
+
+	//boolean eexistsByEtapa(EtapaProyecto etapa);
 
 	boolean existsByTipo(TipoProyecto tipo);
 

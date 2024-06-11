@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.backendgip.controller;
 
 import java.time.LocalDate;
@@ -12,29 +17,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.backendgip.repository.ContenidoUfsRepository;
 import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.LogSistemaService;
 import com.backendgip.service.MantenimientoPesoHoraService;
-import com.backendgip.service.FuncionService;
+import com.backendgip.service.MantenimientoUnidadService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import com.backendgip.exception.ResourceAlreadyExistsException;
 import com.backendgip.exception.ResourceNotFoundException;
-import com.backendgip.model.Cliente;
 import com.backendgip.model.ContenidoUfs;
-import com.backendgip.model.Empleado;
-import com.backendgip.model.Esfuerzo;
-import com.backendgip.model.EstadoCliente;
 import com.backendgip.model.LogSistema;
-import com.backendgip.model.MantenimientoUnidad;
-import com.backendgip.model.SectorCliente;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,12 +44,10 @@ public class ContenidoUfsController {
     ContenidoUfsRepository contenidoUfsRepository;
     @Autowired
     ContenidoUfsService contenidoUfsService;
-    @Autowired
-    FuncionService mantenimientoUnidadService;
+   
     @Autowired
 	private LogSistemaService logService;
-    @Autowired
-    private EsfuerzoService esfuerzoService;
+
 
     @GetMapping({"/contenido-ufs"})
     public List<ContenidoUfs> getContenidoUfs() {
@@ -63,8 +56,8 @@ public class ContenidoUfsController {
 
     @PostMapping({"/contenido-ufs"})
     public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
-        if(this.contenidoUfsRepository.existsByNombreCaso(contenidoUfs.getNombreCaso())){
-            return ResponseEntity.badRequest().body("Este caso ya existe");
+        if(this.contenidoUfsRepository.existsById(contenidoUfs.getId())){
+            return ResponseEntity.badRequest().body("No existe ufs con este id ");
         } else {
             LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
             ContenidoUfs createdContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);

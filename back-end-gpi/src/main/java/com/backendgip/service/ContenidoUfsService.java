@@ -3,7 +3,6 @@ package com.backendgip.service;
 import java.util.List;
 
 import com.backendgip.model.ContenidoUfs;
-import com.backendgip.model.EstadoCliente;
 
 public interface ContenidoUfsService {
 
