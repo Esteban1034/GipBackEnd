@@ -22,8 +22,9 @@ import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.LogSistemaService;
 import com.backendgip.service.MantenimientoPesoHoraService;
-import com.backendgip.service.MantenimientoUnidadService;
+import com.backendgip.service.FuncionService;
 
+import com.backendgip.service.MantenimientoUnidadService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,33 +45,36 @@ public class ContenidoUfsController {
     ContenidoUfsRepository contenidoUfsRepository;
     @Autowired
     ContenidoUfsService contenidoUfsService;
-   
+    @Autowired
+    FuncionService mantenimientoUnidadService;
     @Autowired
 	private LogSistemaService logService;
-
+    @Autowired
+    private EsfuerzoService esfuerzoService;
 
     @GetMapping({"/contenido-ufs"})
     public List<ContenidoUfs> getContenidoUfs() {
         return contenidoUfsService.getContenidoUfs();
     }
 
-    @PostMapping({"/contenido-ufs"})
-    public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
-        if(this.contenidoUfsRepository.existsById(contenidoUfs.getId())){
-            return ResponseEntity.badRequest().body("No existe ufs con este id ");
-        } else {
-            LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-            ContenidoUfs createdContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);
-            LogSistema log = new LogSistema();
-            log.setAccion("CREATE");
-            log.setFechaHora(new Date());
+	@PostMapping({"/contenido-ufs"})
+	public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
+		if (contenidoUfs.getId() != null && this.contenidoUfsRepository.existsById(contenidoUfs.getId())) {
+			return ResponseEntity.badRequest().body("Ya existe un contenido con este id: " + contenidoUfs.getId());
+		} else {
+			LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+			ContenidoUfs createdContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);
+			LogSistema log = new LogSistema();
+			log.setAccion("CREATE");
+			log.setFechaHora(new Date());
 			log.setTabla(ContenidoUfs.class.toString());
 			log.setIdAccion(createdContenidoUfs.getId());
 			log.setDescripcion(createdContenidoUfs.toString());
-            this.logService.saveLog(log);
+			this.logService.saveLog(log);
 			return ResponseEntity.ok(createdContenidoUfs);
-        }
-    }
+		}
+	}
+	
 
     @PutMapping({ "/contenido-ufs/{id}" })
 	public ResponseEntity<?> updateContenidoUfs(@PathVariable Integer id, @RequestBody ContenidoUfs contenidoUfsDetails) {
