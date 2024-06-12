@@ -73,5 +73,11 @@ public class MantenimientoUnidad implements Serializable {
         this.mantenimientoPesoHora = mantenimientoPesoHora;
     }
 
+    @Override
+    public String toString() {
+        return "MantenimientoUnidad [id=" + id + ", nombre=" + nombre + ", peso=" + peso + ", mantenimientoPesoHora="
+                + mantenimientoPesoHora + "]";
+    }
+
     
 }

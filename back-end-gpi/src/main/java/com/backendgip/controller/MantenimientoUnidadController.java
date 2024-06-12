@@ -16,7 +16,6 @@ import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.FuncionService;
 
-
 @RestController
 @RequestMapping("/api")
 public class MantenimientoUnidadController {
@@ -25,19 +24,15 @@ public class MantenimientoUnidadController {
     private MantenimientoUnidadService mantenimientoUnidadService;
     @Autowired
     private MantenimientoPesoHoraService mantenimientoPesoHoraService;
-  
-    
-    
-    @GetMapping({"/mantenimiento-unidad"})
+
+    @GetMapping({ "/mantenimiento-unidad" })
     public List<MantenimientoUnidad> getMantenimientos() {
         return mantenimientoUnidadService.getMantenimientos();
     }
 
-    @GetMapping({"/peso-hora"})
-    public List<MantenimientoPesoHora> getPesoHora(){
-        return this.mantenimientoPesoHoraService.getPesoHora() ;
+    @GetMapping({ "/peso-hora" })
+    public List<MantenimientoPesoHora> getPesoHora() {
+        return this.mantenimientoPesoHoraService.getPesoHora();
     }
 
-   
 }
-
