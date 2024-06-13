@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Ufs;
 import com.backendgip.repository.UfsRepository;
@@ -85,5 +89,23 @@ public class UfsController {
 			return new ResourceNotFoundException("ID " + id + " NO ENCONTRADO");
 		});
 		return ResponseEntity.ok(ufs);
+	}
+
+	@DeleteMapping({ "/unidad-funcional/{id}" })
+	public ResponseEntity<?> deleteContenidoUfs(@PathVariable Integer id) {
+		Ufs ufs = (Ufs) this.ufsRepository.findById(id).orElseThrow(() -> {
+			return new ResourceNotFoundException("La función no exite con el id:" + id);
+		});
+		LogSistema log = new LogSistema();
+		log.setAccion("DELETE");
+		log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+		log.setIdAccion(ufs.getId());
+		log.setDescripcion(ufs.toString());
+		log.setTabla(Ufs.class.toString());
+		this.logService.saveLog(log);
+		this.ufsRepository.deleteById(ufs.getId());
+		Map<String, Boolean> response = new HashMap();
+		response.put("deleted", Boolean.TRUE);
+		return ResponseEntity.ok(response);
 	}
 }
