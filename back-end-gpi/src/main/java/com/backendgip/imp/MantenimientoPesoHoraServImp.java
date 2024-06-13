@@ -27,7 +27,7 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
 	}
 
     @Override
-    public MantenimientoPesoHora buscarPeso(String peso) {
+    public MantenimientoPesoHora buscarPeso(Integer peso) {
       return this.mantenimientoPesoHoraRepository.findByPeso(peso);
     }
 }

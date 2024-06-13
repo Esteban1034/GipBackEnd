@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backendgip.repository.ContenidoUfsRepository;
+import com.backendgip.repository.MantenimientoPesoHoraRepository;
 import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.LogSistemaService;
@@ -26,6 +28,7 @@ import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.MantenimientoPesoHora;
 import com.backendgip.model.MantenimientoUnidad;
+import com.backendgip.model.TipoDocumento;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,19 +50,25 @@ public class ContenidoUfsController {
 	private EsfuerzoService esfuerzoService;
 	@Autowired
 	MantenimientoPesoHoraService pesoHoraService;
+	@Autowired
+	MantenimientoPesoHoraRepository pesoHoraRepository;
 
 	@GetMapping({ "/contenido-ufs" })
 	public List<ContenidoUfs> getContenidoUfs() {
 		return contenidoUfsService.getContenidoUfs();
 	}
 
-	@GetMapping({ "/obtenerHoras/{tipo}" })
-	public MantenimientoPesoHora obtenerHoras(@RequestBody MantenimientoUnidad tipoMantenimiento) {
-		System.out.println(tipoMantenimiento);
-		System.out.println( String.valueOf(tipoMantenimiento.getPeso()));
-		return this.pesoHoraService.buscarPeso(String.valueOf(tipoMantenimiento.getPeso()));
-	}
-
+	@GetMapping({ "/obtenerHoras/{peso}" })
+    public Object obtenerHoras(@PathVariable Integer peso) {
+        MantenimientoPesoHora pesoMantenimiento = this.pesoHoraService.buscarPeso(peso);
+        if (pesoMantenimiento != null) {
+            return pesoMantenimiento;
+        } else {
+			return ResponseEntity.badRequest().body("No se encontro el peso a buscar");
+        }
+    }
+	
+	
 	@PostMapping({ "/contenido-ufs" })
 	public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
 		if (this.contenidoUfsRepository.existsById(contenidoUfs.getId())) {

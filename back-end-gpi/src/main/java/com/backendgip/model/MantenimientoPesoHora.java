@@ -22,14 +22,14 @@ public class MantenimientoPesoHora implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "peso")
-	private String peso;
+	private Integer peso;
 	@Column(name = "hora")
 	private Double hora;
 
 	public MantenimientoPesoHora() {
 	}
 
-    public MantenimientoPesoHora(Integer id, String peso, Double hora) {
+    public MantenimientoPesoHora(Integer id, Integer peso, Double hora) {
         this.id = id;
         this.peso = peso;
         this.hora = hora;
@@ -43,11 +43,11 @@ public class MantenimientoPesoHora implements Serializable {
         this.id = id;
     }
 
-    public String getPeso() {
+    public Integer getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(Integer peso) {
         this.peso = peso;
     }
 
@@ -62,6 +62,11 @@ public class MantenimientoPesoHora implements Serializable {
     @Override
     public String toString() {
         return "MantenimientoPesoHora [id=" + id + ", peso=" + peso + ", hora=" + hora + "]";
+    }
+
+    public MantenimientoPesoHora orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
     }
 
     
