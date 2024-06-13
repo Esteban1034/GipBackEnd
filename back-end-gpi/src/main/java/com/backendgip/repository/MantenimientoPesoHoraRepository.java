@@ -7,5 +7,5 @@ import com.backendgip.model.MantenimientoPesoHora;
 
 @Repository
 public interface MantenimientoPesoHoraRepository extends CrudRepository<MantenimientoPesoHora,Integer> {
-    MantenimientoPesoHora findByPeso(String peso);
+    MantenimientoPesoHora findByPeso(Integer peso);
 }

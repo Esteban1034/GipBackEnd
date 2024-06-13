@@ -8,7 +8,7 @@ public interface MantenimientoPesoHoraService {
     
     List<MantenimientoPesoHora> getPesoHora();
     
-    MantenimientoPesoHora buscarPeso(String peso);
+    MantenimientoPesoHora buscarPeso(Integer peso);
 
     MantenimientoPesoHora saveMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora);
 }
