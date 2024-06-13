@@ -1,12 +1,10 @@
-
-
 package com.backendgip.repository;
 
-import com.backendgip.model.ContenidoUfs;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import com.backendgip.model.Funcion;
 
 @Repository
-public interface ContenidoUfsRepository extends CrudRepository<ContenidoUfs, Integer> {
-
+public interface FuncionRepository extends CrudRepository<Funcion, Integer> {
+    
 }

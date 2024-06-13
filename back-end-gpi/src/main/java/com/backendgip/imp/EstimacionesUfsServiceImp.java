@@ -5,7 +5,6 @@
 
 package com.backendgip.imp;
 
-
 import com.backendgip.model.EstimacionUfs;
 
 import com.backendgip.repository.EstimacionesUfsRepository;
@@ -17,10 +16,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
-	@Autowired
+    @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
 
-  
     public List<EstimacionUfs> getEstimaciones() {
         return (List<EstimacionUfs>) estimacionesUfsRepository.findAll();
     }
