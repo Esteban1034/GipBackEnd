@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
-import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Ufs;
 import com.backendgip.repository.UfsRepository;

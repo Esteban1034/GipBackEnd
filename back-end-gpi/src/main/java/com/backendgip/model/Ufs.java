@@ -25,12 +25,15 @@ public class Ufs implements Serializable {
 	private Integer id;
 	@Column(name = "nombre")
 	private String nombre;
-	@ManyToOne
-    @JoinColumn(name = "fk_contenido_ufs")
-    private ContenidoUfs contenidoUfs;
 
 	public Ufs() {
 	}
+
+	public Ufs(Integer id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
+	}
+
 
 	public Integer getId() {
 		return id;
@@ -48,18 +51,10 @@ public class Ufs implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public ContenidoUfs getContenidoUfs() {
-		return contenidoUfs;
-	}
-
-	public void setContenidoUfs(ContenidoUfs contenidoUfs) {
-		this.contenidoUfs = contenidoUfs;
-	}
 
 	public Ufs(Integer id, String nombre, ContenidoUfs contenidoUfs) {
 		this.id = id;
 		this.nombre = nombre;
-		this.contenidoUfs = contenidoUfs;
 	}
 
 }
