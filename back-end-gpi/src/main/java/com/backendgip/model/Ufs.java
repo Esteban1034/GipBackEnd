@@ -51,7 +51,6 @@ public class Ufs implements Serializable {
 		this.nombre = nombre;
 	}
 
-
 	public Ufs(Integer id, String nombre, ContenidoUfs contenidoUfs) {
 		this.id = id;
 		this.nombre = nombre;
