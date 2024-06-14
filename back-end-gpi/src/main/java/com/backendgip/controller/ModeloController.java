@@ -29,16 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ModeloController {
     @Autowired
 	private ModeloService modeloService;
-	@Autowired
-	private ModeloRepository modeloRepository;
-	@Autowired
-	private LogSistemaService logService;
     
     public ModeloController(){
     }
 
-    @GetMapping({ "/Modelo" })
-	public List<Modelo> getAllModelos() {
+    @GetMapping({ "/modelo" })
+	public List<Modelo> getModelos() {
 		return this.modeloService.getNombresList();
 	}
 }
