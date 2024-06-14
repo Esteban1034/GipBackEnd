@@ -27,9 +27,7 @@ public class MantenimientoUnidad implements Serializable {
 	private String nombre;
 	@Column(name = "peso")
 	private Integer peso;
-    @ManyToOne
-    @JoinColumn(name = "fk_mantenimiento_peso_hora")
-    private MantenimientoPesoHora mantenimientoPesoHora;
+    
 
 	public MantenimientoUnidad() {
 	}
@@ -58,25 +56,16 @@ public class MantenimientoUnidad implements Serializable {
         this.peso = peso;
     }
 
-    public MantenimientoPesoHora getMantenimientoPesoHora() {
-        return mantenimientoPesoHora;
-    }
-
-    public void setMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora) {
-        this.mantenimientoPesoHora = mantenimientoPesoHora;
-    }
 
     public MantenimientoUnidad(Integer id, String nombre, Integer peso, MantenimientoPesoHora mantenimientoPesoHora) {
         this.id = id;
         this.nombre = nombre;
         this.peso = peso;
-        this.mantenimientoPesoHora = mantenimientoPesoHora;
     }
 
     @Override
     public String toString() {
-        return "MantenimientoUnidad [id=" + id + ", nombre=" + nombre + ", peso=" + peso + ", mantenimientoPesoHora="
-                + mantenimientoPesoHora + "]";
+        return "MantenimientoUnidad [id=" + id + ", nombre=" + nombre + ", peso=" + peso + "]";
     }
 
     
