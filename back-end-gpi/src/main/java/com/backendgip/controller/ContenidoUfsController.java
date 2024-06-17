@@ -64,7 +64,7 @@ public class ContenidoUfsController {
         if (pesoMantenimiento != null) {
             return ResponseEntity.ok(pesoMantenimiento);
         } else {
-            return ResponseEntity.notFound().build();
+			return ResponseEntity.badRequest().body("No se encuentra horas asignadas a esta complejidad");
         }
     }
 

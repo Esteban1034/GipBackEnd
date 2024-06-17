@@ -54,9 +54,8 @@ public class EstimacionesUfsController {
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfs estimaciones) {
         estimaciones.setActividadesComplementarias(null);
-        estimaciones.setUfs(null);
         System.out.println(estimaciones.getActividadesComplementarias());
-        System.out.println(estimaciones.getUfs());
+        System.out.println(estimaciones.getContenidoUfs());
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
         if (createdEstimaciones == null) {
             return ResponseEntity.badRequest().body("Nomenclatura existente");
@@ -116,7 +115,7 @@ public class EstimacionesUfsController {
         estimaciones.setProyecto(estimacionesDetails.getProyecto());
         estimaciones.setActividadesComplementarias(estimacionesDetails.getActividadesComplementarias());
         estimaciones.setRecurso(estimacionesDetails.getRecurso());
-        estimaciones.setUfs(estimacionesDetails.getUfs());
+        estimaciones.setContenidoUfs(estimacionesDetails.getContenidoUfs());
         estimaciones.setFechaCreacion(estimacionesDetails.getFechaCreacion());
         estimacionesUfsService.saveEstimacionIn(estimaciones);
 
