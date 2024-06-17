@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping({ "/api" })
+@RequestMapping( "/api" )
 public class ContenidoUfsController {
 
 	@Autowired
@@ -53,23 +53,23 @@ public class ContenidoUfsController {
 	@Autowired
 	MantenimientoPesoHoraRepository pesoHoraRepository;
 
-	@GetMapping({ "/contenido-ufs" })
+	@GetMapping( "/contenido-ufs" )
 	public List<ContenidoUfs> getContenidoUfs() {
 		return contenidoUfsService.getContenidoUfs();
 	}
 
-	@GetMapping({ "/obtenerHoras/{peso}" })
-    public Object obtenerHoras(@PathVariable Integer peso) {
-        MantenimientoPesoHora pesoMantenimiento = this.pesoHoraService.buscarPeso(peso);
+	@GetMapping("/contenido-ufs/obtenerHoras/{peso}")
+    public ResponseEntity<?> obtenerHoras(@PathVariable Integer peso) {
+        MantenimientoPesoHora pesoMantenimiento = pesoHoraService.buscarPeso(peso);
         if (pesoMantenimiento != null) {
-            return pesoMantenimiento;
+            return ResponseEntity.ok(pesoMantenimiento);
         } else {
 			return ResponseEntity.badRequest().body("No se encuentra horas asignadas a esta complejidad");
         }
     }
+
 	
-	
-	@PostMapping({ "/contenido-ufs" })
+	@PostMapping( "/contenido-ufs" )
 	public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
 		if (this.contenidoUfsRepository.existsById(contenidoUfs.getId())) {
 			return ResponseEntity.badRequest().body("No existe ufs con este id ");
@@ -87,7 +87,7 @@ public class ContenidoUfsController {
 		}
 	}
 
-	@PutMapping({ "/contenido-ufs/{id}" })
+	@PutMapping( "/contenido-ufs/{id}" )
 	public ResponseEntity<?> updateContenidoUfs(@PathVariable Integer id,
 			@RequestBody ContenidoUfs contenidoUfsDetails) {
 		ContenidoUfs contenidoUfs = (ContenidoUfs) this.contenidoUfsRepository.findById(id).orElseThrow(() -> {

@@ -38,13 +38,10 @@ public class FuncionesServiceImp implements FuncionService {
     public void deleteFuncion(Funcion funcion) {
         funcionRepository.delete(funcion);
     }
-
-
-    @Override
     public Funcion sFuncion(Funcion funcion) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sFuncion'");
+        return funcionRepository.save(funcion);
     }
+    
 
 
  
