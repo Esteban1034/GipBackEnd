@@ -10,5 +10,6 @@ public interface MantenimientoPesoHoraService {
     
     MantenimientoPesoHora buscarPeso(Integer peso);
 
+    
     MantenimientoPesoHora saveMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora);
 }

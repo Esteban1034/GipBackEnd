@@ -3,7 +3,11 @@ package com.backendgip.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,9 +33,15 @@ public class FuncionController {
     
 
 
-    @GetMapping({"/funcion"})
+    @GetMapping({"/funciones"})
     public List<Funcion> getFuncions(){
         return this.funcionService.geFuncions() ;
+    }
+
+     @PostMapping("/funciones")
+    public ResponseEntity<Funcion> saveFuncion(@RequestBody Funcion funcion) {
+        Funcion savedFuncion = funcionService.sFuncion(funcion);
+        return new ResponseEntity<>(savedFuncion, HttpStatus.CREATED);
     }
     
    
