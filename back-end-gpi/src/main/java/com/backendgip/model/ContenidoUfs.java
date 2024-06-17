@@ -47,7 +47,7 @@ public class ContenidoUfs implements Serializable {
     @Column(name = "total_pruebas")
     private Integer totalPruebas;
     @ManyToOne
-    @JoinColumn(name = "fk_ufs")
+    @JoinColumn(name = "fk_ufs", nullable=false)
     private Ufs ufs;
 
 

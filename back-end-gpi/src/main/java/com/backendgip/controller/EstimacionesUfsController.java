@@ -2,18 +2,24 @@ package com.backendgip.controller;
 
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ComponenteDesarrollo;
+import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EstimacionUfs;
+import com.backendgip.model.EstimacionUfsDTO;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Proyecto;
+import com.backendgip.model.Ufs;
 import com.backendgip.repository.EmpleadoRepository;
 import com.backendgip.repository.EstimacionesUfsRepository;
+import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EmpleadoService;
 import com.backendgip.service.EstimacionesUfsService;
 import com.backendgip.service.LogSistemaService;
 import com.backendgip.service.ProyectoService;
+import com.backendgip.service.UfsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,21 +35,20 @@ public class EstimacionesUfsController {
 
     @Autowired
     private EstimacionesUfsService estimacionesUfsService;
-
     @Autowired
     private LogSistemaService logService;
-
     @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
-
     @Autowired
     private ProyectoService proyectoService;
-
     @Autowired
     private EmpleadoRepository empleadoRepository;
-
     @Autowired
     private EmpleadoService empleadoService;
+    @Autowired
+    private UfsService ufsService;
+    @Autowired
+    private ContenidoUfsService contenidoUfsService;
 
     @GetMapping("/estimaciones")
     public ResponseEntity<List<EstimacionUfs>> getEstimaciones() {
@@ -52,14 +57,25 @@ public class EstimacionesUfsController {
     }
 
     @PostMapping("/estimaciones")
-    public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfs estimaciones) {
-        estimaciones.setActividadesComplementarias(null);
-        System.out.println(estimaciones.getActividadesComplementarias());
-        System.out.println(estimaciones.getContenidoUfs());
+    public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfsDTO estimacionesDto) {
+        estimacionesDto.getEstimacionUfs().setActividadesComplementarias(null);
+        Integer UfId = estimacionesDto.getUfId();
+        Ufs ufs = ufsService.getUfsById(UfId);
+        if(ufs == null){
+            return ResponseEntity.badRequest().body("No es posible crear la Unidad fincional" + ufs);
+        }
+        ContenidoUfs contenidoUfs = new ContenidoUfs();
+        contenidoUfs.setUfs(ufs);
+
+        ContenidoUfs createdContenidoUfs = contenidoUfsService.saveContenidoUfs(contenidoUfs);
+        if(createdContenidoUfs == null){
+            return ResponseEntity.badRequest().body("No se pudo asociar el contenido a la Unidad funcional"+ ufs);
+        }
+        EstimacionUfs estimaciones = estimacionesDto.getEstimacionUfs();
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
-        if (createdEstimaciones == null) {
-            return ResponseEntity.badRequest().body("Nomenclatura existente");
-        } else {        
+        if(createdEstimaciones == null){
+            return ResponseEntity.badRequest().body("No se pudo guardar la estimación");
+        }else {        
             LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
             estimaciones.setFechaCreacion(fechaCreacion);
             LogSistema log = new LogSistema();
