@@ -72,6 +72,7 @@ public class EstimacionesUfsController {
             return ResponseEntity.badRequest().body("No se pudo asociar el contenido a la Unidad funcional"+ ufs);
         }
         EstimacionUfs estimaciones = estimacionesDto.getEstimacionUfs();
+        estimaciones.setContenidoUfs(createdContenidoUfs);
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
         if(createdEstimaciones == null){
             return ResponseEntity.badRequest().body("No se pudo guardar la estimación");
