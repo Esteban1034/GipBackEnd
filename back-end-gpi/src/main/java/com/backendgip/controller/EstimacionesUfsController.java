@@ -59,7 +59,7 @@ public class EstimacionesUfsController {
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfsDTO estimacionesDto) {
         estimacionesDto.getEstimacionUfs().setActividadesComplementarias(null);
-        Integer UfId = estimacionesDto.getUfId();
+        Integer UfId = estimacionesDto.getUfId()!= null? estimacionesDto.getUfId() : 1;
         Ufs ufs = ufsService.getUfsById(UfId);
         if(ufs == null){
             return ResponseEntity.badRequest().body("No es posible crear la Unidad fincional" + ufs);
@@ -72,8 +72,8 @@ public class EstimacionesUfsController {
             return ResponseEntity.badRequest().body("No se pudo asociar el contenido a la Unidad funcional"+ ufs);
         }
         EstimacionUfs estimaciones = estimacionesDto.getEstimacionUfs();
-        estimaciones.setContenidoUfs(createdContenidoUfs);
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
+        contenidoUfs.setEstimacionUfs(estimaciones);
         if(createdEstimaciones == null){
             return ResponseEntity.badRequest().body("No se pudo guardar la estimación");
         }else {        
@@ -132,7 +132,6 @@ public class EstimacionesUfsController {
         estimaciones.setProyecto(estimacionesDetails.getProyecto());
         estimaciones.setActividadesComplementarias(estimacionesDetails.getActividadesComplementarias());
         estimaciones.setRecurso(estimacionesDetails.getRecurso());
-        estimaciones.setContenidoUfs(estimacionesDetails.getContenidoUfs());
         estimaciones.setFechaCreacion(estimacionesDetails.getFechaCreacion());
         estimacionesUfsService.saveEstimacionIn(estimaciones);
 

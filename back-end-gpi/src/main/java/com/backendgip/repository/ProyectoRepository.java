@@ -49,6 +49,8 @@ public interface ProyectoRepository extends CrudRepository<Proyecto, Integer> {
 
 	List<Proyecto> findByInterno(Boolean interno);
 
+	List<Proyecto> findByClienteAndEtapa(Cliente cliente, EtapaProyecto etapaProyecto);
+
 	List<Proyecto> findByLider(Empleado lider);
 
 	List<Proyecto> findByEtapa(EtapaProyecto etapa);

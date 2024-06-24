@@ -49,7 +49,9 @@ public class ContenidoUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_ufs")
     private Ufs ufs;
-
+    @ManyToOne
+    @JoinColumn(name = "fk_estimacion")
+    private EstimacionUfs estimacionUfs;
 
     public ContenidoUfs() {
     }
@@ -152,9 +154,17 @@ public class ContenidoUfs implements Serializable {
         this.ufs = ufs;
     }
 
+    public EstimacionUfs getEstimacionUfs() {
+        return estimacionUfs;
+    }
+
+    public void setEstimacionUfs(EstimacionUfs estimacionUfs) {
+        this.estimacionUfs = estimacionUfs;
+    }
+
     public ContenidoUfs(Integer id, String nombreCaso, Esfuerzo esfuerzo, Funcion funcion,
             MantenimientoUnidad mantenimientoUnidad, Integer porcentajeDiseno, Integer porcentajeConstruccion,
-            Integer porcentajePruebas, Integer totalDiseno, Integer totalConstruccion, Integer totalPruebas, Ufs ufs) {
+            Integer porcentajePruebas, Integer totalDiseno, Integer totalConstruccion, Integer totalPruebas, Ufs ufs, EstimacionUfs estimacionUfs) {
         this.id = id;
         this.nombreCaso = nombreCaso;
         this.esfuerzo = esfuerzo;
@@ -167,8 +177,6 @@ public class ContenidoUfs implements Serializable {
         this.totalConstruccion = totalConstruccion;
         this.totalPruebas = totalPruebas;
         this.ufs = ufs;
+        this.estimacionUfs = estimacionUfs;
     }
-
-    
-
 }

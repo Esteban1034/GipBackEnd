@@ -40,20 +40,31 @@ public class EstimacionUfs implements Serializable {
     @JoinColumn(name = "fk_empleado")
     private Empleado recurso;
     @ManyToOne
-    @JoinColumn(name = "fk_contenidoufs")
-    private ContenidoUfs contenidoUfs;
-
-    @ManyToOne
     @JoinColumn(name = "fk_etapa_proyecto")
     private EtapaProyecto etapaProyecto;
-
     @ManyToOne
     @JoinColumn(name = "fk_tipo_proyecto")
     private TipoProyecto tipoProyecto;
-    
-  
-	public EstimacionUfs() {
-	}
+
+    public EstimacionUfs() {
+    }
+
+    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
+            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso,
+            EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.proyecto = proyecto;
+        this.actividadesComplementarias = actividadesComplementarias;
+        this.modelo = modelo;
+        this.recurso = recurso;
+        this.etapaProyecto = etapaProyecto;
+        this.tipoProyecto = tipoProyecto;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;
@@ -62,15 +73,14 @@ public class EstimacionUfs implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public LocalDate getFechaCreacion() {
-        return this.fechaCreacion;
+        return fechaCreacion;
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-
-
 
     public Proyecto getProyecto() {
         return proyecto;
@@ -104,14 +114,6 @@ public class EstimacionUfs implements Serializable {
         this.recurso = recurso;
     }
 
-    public ContenidoUfs getContenidoUfs() {
-        return contenidoUfs;
-    }
-
-    public void setContenidoUfs(ContenidoUfs contenidoUfs) {
-        this.contenidoUfs = contenidoUfs;
-    }
-
     public EtapaProyecto getEtapaProyecto() {
         return etapaProyecto;
     }
@@ -128,22 +130,12 @@ public class EstimacionUfs implements Serializable {
         this.tipoProyecto = tipoProyecto;
     }
 
-    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
-            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, ContenidoUfs contenidoUfs,
-            EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
-        this.id = id;
-        this.fechaCreacion = fechaCreacion;
-        this.proyecto = proyecto;
-        this.actividadesComplementarias = actividadesComplementarias;
-        this.modelo = modelo;
-        this.recurso = recurso;
-        this.contenidoUfs = contenidoUfs;
-        this.etapaProyecto=etapaProyecto;
-        this.tipoProyecto=tipoProyecto;
+    @Override
+    public String toString() {
+        return "EstimacionUfs [id=" + id + ", fechaCreacion=" + fechaCreacion + ", proyecto=" + proyecto
+                + ", actividadesComplementarias=" + actividadesComplementarias + ", modelo=" + modelo + ", recurso="
+                + recurso + ", etapaProyecto=" + etapaProyecto + ", tipoProyecto=" + tipoProyecto + "]";
     }
-
-
-
 
     
 

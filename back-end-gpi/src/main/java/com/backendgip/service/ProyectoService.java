@@ -37,6 +37,8 @@ public interface ProyectoService {
 	List<Proyecto> findByComponente(ComponenteDesarrollo componente);
 
 	List<Proyecto> findByCodigoAndCliente(String codigo, Cliente cliente);
+	
+	List<Proyecto> findByClienteConEtapaPRP(Cliente cliente);
 
 	List<Proyecto> findByCodigoAndComponente(String codigo, ComponenteDesarrollo componente);
 
@@ -45,6 +47,8 @@ public interface ProyectoService {
 	List<Proyecto> findByComponenteAndCliente(ComponenteDesarrollo componente, Cliente cliente);
 
 	List<Proyecto> findByInterno(Boolean interno);
+
+	List<Proyecto> findByClienteAndEtapa(Cliente cliente, EtapaProyecto etapaProyecto);
 
 	List<Proyecto> findByLider(Empleado lider);
 
