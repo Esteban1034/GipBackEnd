@@ -14,4 +14,9 @@ public interface MantenimientoUnidadService {
 
     MantenimientoUnidad saveMantenimientoUnd(MantenimientoUnidad mantenimientoUnidad);
 
+    boolean validarNombre(String nombre);
+
+    void deleteById(Integer id);
+
+
 }

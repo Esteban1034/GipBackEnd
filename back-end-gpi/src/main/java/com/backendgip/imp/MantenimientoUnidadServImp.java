@@ -24,11 +24,25 @@ public class MantenimientoUnidadServImp implements MantenimientoUnidadService {
 
     public MantenimientoUnidad saveMantenimientoUnd(MantenimientoUnidad mantenimientoUnidad) {
 		return (MantenimientoUnidad) this.mantenimineMantenimientoUnidadRepository.save(mantenimientoUnidad);
-	}
+	  }
 
     public MantenimientoUnidad getMantenimientoUndById(Integer idMantenimientoUnd) {
 		return (MantenimientoUnidad) this.mantenimineMantenimientoUnidadRepository.findById(idMantenimientoUnd).orElseThrow(() -> {
 			return new ResourceNotFoundException("No se ha encontrado el estado con el id:" + idMantenimientoUnd);
 		});
 	}
+
+    @Override
+    public boolean validarNombre(String nombre) {
+      if (this.mantenimineMantenimientoUnidadRepository.findByNombre(nombre)) {
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+      this.mantenimineMantenimientoUnidadRepository.deleteById(id);
+    }
 }

@@ -31,4 +31,20 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
     public MantenimientoPesoHora buscarPeso(Integer peso) {
         return mantenimientoPesoHoraRepository.findByPeso(peso);
     }
+
+
+    @Override
+    public boolean validarPeso(Integer peso) {
+        MantenimientoPesoHora mantenimiento = mantenimientoPesoHoraRepository.findByPeso(peso);
+        if (mantenimiento != null) {
+            return true;
+          }else{
+            return false;
+          }
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+      this.mantenimientoPesoHoraRepository.deleteById(id);
+    }
 }
