@@ -55,6 +55,7 @@ public class ContenidoUfs implements Serializable {
     private EstimacionUfs estimacionUfs;
 
 
+ 
     public ContenidoUfs() {
     }
 
@@ -228,8 +229,6 @@ public class ContenidoUfs implements Serializable {
                 + getPorcentajePruebas() + ", getTotalDiseno()=" + getTotalDiseno() + ", getTotalConstruccion()="
                 + getTotalConstruccion() + ", getTotalPruebas()=" + getTotalPruebas() + ", getUfs()=" + getUfs()
                 + ", getEstimacionUfs()=" + getEstimacionUfs() + ", toString()=" + super.toString() + "]";
-    }
-
     
-
+}
 }

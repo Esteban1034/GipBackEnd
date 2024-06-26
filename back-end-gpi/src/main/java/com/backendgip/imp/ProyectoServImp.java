@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,13 @@ public class ProyectoServImp implements ProyectoService {
 
 	public List<Proyecto> getProyectos() {
 		return (List) this.proyectoRepository.findAll();
+	}
+
+	public List<Proyecto> findByClienteConEtapaPRP(Cliente cliente){
+		List<Proyecto> proyectosFiltrados = this.findByCliente(cliente).stream()
+		.filter(proyecto -> proyecto.getEtapa().getId() == 1)
+		.collect(Collectors.toList());
+		return proyectosFiltrados;
 	}
 
 	public List<Proyecto> getProyectosByFechaInicioFechaFin(LocalDate fechaInicio, LocalDate fechaFin) {
@@ -105,19 +114,23 @@ public class ProyectoServImp implements ProyectoService {
 	public List<Proyecto> findByCliente(Cliente cliente) {
 		return this.proyectoRepository.findByCliente(cliente);
 	}
-
+	
 	public List<Proyecto> findByCodigo(String codigo) {
 		return this.proyectoRepository.findByCodigo(codigo);
 	}
-
+	
 	public List<Proyecto> findByComponente(ComponenteDesarrollo componente) {
 		return this.proyectoRepository.findByComponente(componente);
 	}
-
+	
 	public List<Proyecto> findByCodigoAndCliente(String codigo, Cliente cliente) {
 		return this.proyectoRepository.findByCodigoAndCliente(codigo, cliente);
 	}
 
+	public List<Proyecto> findByClienteAndEtapa(Cliente cliente, EtapaProyecto etapaProyecto) {
+		return this.proyectoRepository.findByClienteAndEtapa(cliente, etapaProyecto);
+	}
+	
 	public List<Proyecto> findByCodigoAndComponente(String codigo, ComponenteDesarrollo componente) {
 		return this.proyectoRepository.findByCodigoAndComponente(codigo, componente);
 	}
@@ -143,7 +156,6 @@ public class ProyectoServImp implements ProyectoService {
 				totalHoras = totalHoras + r.getHoras();
 			}
 		}
-
 		return totalHoras;
 	}
 
@@ -176,9 +188,11 @@ public class ProyectoServImp implements ProyectoService {
 	public boolean existsByNombre(String nombre) {
 		return this.proyectoRepository.existsByNombre(nombre);
 	}
-
+	
+	
 	public List<Proyecto> findByEtapa(EtapaProyecto etapa) {
 		return this.proyectoRepository.findByEtapa(etapa);
 	}
+
 
 }

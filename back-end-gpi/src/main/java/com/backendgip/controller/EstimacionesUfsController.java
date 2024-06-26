@@ -55,52 +55,39 @@ public class EstimacionesUfsController {
         List<EstimacionUfs> estimaciones = estimacionesUfsService.getEstimaciones();
         return ResponseEntity.ok(estimaciones);
     }
-
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfsDTO estimacionesDto) {
         estimacionesDto.getEstimacionUfs().setActividadesComplementarias(null);
-        Integer ufId = estimacionesDto.getUfId() != null ? estimacionesDto.getUfId() : 1;
-        Ufs ufs = ufsService.getUfsById(ufId);
-        if (ufs == null) {
-            return ResponseEntity.badRequest().body("No es posible crear la Unidad funcional con ID: " + ufId);
+        Integer UfId = estimacionesDto.getUfId()!= null? estimacionesDto.getUfId() : 1;
+        Ufs ufs = ufsService.getUfsById(UfId);
+        if(ufs == null){
+            return ResponseEntity.badRequest().body("No es posible crear la Unidad fincional" + ufs);
         }
-    
-        // Guardar ContenidoUfs asociado a la Ufs
         ContenidoUfs contenidoUfs = new ContenidoUfs();
         contenidoUfs.setUfs(ufs);
+
         ContenidoUfs createdContenidoUfs = contenidoUfsService.saveContenidoUfs(contenidoUfs);
-        if (createdContenidoUfs == null) {
-            return ResponseEntity.badRequest().body("No se pudo asociar el contenido a la Unidad funcional con ID: " + ufId);
+        if(createdContenidoUfs == null){
+            return ResponseEntity.badRequest().body("No se pudo asociar el contenido a la Unidad funcional"+ ufs);
         }
-    
-        // Guardar EstimacionUfs
         EstimacionUfs estimaciones = estimacionesDto.getEstimacionUfs();
         EstimacionUfs createdEstimaciones = estimacionesUfsService.saveEstimacionIn(estimaciones);
-        if (createdEstimaciones == null) {
+        contenidoUfs.setEstimacionUfs(estimaciones);
+        if(createdEstimaciones == null){
             return ResponseEntity.badRequest().body("No se pudo guardar la estimación");
+        }else {        
+            LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+            estimaciones.setFechaCreacion(fechaCreacion);
+            LogSistema log = new LogSistema();
+            log.setAccion("CREATE");
+            log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+            log.setTabla(EstimacionUfs.class.toString());
+            log.setIdAccion(createdEstimaciones.getId());
+            log.setDescripcion(createdEstimaciones.toString());
+            logService.saveLog(log);
+            return ResponseEntity.ok(createdEstimaciones);
         }
-    
-        // Asociar el ID de la Estimación al ContenidoUfs
-        createdContenidoUfs.setEstimacionUfs(createdEstimaciones);
-        ContenidoUfs updatedContenidoUfs = contenidoUfsService.saveContenidoUfs(createdContenidoUfs);
-        if (updatedContenidoUfs == null) {
-            return ResponseEntity.badRequest().body("No se pudo asociar el ID de la estimación al contenido de UFS");
-        }
-    
-        // Guardar log de la acción
-        LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-        estimaciones.setFechaCreacion(fechaCreacion);
-        LogSistema log = new LogSistema();
-        log.setAccion("CREATE");
-        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-        log.setTabla(EstimacionUfs.class.toString());
-        log.setIdAccion(createdEstimaciones.getId());
-        log.setDescripcion(createdEstimaciones.toString());
-        logService.saveLog(log);
-    
-        return ResponseEntity.ok(createdEstimaciones);
     }
-    
     @DeleteMapping("/estimaciones/{id}")
     public ResponseEntity<?> deleteEstimaciones(@PathVariable Integer id) {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
