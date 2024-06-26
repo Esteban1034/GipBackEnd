@@ -9,9 +9,6 @@ import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ContenidoUfs;
 import com.backendgip.repository.ContenidoUfsRepository;
 import com.backendgip.service.ContenidoUfsService;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +35,7 @@ public class ContenidoUfsServiceImp implements ContenidoUfsService {
 	public void deleteContenidoUfs(ContenidoUfs contenidoUfs) {
 		this.contenidoufsRepository.delete(contenidoUfs);
 	}
-	public boolean existeUfsPorId(Integer idUfs) {
+	public boolean existsById(Integer idUfs) {
         return contenidoufsRepository.existsById(idUfs);
     }
 

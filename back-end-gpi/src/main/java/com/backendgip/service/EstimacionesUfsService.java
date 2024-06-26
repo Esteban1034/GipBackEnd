@@ -18,9 +18,6 @@ public interface EstimacionesUfsService {
 
     
     EstimacionUfs getUltimaEstimacionUfs();
-
-    
-    Long findMaxId();
-
+ 
 
 }

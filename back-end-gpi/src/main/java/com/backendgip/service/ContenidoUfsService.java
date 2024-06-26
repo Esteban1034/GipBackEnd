@@ -16,10 +16,9 @@ public interface ContenidoUfsService {
 
 
     ContenidoUfs getUltimoContenidoUfs();
-    boolean existsById(Integer integer); // Solo declaramos el método aquí
 
-    
+    boolean existsById(Integer integer);
+
     Long findMaxId();
-
 
 }
