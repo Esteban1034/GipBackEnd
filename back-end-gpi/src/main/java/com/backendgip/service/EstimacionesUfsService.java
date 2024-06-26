@@ -4,6 +4,7 @@
 //
 
 package com.backendgip.service;
+import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.EstimacionUfs;
 import java.util.List;
 
@@ -14,4 +15,12 @@ public interface EstimacionesUfsService {
     EstimacionUfs saveEstimacionIn(EstimacionUfs estimacionesUfs);
 
     void deleteEstimaciones(EstimacionUfs estimacionesUfs);
+
+    
+    EstimacionUfs getUltimaEstimacionUfs();
+
+    
+    Long findMaxId();
+
+
 }

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backendgip.repository.ContenidoUfsRepository;
 import com.backendgip.repository.MantenimientoPesoHoraRepository;
+import com.backendgip.repository.UfsRepository;
 import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.LogSistemaService;
@@ -53,6 +53,9 @@ public class ContenidoUfsController {
 	@Autowired
 	MantenimientoPesoHoraRepository pesoHoraRepository;
 
+	@Autowired
+	UfsRepository ufsRepository;
+
 	@GetMapping( "/contenido-ufs" )
 	public List<ContenidoUfs> getContenidoUfs() {
 		return contenidoUfsService.getContenidoUfs();
@@ -68,24 +71,57 @@ public class ContenidoUfsController {
         }
     }
 
+	@GetMapping("/contenido-ufs/ultimo")
+    public ResponseEntity<ContenidoUfs> getUltimoContenidoUfs() {
+        ContenidoUfs ultimoContenido = contenidoUfsService.getUltimoContenidoUfs();
+        if (ultimoContenido != null) {
+            return ResponseEntity.ok(ultimoContenido);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 	
-	@PostMapping( "/contenido-ufs" )
-	public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
-		if (this.contenidoUfsRepository.existsById(contenidoUfs.getId())) {
-			return ResponseEntity.badRequest().body("No existe ufs con este id ");
-		} else {
-			LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-			ContenidoUfs createdContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);
-			LogSistema log = new LogSistema();
-			log.setAccion("CREATE");
-			log.setFechaHora(new Date());
-			log.setTabla(ContenidoUfs.class.toString());
-			log.setIdAccion(createdContenidoUfs.getId());
-			log.setDescripcion(createdContenidoUfs.toString());
-			this.logService.saveLog(log);
-			return ResponseEntity.ok(createdContenidoUfs);
-		}
-	}
+	@PostMapping("/contenido-ufs")
+    public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
+    try {
+        // Validación básica de datos de entrada
+        if (contenidoUfs == null || contenidoUfs.getId() == null) {
+            return ResponseEntity.badRequest().body("El contenido de UFS o su ID no pueden ser nulos");
+        }
+
+        // Verifica si el contenidoUfs ya existe para decidir si es una actualización o inserción
+        boolean exists = this.contenidoUfsRepository.existsById(contenidoUfs.getId());
+
+        // Verificar si existe el ufs asociado (si aplica)
+        if (contenidoUfs.getUfs() != null && !this.ufsRepository.existsById(contenidoUfs.getUfs().getId())) {
+            return ResponseEntity.badRequest().body("No existe ufs con este ID: " + contenidoUfs.getUfs().getId());
+        }
+
+        // Guardar o actualizar según corresponda
+        ContenidoUfs updatedContenidoUfs;
+        if (exists) {
+            updatedContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs); // Actualización
+        } else {
+            updatedContenidoUfs = this.contenidoUfsRepository.save(contenidoUfs); // Inserción
+        }
+
+        // Registra el log de sistema para la acción realizada
+        LogSistema log = new LogSistema();
+        log.setAccion(exists ? "UPDATE" : "INSERT");
+        log.setFechaHora(new Date());
+        log.setTabla(ContenidoUfs.class.toString());
+        log.setIdAccion(updatedContenidoUfs.getId());
+        log.setDescripcion(updatedContenidoUfs.toString());
+        this.logService.saveLog(log);
+
+        // Devuelve respuesta con el contenidoUfs actualizado o insertado correctamente
+        return ResponseEntity.ok(updatedContenidoUfs);
+    } catch (Exception e) {
+        e.printStackTrace(); // Imprime la excepción para depuración
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error al guardar o actualizar el contenido de UFS: " + e.getMessage());
+    }
+}
 
 	@PutMapping( "/contenido-ufs/{id}" )
 	public ResponseEntity<?> updateContenidoUfs(@PathVariable Integer id,
@@ -106,6 +142,10 @@ public class ContenidoUfsController {
 		contenidoUfs.setPorcentajeDiseno(contenidoUfsDetails.getPorcentajeDiseno());
 		contenidoUfs.setPorcentajePruebas(contenidoUfsDetails.getPorcentajePruebas());
 		contenidoUfs.setMantenimientoUnidad(contenidoUfsDetails.getMantenimientoUnidad());
+		contenidoUfs.setUfs(contenidoUfsDetails.getUfs());
+		contenidoUfs.setEstimacionUfs(contenidoUfsDetails.getEstimacionUfs());
+
+
 		ContenidoUfs updatedContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);
 		return ResponseEntity.ok(updatedContenidoUfs);
 	}

@@ -5,6 +5,7 @@
 
 package com.backendgip.imp;
 
+import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.EstimacionUfs;
 
 import com.backendgip.repository.EstimacionesUfsRepository;
@@ -34,5 +35,14 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
 
     public void deleteEstimaciones(EstimacionUfs estimacionUfs) {
         estimacionesUfsRepository.delete(estimacionUfs);
+    }
+
+    
+    public EstimacionUfs getUltimaEstimacionUfs() {
+        Long ultimoId = estimacionesUfsRepository.findMaxId();
+        if (ultimoId != null) {
+            return estimacionesUfsRepository.findById(ultimoId.intValue()).orElse(null);
+        }
+        return null;
     }
 }

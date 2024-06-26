@@ -39,9 +39,7 @@ public class EstimacionUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_empleado")
     private Empleado recurso;
-    @ManyToOne
-    @JoinColumn(name = "fk_contenidoufs")
-    private ContenidoUfs contenidoUfs;
+ 
 
     @ManyToOne
     @JoinColumn(name = "fk_etapa_proyecto")
@@ -104,13 +102,7 @@ public class EstimacionUfs implements Serializable {
         this.recurso = recurso;
     }
 
-    public ContenidoUfs getContenidoUfs() {
-        return contenidoUfs;
-    }
-
-    public void setContenidoUfs(ContenidoUfs contenidoUfs) {
-        this.contenidoUfs = contenidoUfs;
-    }
+  
 
     public EtapaProyecto getEtapaProyecto() {
         return etapaProyecto;
@@ -129,7 +121,7 @@ public class EstimacionUfs implements Serializable {
     }
 
     public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
-            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, ContenidoUfs contenidoUfs,
+            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso,
             EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
@@ -137,7 +129,6 @@ public class EstimacionUfs implements Serializable {
         this.actividadesComplementarias = actividadesComplementarias;
         this.modelo = modelo;
         this.recurso = recurso;
-        this.contenidoUfs = contenidoUfs;
         this.etapaProyecto=etapaProyecto;
         this.tipoProyecto=tipoProyecto;
     }

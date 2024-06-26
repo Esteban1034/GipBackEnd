@@ -38,5 +38,22 @@ public class ContenidoUfsServiceImp implements ContenidoUfsService {
 	public void deleteContenidoUfs(ContenidoUfs contenidoUfs) {
 		this.contenidoufsRepository.delete(contenidoUfs);
 	}
+	public boolean existeUfsPorId(Integer idUfs) {
+        return contenidoufsRepository.existsById(idUfs);
+    }
+
+    public ContenidoUfs getUltimoContenidoUfs() {
+        Long ultimoId = contenidoufsRepository.findMaxId();
+        if (ultimoId != null) {
+            return contenidoufsRepository.findById(ultimoId.intValue()).orElse(null);
+        }
+        return null;
+    }
+
+
+    public Long findMaxId() {
+        return contenidoufsRepository.findMaxId();
+    }
 }
+
 

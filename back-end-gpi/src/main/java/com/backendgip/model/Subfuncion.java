@@ -20,20 +20,24 @@ import javax.persistence.Table;
 public class Subfuncion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_funcion")
+	@Column(name = "pk_subfuncion")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "base_de_datos")
-	private String basededatos;
-	@Column(name = "parametrizacion")
-	private String parametrizacion;
-    @JoinColumn(name = "mantenimientos")
-    private String mantenimiento;
-    @JoinColumn(name = "procesos")
-    private String procesos;
-    
-	public Subfuncion() {
-	}
+
+	@Column(name = "descripcion")
+	private String subfuncion;
+
+    @ManyToOne
+    @JoinColumn(name = "FK_funciones")
+    private Funcion funcion;
+
+    @ManyToOne
+    @JoinColumn(name = "FK_mantenimientos")
+    private MantenimientoUnidad mantenimientoUnidad;
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;
@@ -43,50 +47,37 @@ public class Subfuncion implements Serializable {
         this.id = id;
     }
 
-    public String getBasededatos() {
-        return basededatos;
+    public String getSubfuncion() {
+        return subfuncion;
     }
 
-    public void setBasededatos(String basededatos) {
-        this.basededatos = basededatos;
+    public void setSubfuncion(String subfuncion) {
+        this.subfuncion = subfuncion;
     }
 
-    public String getParametrizacion() {
-        return parametrizacion;
+    public Funcion getFuncion() {
+        return funcion;
     }
 
-    public void setParametrizacion(String parametrizacion) {
-        this.parametrizacion = parametrizacion;
+    public void setFuncion(Funcion funcion) {
+        this.funcion = funcion;
     }
 
-    public String getMantenimiento() {
-        return mantenimiento;
+    public MantenimientoUnidad getMantenimientoUnidad() {
+        return mantenimientoUnidad;
     }
 
-    public void setMantenimiento(String mantenimiento) {
-        this.mantenimiento = mantenimiento;
+    public void setMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
+        this.mantenimientoUnidad = mantenimientoUnidad;
     }
 
-    public String getProcesos() {
-        return procesos;
-    }
-
-    public void setProcesos(String procesos) {
-        this.procesos = procesos;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
-    public Subfuncion(Integer id, String basededatos, String parametrizacion, String mantenimiento, String procesos) {
+    public Subfuncion(Integer id, String subfuncion, Funcion funcion, MantenimientoUnidad mantenimientoUnidad) {
         this.id = id;
-        this.basededatos = basededatos;
-        this.parametrizacion = parametrizacion;
-        this.mantenimiento = mantenimiento;
-        this.procesos = procesos;
+        this.subfuncion = subfuncion;
+        this.funcion = funcion;
+        this.mantenimientoUnidad = mantenimientoUnidad;
     }
 
-    
+
     
 }
