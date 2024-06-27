@@ -45,4 +45,8 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
         }
         return null;
     }
+
+    public boolean existsByProyectoId(Integer proyectoId) {
+		return this.estimacionesUfsRepository.existsByProyectoId(proyectoId);
+	}
 }

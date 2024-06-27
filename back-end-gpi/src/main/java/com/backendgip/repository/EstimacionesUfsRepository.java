@@ -15,6 +15,9 @@ import org.springframework.data.repository.CrudRepository;
 @Repository
 public interface EstimacionesUfsRepository extends CrudRepository<EstimacionUfs, Integer> {
     @Query("SELECT MAX(e.id) FROM EstimacionUfs e")
+
     Long findMaxId();
+
+    boolean existsByProyectoId(Integer proyectoId);
 
 }

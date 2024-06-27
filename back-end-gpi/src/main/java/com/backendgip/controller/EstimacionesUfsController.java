@@ -9,7 +9,7 @@ import com.backendgip.model.EstimacionUfsDTO;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Proyecto;
 import com.backendgip.model.Ufs;
-import com.backendgip.repository.EmpleadoRepository;
+import com.backendgip.repository.ContenidoUfsRepository;
 import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.service.ContenidoUfsService;
 import com.backendgip.service.EmpleadoService;
@@ -42,7 +42,7 @@ public class EstimacionesUfsController {
     @Autowired
     private ProyectoService proyectoService;
     @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private ContenidoUfsRepository contenidoUfsRepository;
     @Autowired
     private EmpleadoService empleadoService;
     @Autowired
@@ -57,7 +57,11 @@ public class EstimacionesUfsController {
     }
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfsDTO estimacionesDto) {
-        estimacionesDto.getEstimacionUfs().setActividadesComplementarias(null);
+        Integer idProyecto = estimacionesDto.getEstimacionUfs().getProyecto().getId();
+        boolean exists = estimacionesUfsService.existsByProyectoId(idProyecto);
+        if(exists){
+            return ResponseEntity.badRequest().body("Ya esxiste una estimación para este proyecto");
+        }
         Integer UfId = estimacionesDto.getUfId()!= null? estimacionesDto.getUfId() : 1;
         Ufs ufs = ufsService.getUfsById(UfId);
         if(ufs == null){
@@ -93,7 +97,11 @@ public class EstimacionesUfsController {
     public ResponseEntity<?> deleteEstimaciones(@PathVariable Integer id) {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
-
+                List<ContenidoUfs> contenidos = contenidoUfsRepository.findByEstimacionUfs(estimacion);
+                if(!contenidos.isEmpty()){
+                    contenidoUfsRepository.deleteAll(contenidos);
+                }
+                estimacionesUfsService.deleteEstimaciones(estimacion);
         LogSistema log = new LogSistema();
         log.setAccion("DELETE");
         log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
@@ -102,7 +110,6 @@ public class EstimacionesUfsController {
         log.setDescripcion(estimacion.toString());
         logService.saveLog(log);
 
-        estimacionesUfsService.deleteEstimaciones(estimacion);
 
         return ResponseEntity.ok().build();
     }
@@ -112,29 +119,6 @@ public class EstimacionesUfsController {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
         return ResponseEntity.ok(estimacion);
-    }
-
-    @PutMapping("/estimaciones/{id}")
-    public ResponseEntity<EstimacionUfs> updateEstimaciones(@PathVariable Integer id,
-            @RequestBody EstimacionUfs estimacionesDetails) {
-        EstimacionUfs estimaciones = this.estimacionesUfsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con id: " + id));
-
-        LogSistema log = new LogSistema();
-        log.setAccion("UPDATE");
-        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-        log.setTabla(EstimacionUfs.class.toString());
-        log.setIdAccion(estimaciones.getId());
-        log.setDescripcion(estimaciones.toString());
-        logService.saveLog(log);
-
-        estimaciones.setProyecto(estimacionesDetails.getProyecto());
-        estimaciones.setActividadesComplementarias(estimacionesDetails.getActividadesComplementarias());
-        estimaciones.setRecurso(estimacionesDetails.getRecurso());
-        estimaciones.setFechaCreacion(estimacionesDetails.getFechaCreacion());
-        estimacionesUfsService.saveEstimacionIn(estimaciones);
-
-        return ResponseEntity.ok(estimaciones);
     }
     
 }

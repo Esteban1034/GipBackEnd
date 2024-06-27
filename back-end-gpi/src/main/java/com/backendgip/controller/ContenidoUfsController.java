@@ -144,8 +144,7 @@ public class ContenidoUfsController {
 		contenidoUfs.setMantenimientoUnidad(contenidoUfsDetails.getMantenimientoUnidad());
 		contenidoUfs.setUfs(contenidoUfsDetails.getUfs());
 		contenidoUfs.setEstimacionUfs(contenidoUfsDetails.getEstimacionUfs());
-
-
+		
 		ContenidoUfs updatedContenidoUfs = this.contenidoUfsService.saveContenidoUfs(contenidoUfs);
 		return ResponseEntity.ok(updatedContenidoUfs);
 	}

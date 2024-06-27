@@ -15,9 +15,10 @@ public interface EstimacionesUfsService {
     EstimacionUfs saveEstimacionIn(EstimacionUfs estimacionesUfs);
 
     void deleteEstimaciones(EstimacionUfs estimacionesUfs);
-
     
     EstimacionUfs getUltimaEstimacionUfs();
+
+    boolean existsByProyectoId(Integer proyectoId);
  
 
 }

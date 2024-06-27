@@ -31,39 +31,17 @@ public class EstimacionUfs implements Serializable {
     @JoinColumn(name = "fk_proyecto")
     private Proyecto proyecto;
     @ManyToOne
-    @JoinColumn(name = "fk_actividades")
-    private ActividadesComplementarias actividadesComplementarias;
-    @ManyToOne
     @JoinColumn(name = "fk_modelo")
     private Modelo modelo;
-    @ManyToOne
-    @JoinColumn(name = "fk_empleado")
-    private Empleado recurso;
-    @ManyToOne
-    @JoinColumn(name = "fk_contenidoufs")
-    private ContenidoUfs contenidoUfs;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_etapa_proyecto")
-    private EtapaProyecto etapaProyecto;
-    @ManyToOne
-    @JoinColumn(name = "fk_tipo_proyecto")
-    private TipoProyecto tipoProyecto;
 
     public EstimacionUfs() {
     }
 
-    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
-            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso,
-            EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
+    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto, Modelo modelo) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.proyecto = proyecto;
-        this.actividadesComplementarias = actividadesComplementarias;
         this.modelo = modelo;
-        this.recurso = recurso;
-        this.etapaProyecto = etapaProyecto;
-        this.tipoProyecto = tipoProyecto;
     }
 
     public static long getSerialversionuid() {
@@ -94,14 +72,6 @@ public class EstimacionUfs implements Serializable {
         this.proyecto = proyecto;
     }
 
-    public ActividadesComplementarias getActividadesComplementarias() {
-        return actividadesComplementarias;
-    }
-
-    public void setActividadesComplementarias(ActividadesComplementarias actividadesComplementarias) {
-        this.actividadesComplementarias = actividadesComplementarias;
-    }
-
     public Modelo getModelo() {
         return modelo;
     }
@@ -110,52 +80,11 @@ public class EstimacionUfs implements Serializable {
         this.modelo = modelo;
     }
 
-    public Empleado getRecurso() {
-        return recurso;
+    @Override
+    public String toString() {
+        return "EstimacionUfs [id=" + id + ", fechaCreacion=" + fechaCreacion + ", proyecto=" + proyecto + ", modelo="
+                + modelo + "]";
     }
-
-    public void setRecurso(Empleado recurso) {
-        this.recurso = recurso;
-    }
-
-    public ContenidoUfs getContenidoUfs() {
-        return contenidoUfs;
-    }
-
-    public void setContenidoUfs(ContenidoUfs contenidoUfs) {
-        this.contenidoUfs = contenidoUfs;
-    }
-
-    public EtapaProyecto getEtapaProyecto() {
-        return etapaProyecto;
-    }
-
-    public void setEtapaProyecto(EtapaProyecto etapaProyecto) {
-        this.etapaProyecto = etapaProyecto;
-    }
-
-    public TipoProyecto getTipoProyecto() {
-        return tipoProyecto;
-    }
-
-    public void setTipoProyecto(TipoProyecto tipoProyecto) {
-        this.tipoProyecto = tipoProyecto;
-    }
-
-    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto,
-            ActividadesComplementarias actividadesComplementarias, Modelo modelo, Empleado recurso, ContenidoUfs contenidoUfs,
-            EtapaProyecto etapaProyecto, TipoProyecto tipoProyecto) {
-        this.id = id;
-        this.fechaCreacion = fechaCreacion;
-        this.proyecto = proyecto;
-        this.actividadesComplementarias = actividadesComplementarias;
-        this.modelo = modelo;
-        this.recurso = recurso;
-        this.contenidoUfs = contenidoUfs;
-        this.etapaProyecto=etapaProyecto;
-        this.tipoProyecto=tipoProyecto;
-    }
-
     
 
 }
