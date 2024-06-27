@@ -30,11 +30,8 @@ public class ContenidoUfs implements Serializable {
     private Esfuerzo esfuerzo;
     @ManyToOne
     @JoinColumn(name = "fk_funcion")
-    private Funcion funcion;
-    @ManyToOne
-    @JoinColumn(name = "fk_mantenimiento_unidad")
-    private MantenimientoUnidad mantenimientoUnidad;
-
+    private Subfuncion subfuncion;
+  
     @Column(name = "porcentaje_diseño")
     private Integer porcentajeDiseno;
     @Column(name = "porcentaje_construccion")
@@ -60,15 +57,14 @@ public class ContenidoUfs implements Serializable {
     }
 
 
-    public ContenidoUfs(Integer id, String nombreCaso, Esfuerzo esfuerzo, Funcion funcion,
-            MantenimientoUnidad mantenimientoUnidad, Integer porcentajeDiseno, Integer porcentajeConstruccion,
+    public ContenidoUfs(Integer id, String nombreCaso, Esfuerzo esfuerzo, Subfuncion subfuncion,
+            Integer porcentajeDiseno, Integer porcentajeConstruccion,
             Integer porcentajePruebas, Integer totalDiseno, Integer totalConstruccion, Integer totalPruebas, Ufs ufs,
             EstimacionUfs estimacionUfs) {
         this.id = id;
         this.nombreCaso = nombreCaso;
         this.esfuerzo = esfuerzo;
-        this.funcion = funcion;
-        this.mantenimientoUnidad = mantenimientoUnidad;
+        this.subfuncion = subfuncion;
         this.porcentajeDiseno = porcentajeDiseno;
         this.porcentajeConstruccion = porcentajeConstruccion;
         this.porcentajePruebas = porcentajePruebas;
@@ -115,25 +111,10 @@ public class ContenidoUfs implements Serializable {
     }
 
 
-    public Funcion getFuncion() {
-        return funcion;
-    }
+  
 
 
-    public void setFuncion(Funcion funcion) {
-        this.funcion = funcion;
-    }
-
-
-    public MantenimientoUnidad getMantenimientoUnidad() {
-        return mantenimientoUnidad;
-    }
-
-
-    public void setMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
-        this.mantenimientoUnidad = mantenimientoUnidad;
-    }
-
+  
 
     public Integer getPorcentajeDiseno() {
         return porcentajeDiseno;
@@ -215,20 +196,26 @@ public class ContenidoUfs implements Serializable {
     }
 
 
+    public Subfuncion getSubfuncion() {
+        return subfuncion;
+    }
+
+
+    public void setSubfuncion(Subfuncion subfuncion) {
+        this.subfuncion = subfuncion;
+    }
+
+
     @Override
     public String toString() {
-        return "ContenidoUfs [id=" + id + ", nombreCaso=" + nombreCaso + ", esfuerzo=" + esfuerzo + ", funcion="
-                + funcion + ", mantenimientoUnidad=" + mantenimientoUnidad + ", porcentajeDiseno=" + porcentajeDiseno
+        return "ContenidoUfs [id=" + id + ", nombreCaso=" + nombreCaso + ", esfuerzo=" + esfuerzo + ", subfuncion="
+                + subfuncion +", porcentajeDiseno=" + porcentajeDiseno
                 + ", porcentajeConstruccion=" + porcentajeConstruccion + ", porcentajePruebas=" + porcentajePruebas
                 + ", totalDiseno=" + totalDiseno + ", totalConstruccion=" + totalConstruccion + ", totalPruebas="
-                + totalPruebas + ", ufs=" + ufs + ", estimacionUfs=" + estimacionUfs + ", getClass()=" + getClass()
-                + ", getId()=" + getId() + ", getNombreCaso()=" + getNombreCaso() + ", getEsfuerzo()=" + getEsfuerzo()
-                + ", getFuncion()=" + getFuncion() + ", getMantenimientoUnidad()=" + getMantenimientoUnidad()
-                + ", hashCode()=" + hashCode() + ", getPorcentajeDiseno()=" + getPorcentajeDiseno()
-                + ", getPorcentajeConstruccion()=" + getPorcentajeConstruccion() + ", getPorcentajePruebas()="
-                + getPorcentajePruebas() + ", getTotalDiseno()=" + getTotalDiseno() + ", getTotalConstruccion()="
-                + getTotalConstruccion() + ", getTotalPruebas()=" + getTotalPruebas() + ", getUfs()=" + getUfs()
-                + ", getEstimacionUfs()=" + getEstimacionUfs() + ", toString()=" + super.toString() + "]";
-    
-}
+                + totalPruebas + ", ufs=" + ufs + ", estimacionUfs=" + estimacionUfs + "]";
+    }
+
+
+   
+
 }

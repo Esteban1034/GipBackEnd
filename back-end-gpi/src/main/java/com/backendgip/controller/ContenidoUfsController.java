@@ -136,12 +136,11 @@ public class ContenidoUfsController {
 		log.setIdAccion(contenidoUfs.getId());
 		log.setTabla(contenidoUfs.getClass().toString());
 		this.logService.saveLog(log);
-		contenidoUfs.setFuncion(contenidoUfsDetails.getFuncion());
+		contenidoUfs.setSubfuncion(contenidoUfsDetails.getSubfuncion());
 		contenidoUfs.setNombreCaso(contenidoUfsDetails.getNombreCaso());
 		contenidoUfs.setPorcentajeConstruccion(contenidoUfsDetails.getPorcentajeConstruccion());
 		contenidoUfs.setPorcentajeDiseno(contenidoUfsDetails.getPorcentajeDiseno());
 		contenidoUfs.setPorcentajePruebas(contenidoUfsDetails.getPorcentajePruebas());
-		contenidoUfs.setMantenimientoUnidad(contenidoUfsDetails.getMantenimientoUnidad());
 		contenidoUfs.setUfs(contenidoUfsDetails.getUfs());
 		contenidoUfs.setEstimacionUfs(contenidoUfsDetails.getEstimacionUfs());
 

@@ -1,11 +1,6 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.backendgip.model;
-
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,17 +10,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "subfuncion")
 public class Subfuncion implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "pk_subfuncion")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
-	@Column(name = "descripcion")
-	private String subfuncion;
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "pk_funcion")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "descripcion")
+    private String descripcion;
 
     @ManyToOne
     @JoinColumn(name = "FK_funciones")
@@ -35,10 +33,11 @@ public class Subfuncion implements Serializable {
     @JoinColumn(name = "FK_mantenimientos")
     private MantenimientoUnidad mantenimientoUnidad;
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    // Constructor sin argumentos
+    public Subfuncion() {
     }
 
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -47,12 +46,12 @@ public class Subfuncion implements Serializable {
         this.id = id;
     }
 
-    public String getSubfuncion() {
-        return subfuncion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setSubfuncion(String subfuncion) {
-        this.subfuncion = subfuncion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Funcion getFuncion() {
@@ -71,13 +70,22 @@ public class Subfuncion implements Serializable {
         this.mantenimientoUnidad = mantenimientoUnidad;
     }
 
-    public Subfuncion(Integer id, String subfuncion, Funcion funcion, MantenimientoUnidad mantenimientoUnidad) {
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public Subfuncion(Integer id, String descripcion, Funcion funcion, MantenimientoUnidad mantenimientoUnidad) {
         this.id = id;
-        this.subfuncion = subfuncion;
+        this.descripcion = descripcion;
         this.funcion = funcion;
         this.mantenimientoUnidad = mantenimientoUnidad;
     }
 
+    @Override
+    public String toString() {
+        return "Subfuncion [id=" + id + ", descripcion=" + descripcion + ", funcion=" + funcion
+                + ", mantenimientoUnidad=" + mantenimientoUnidad + "]";
+    }
 
     
 }
