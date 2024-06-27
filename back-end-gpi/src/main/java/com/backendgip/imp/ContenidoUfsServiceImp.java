@@ -47,12 +47,10 @@ public class ContenidoUfsServiceImp implements ContenidoUfsService {
         return null;
     }
 
-
     public Long findMaxId() {
         return contenidoufsRepository.findMaxId();
     }
-
-
+	
 }
 
 

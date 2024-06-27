@@ -16,8 +16,10 @@ public interface ContenidoUfsRepository extends CrudRepository<ContenidoUfs, Int
     @Query(value = "SELECT max(c.id) FROM ContenidoUfs c")
     Long findMaxId();
 
+    long countByEstimacionUfsId(Integer estimacionId);
+
     List<ContenidoUfs> findByEstimacionUfs(EstimacionUfs estimacionUfs);
 
     void deleteByEstimacionUfs(EstimacionUfs estimacionUfs);
-
+      
 }

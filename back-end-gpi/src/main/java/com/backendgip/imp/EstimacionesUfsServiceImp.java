@@ -36,7 +36,6 @@ public class EstimacionesUfsServiceImp implements EstimacionesUfsService {
     public void deleteEstimaciones(EstimacionUfs estimacionUfs) {
         estimacionesUfsRepository.delete(estimacionUfs);
     }
-
     
     public EstimacionUfs getUltimaEstimacionUfs() {
         Long ultimoId = estimacionesUfsRepository.findMaxId();

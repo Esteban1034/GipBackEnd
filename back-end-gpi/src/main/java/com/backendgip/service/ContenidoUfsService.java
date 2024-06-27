@@ -14,7 +14,6 @@ public interface ContenidoUfsService {
 
     ContenidoUfs getContenidoUfsById(Integer idContenidoUfs);
 
-
     ContenidoUfs getUltimoContenidoUfs();
 
     boolean existsById(Integer integer);
