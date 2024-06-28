@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MantenimientoUnidadRepository extends CrudRepository<MantenimientoUnidad, Integer> {
-    Boolean findByNombre(String nombre);
+    MantenimientoUnidad findByNombre(String nombre);
 }

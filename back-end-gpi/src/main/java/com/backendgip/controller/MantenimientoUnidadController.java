@@ -1,11 +1,15 @@
 package com.backendgip.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -75,18 +79,12 @@ public class MantenimientoUnidadController {
         return ResponseEntity.ok(editUnidad);
     }
     
-    @PostMapping("/eliminar-unidad")
-    public ResponseEntity<?> deleteUnidad(@RequestBody MantenimientoUnidad mantenimiento) {
-        MantenimientoUnidad unidad = this.mantenimientoUnidadService.getMantenimientoUndById(mantenimiento.getId());
-        LogSistema log = new LogSistema();
-			log.setAccion("DELETE");
-			log.setFechaHora(new Date());
-			log.setTabla(MantenimientoUnidad.class.toString());
-			log.setIdAccion(unidad.getId());
-			log.setDescripcion(unidad.toString());
-			this.logService.saveLog(log);
-        this.mantenimientoUnidadService.deleteById(unidad.getId());
-        return ResponseEntity.ok("Eliminado correctamente");
+    @PostMapping("/eliminar-unidad/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteUnidad(@PathVariable Integer id) {
+        this.mantenimientoUnidadService.deleteById(id);
+        Map<String, Boolean> response = new HashMap();
+		response.put("deleted", Boolean.TRUE);
+		return ResponseEntity.ok(response);
     }
     
 
