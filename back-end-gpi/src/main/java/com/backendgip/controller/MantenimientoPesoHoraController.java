@@ -1,24 +1,22 @@
 package com.backendgip.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backendgip.model.Esfuerzo;
-import com.backendgip.model.Funcion;
+
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.MantenimientoPesoHora;
 import com.backendgip.model.MantenimientoUnidad;
-import com.backendgip.model.Novedad;
 import com.backendgip.service.MantenimientoPesoHoraService;
-import com.backendgip.service.MantenimientoUnidadService;
-import com.backendgip.service.EsfuerzoService;
-import com.backendgip.service.FuncionService;
 import com.backendgip.service.LogSistemaService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,18 +71,12 @@ public class MantenimientoPesoHoraController {
         return ResponseEntity.ok(editPesoHora);
     }
     
-    @PostMapping("/eliminar-peso-hora")
-    public ResponseEntity<?> deletePesoHora(@RequestBody MantenimientoPesoHora mantenimiento) {
-        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.buscarPeso(mantenimiento.getPeso());
-        LogSistema log = new LogSistema();
-			log.setAccion("DELETE");
-			log.setFechaHora(new Date());
-			log.setTabla(MantenimientoUnidad.class.toString());
-			log.setIdAccion(peso.getId());
-			log.setDescripcion(peso.toString());
-			this.logService.saveLog(log);
-        this.mantenimientoPesoHoraService.deleteById(peso.getId());
-        return ResponseEntity.ok("Eliminado correctamente");
+    @PostMapping("/eliminar-peso-hora/{id}")
+   public ResponseEntity<Map<String, Boolean>> deletePesoHora(@PathVariable Integer id) {
+        this.mantenimientoPesoHoraService.deleteById(id);
+        Map<String, Boolean> response = new HashMap();
+		response.put("deleted", Boolean.TRUE);
+		return ResponseEntity.ok(response);
     }
     
 
