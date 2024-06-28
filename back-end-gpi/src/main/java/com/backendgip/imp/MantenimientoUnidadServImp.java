@@ -34,7 +34,8 @@ public class MantenimientoUnidadServImp implements MantenimientoUnidadService {
 
     @Override
     public boolean validarNombre(String nombre) {
-      if (this.mantenimineMantenimientoUnidadRepository.findByNombre(nombre)) {
+      MantenimientoUnidad mantenimiento = this.mantenimineMantenimientoUnidadRepository.findByNombre(nombre);
+      if (mantenimiento != null) {
         return true;
       }else{
         return false;
