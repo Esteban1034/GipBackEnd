@@ -55,6 +55,17 @@ public class EstimacionesUfsController {
         List<EstimacionUfs> estimaciones = estimacionesUfsService.getEstimaciones();
         return ResponseEntity.ok(estimaciones);
     }
+
+    @GetMapping("/estimaciones/ultimo")
+    public ResponseEntity<EstimacionUfs> getUltimaEstimacionUfs() {
+        EstimacionUfs ultimoEstimacion = estimacionesUfsService.getUltimaEstimacionUfs();
+        if (ultimoEstimacion != null) {
+            return ResponseEntity.ok(ultimoEstimacion);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimaciones(@RequestBody EstimacionUfsDTO estimacionesDto) {
         estimacionesDto.getEstimacionUfs().setActividadesComplementarias(null);

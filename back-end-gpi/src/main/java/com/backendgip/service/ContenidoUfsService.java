@@ -13,6 +13,7 @@ public interface ContenidoUfsService {
     void deleteContenidoUfs(ContenidoUfs contenidoUfs);
 
     ContenidoUfs getContenidoUfsById(Integer idContenidoUfs);
+    List<ContenidoUfs> getContenidoUfsByUltimoIdEstimacion();
 
 
     ContenidoUfs getUltimoContenidoUfs();

@@ -80,6 +80,12 @@ public class ContenidoUfsController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/contenido-ufs/ultimo-id-estimacion")
+    public List<ContenidoUfs> getContenidoUfsByUltimoIdEstimacion() {
+        return contenidoUfsService.getContenidoUfsByUltimoIdEstimacion();
+    }
+
+	
 	
 	@PostMapping("/contenido-ufs")
     public ResponseEntity<?> saveContenidoUfs(@RequestBody ContenidoUfs contenidoUfs) {
