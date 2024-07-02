@@ -73,7 +73,7 @@ public class ClienteServiceImp implements ClienteService {
 			List<Cliente> c = this.clienteRepository.findByFechaCreacion(f);
 			clientes.addAll(c);
 		}
-
+		
 		return clientes;
 	}
 

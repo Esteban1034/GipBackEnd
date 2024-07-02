@@ -11,6 +11,8 @@ import com.backendgip.model.ComponenteDesarrollo;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EmpleadoRol;
 import com.backendgip.model.EstadoProyecto;
+import com.backendgip.model.EstimacionUfs;
+import com.backendgip.model.EtapaProyecto;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.Proyecto;
 import com.backendgip.repository.ActividadAsignadaRepository;
@@ -40,8 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -329,6 +333,23 @@ public class ProyectoController {
         return ResponseEntity.ok(this.proyectoService.findByComponente(componente));
     }
 
+    @GetMapping({"/proyectos/proyectos-by-cliente-etapa/{idCliente}/{idEtapa}"})
+    public ResponseEntity<?> findByClienteAndEtapa(@PathVariable Integer idCliente, @PathVariable Integer idEtapa){
+        Cliente cliente = clienteService.getClienteById(idCliente);
+        EtapaProyecto etapaProyecto = etapaService.getEtapaById(idEtapa);
+        return ResponseEntity.ok(this.proyectoService.findByClienteAndEtapa(cliente, etapaProyecto));
+    }
+
+    @GetMapping("/proyectos/{idCliente}/etapa-prp")
+    public ResponseEntity<List<Proyecto>> findByClienteIdConEtapaPRP(@PathVariable Integer idCliente) {
+    try {
+        Cliente cliente = clienteService.getClienteById(idCliente);
+        List<Proyecto> proyectos = proyectoService.findByClienteConEtapaPRP(cliente);
+        return ResponseEntity.ok(proyectos);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
     @GetMapping({"/proyectos/proyectos-by-codigo-cliente/{codigo}/{idCliente}"})
     public ResponseEntity<?> findByCodigoAndCliente(@PathVariable String codigo, @PathVariable Integer idCliente) {
         Cliente cliente = this.clienteService.getClienteById(idCliente);
@@ -755,4 +776,14 @@ public class ProyectoController {
                 + proyecto.getDescripcion() + "</td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n";
         return Table;
     }
+
+    @GetMapping({"/proyectos/proyectos-by-Etapa/{idEtapa}"})
+    public ResponseEntity<?> findByEtapa(@PathVariable Integer idEtapa){
+        EtapaProyecto etapa = this.etapaService.getEtapaById(idEtapa);
+     //   System.out.println(etapa);
+      //  System.out.println(idEtapa);
+       return ResponseEntity.ok(this.proyectoService.findByEtapa(etapa));
+      //  return ResponseEntity.ok(this.etapaService.getEtapaById(idEtapa));
+    }
+
 }

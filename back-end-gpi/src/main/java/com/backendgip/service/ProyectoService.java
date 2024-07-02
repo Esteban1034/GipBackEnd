@@ -10,6 +10,7 @@ import com.backendgip.model.ComponenteDesarrollo;
 import com.backendgip.model.Empleado;
 import com.backendgip.model.EstadoProyecto;
 import com.backendgip.model.Proyecto;
+import com.backendgip.model.EtapaProyecto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +37,8 @@ public interface ProyectoService {
 	List<Proyecto> findByComponente(ComponenteDesarrollo componente);
 
 	List<Proyecto> findByCodigoAndCliente(String codigo, Cliente cliente);
+	
+	List<Proyecto> findByClienteConEtapaPRP(Cliente cliente);
 
 	List<Proyecto> findByCodigoAndComponente(String codigo, ComponenteDesarrollo componente);
 
@@ -45,6 +48,8 @@ public interface ProyectoService {
 
 	List<Proyecto> findByInterno(Boolean interno);
 
+	List<Proyecto> findByClienteAndEtapa(Cliente cliente, EtapaProyecto etapaProyecto);
+
 	List<Proyecto> findByLider(Empleado lider);
 
 	List<Proyecto> findByLiderFechaInicioFechaFin(LocalDate fechaInicio, LocalDate fechaFin, Empleado lider);
@@ -52,4 +57,7 @@ public interface ProyectoService {
 	boolean existsByNombre(String nombre);
 
 	Integer getHorasPropuesta(Proyecto proyecto);
+
+	List<Proyecto> findByEtapa(EtapaProyecto etapa);
+
 }
