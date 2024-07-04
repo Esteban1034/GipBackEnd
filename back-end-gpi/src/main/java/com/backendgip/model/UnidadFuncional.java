@@ -16,24 +16,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ufs")
-public class Ufs implements Serializable {
+@Table(name = "unidad_funcional")
+public class UnidadFuncional implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_ufs")
+	@Column(name = "pk_unidad_funcional")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "nombre")
+	@Column(name = "nombre_unidad_funcional")
 	private String nombre;
+	@ManyToOne
+    @JoinColumn(name = "fk_estimacion")
+    private EstimacionUfs estimacion_ufs;
 
-	public Ufs() {
+	public UnidadFuncional() {
 	}
 
-	public Ufs(Integer id, String nombre) {
+	public UnidadFuncional(Integer id, String nombre, EstimacionUfs estimacion_ufs) {
 		this.id = id;
 		this.nombre = nombre;
+		this.estimacion_ufs = estimacion_ufs;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public Integer getId() {
 		return id;
@@ -51,9 +58,17 @@ public class Ufs implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Ufs(Integer id, String nombre, ContenidoUfs contenidoUfs) {
-		this.id = id;
-		this.nombre = nombre;
+	public EstimacionUfs getEstimacion_ufs() {
+		return estimacion_ufs;
 	}
 
+	public void setEstimacion_ufs(EstimacionUfs estimacion_ufs) {
+		this.estimacion_ufs = estimacion_ufs;
+	}
+
+	@Override
+	public String toString() {
+		return "UnidadFuncional [id=" + id + ", nombre=" + nombre + ", estimacion_ufs=" + estimacion_ufs + "]";
+	}
+	
 }

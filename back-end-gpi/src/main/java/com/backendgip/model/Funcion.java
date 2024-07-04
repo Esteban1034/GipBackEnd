@@ -12,26 +12,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Funcion")
+@Table(name = "funcion")
 public class Funcion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "pk_funcion")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "funcion")
-	private String funcion;
-
+	@Column(name = "nombre_funcion")
+	private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "fk_unidad_funcional")
+    private UnidadFuncional unidadFuncional;
 
     public Funcion() {
     }
 
-    public Funcion(Integer id, String funcion) {
+    public Funcion(Integer id, String nombre, UnidadFuncional unidadFuncional) {
         this.id = id;
-        this.funcion = funcion;
+        this.nombre = nombre;
+        this.unidadFuncional = unidadFuncional;
     }
 
     public static long getSerialversionuid() {
@@ -46,17 +51,24 @@ public class Funcion implements Serializable {
         this.id = id;
     }
 
-    public String getFuncion() {
-        return funcion;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setFuncion(String funcion) {
-        this.funcion = funcion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public UnidadFuncional getUnidadFuncional() {
+        return unidadFuncional;
+    }
+
+    public void setUnidadFuncional(UnidadFuncional unidadFuncional) {
+        this.unidadFuncional = unidadFuncional;
     }
 
     @Override
     public String toString() {
-        return "Funcion [id=" + id + ", funcion=" + funcion + "]";
+        return "Funcion [id=" + id + ", nombre=" + nombre + ", unidadFuncional=" + unidadFuncional + "]";
     }
-    
 }

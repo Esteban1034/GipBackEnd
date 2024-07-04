@@ -21,71 +21,132 @@ public class Subfuncion implements Serializable {
     @Column(name = "pk_funcion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "descripcion")
-    private String descripcion;
-
+    @Column(name = "nombre_subfuncion")
+    private String nombre;
+    @Column(name = "nombre_caso_uso")
+    private String nombreCasoDeUso;
     @ManyToOne
-    @JoinColumn(name = "FK_funciones")
+    @JoinColumn(name = "fk_funcion")
     private Funcion funcion;
-
     @ManyToOne
-    @JoinColumn(name = "FK_mantenimientos")
+    @JoinColumn(name = "fk_complejidad")
     private MantenimientoUnidad mantenimientoUnidad;
+    @Column(name = "porcentaje_contruccion")
+    private Integer porcentajeVConstruccion;
+    @Column(name = "porcentaje_diseño")
+    private Integer porcentajeVDiseño;
+    @Column(name = "porcentaje_pruebas")
+    private Integer porcentajePruebas;
 
-    // Constructor sin argumentos
+
     public Subfuncion() {
     }
 
-    // Getters y Setters
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
+    public Subfuncion(Integer id, String nombre, Funcion funcion, MantenimientoUnidad mantenimientoUnidad,
+            String nombreCasoDeUso, Integer porcentajeVConstruccion, Integer porcentajeVDiseño,
+            Integer porcentajePruebas) {
         this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Funcion getFuncion() {
-        return funcion;
-    }
-
-    public void setFuncion(Funcion funcion) {
+        this.nombre = nombre;
         this.funcion = funcion;
-    }
-
-    public MantenimientoUnidad getMantenimientoUnidad() {
-        return mantenimientoUnidad;
-    }
-
-    public void setMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
         this.mantenimientoUnidad = mantenimientoUnidad;
+        this.nombreCasoDeUso = nombreCasoDeUso;
+        this.porcentajeVConstruccion = porcentajeVConstruccion;
+        this.porcentajeVDiseño = porcentajeVDiseño;
+        this.porcentajePruebas = porcentajePruebas;
     }
+
 
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
 
-    public Subfuncion(Integer id, String descripcion, Funcion funcion, MantenimientoUnidad mantenimientoUnidad) {
+
+    public Integer getId() {
+        return id;
+    }
+
+
+    public void setId(Integer id) {
         this.id = id;
-        this.descripcion = descripcion;
+    }
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+
+    public Funcion getFuncion() {
+        return funcion;
+    }
+
+
+    public void setFuncion(Funcion funcion) {
         this.funcion = funcion;
+    }
+
+
+    public MantenimientoUnidad getMantenimientoUnidad() {
+        return mantenimientoUnidad;
+    }
+
+
+    public void setMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
         this.mantenimientoUnidad = mantenimientoUnidad;
     }
 
-    @Override
-    public String toString() {
-        return "Subfuncion [id=" + id + ", descripcion=" + descripcion + ", funcion=" + funcion
-                + ", mantenimientoUnidad=" + mantenimientoUnidad + "]";
+
+    public String getNombreCasoDeUso() {
+        return nombreCasoDeUso;
     }
 
-    
+
+    public void setNombreCasoDeUso(String nombreCasoDeUso) {
+        this.nombreCasoDeUso = nombreCasoDeUso;
+    }
+
+
+    public Integer getPorcentajeVConstruccion() {
+        return porcentajeVConstruccion;
+    }
+
+
+    public void setPorcentajeVConstruccion(Integer porcentajeVConstruccion) {
+        this.porcentajeVConstruccion = porcentajeVConstruccion;
+    }
+
+
+    public Integer getPorcentajeVDiseño() {
+        return porcentajeVDiseño;
+    }
+
+
+    public void setPorcentajeVDiseño(Integer porcentajeVDiseño) {
+        this.porcentajeVDiseño = porcentajeVDiseño;
+    }
+
+
+    public Integer getPorcentajePruebas() {
+        return porcentajePruebas;
+    }
+
+
+    public void setPorcentajePruebas(Integer porcentajePruebas) {
+        this.porcentajePruebas = porcentajePruebas;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Subfuncion [id=" + id + ", nombre=" + nombre + ", funcion=" + funcion + ", mantenimientoUnidad="
+                + mantenimientoUnidad + ", nombreCasoDeUso=" + nombreCasoDeUso + ", porcentajeVConstruccion="
+                + porcentajeVConstruccion + ", porcentajeVDiseño=" + porcentajeVDiseño + ", porcentajePruebas="
+                + porcentajePruebas + "]";
+    }
 }

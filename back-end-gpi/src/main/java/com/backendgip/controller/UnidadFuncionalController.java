@@ -23,42 +23,42 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.LogSistema;
-import com.backendgip.model.Ufs;
-import com.backendgip.repository.UfsRepository;
+import com.backendgip.model.UnidadFuncional;
+import com.backendgip.repository.UnidadFuncionalRepository;
 import com.backendgip.service.LogSistemaService;
-import com.backendgip.service.UfsService;
+import com.backendgip.service.UnidadFuncionalService;
 
 @RestController
 @Transactional
 @RequestMapping({ "/api" })
-public class UfsController {
+public class UnidadFuncionalController {
 
     @Autowired
-    private UfsService ufsService;
+    private UnidadFuncionalService ufsService;
     @Autowired
 	private LogSistemaService logService;
     @Autowired
-    private UfsRepository ufsRepository;
+    private UnidadFuncionalRepository ufsRepository;
     
-    public UfsController(){
+    public UnidadFuncionalController(){
     }
 
     @GetMapping({"/unidad-funcional"})
-    public List<Ufs> getUfs(){
+    public List<UnidadFuncional> getUfs(){
         return this.ufsService.getUfs();
     }
 
     @PostMapping({"/unidad-funcional"})
-    public ResponseEntity<?> saveUfs(@RequestBody Ufs ufs){
+    public ResponseEntity<?> saveUfs(@RequestBody UnidadFuncional ufs){
         if(this.ufsRepository.existsByNombre(ufs.getNombre()) /*|| this.ufsRepository.existsById(ufs.getId())*/){
             return ResponseEntity.badRequest().body("Esta Unidad funcional ya existe");
         }else{
             LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-			Ufs createdUfs = this.ufsService.saveUfs(ufs);
+			UnidadFuncional createdUfs = this.ufsService.saveUfs(ufs);
 			LogSistema log = new LogSistema();
 			log.setAccion("CREATE");
 			log.setFechaHora(new Date());
-			log.setTabla(Ufs.class.toString());
+			log.setTabla(UnidadFuncional.class.toString());
 			log.setIdAccion(createdUfs.getId());
 			log.setDescripcion(createdUfs.toString());
 			this.logService.saveLog(log);
@@ -67,8 +67,8 @@ public class UfsController {
     }
 
     @PutMapping({ "/unidad-funcional/{id}" })
-	public ResponseEntity<?> updateUfs(@PathVariable Integer id, @RequestBody Ufs UfsDetails) {
-		Ufs ufs = (Ufs) this.ufsRepository.findById(id).orElseThrow(() -> {
+	public ResponseEntity<?> updateUfs(@PathVariable Integer id, @RequestBody UnidadFuncional UfsDetails) {
+		UnidadFuncional ufs = (UnidadFuncional) this.ufsRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("No se ha encontrado la unidad funcional con el id: " + id);
 		});
 		LogSistema log = new LogSistema();
@@ -79,13 +79,13 @@ public class UfsController {
 		log.setTabla(ufs.getClass().toString());
 		this.logService.saveLog(log);
 		ufs.setNombre(UfsDetails.getNombre());
-		Ufs updatedUfs = this.ufsService.saveUfs(ufs);
+		UnidadFuncional updatedUfs = this.ufsService.saveUfs(ufs);
 		return ResponseEntity.ok(updatedUfs);
 	}
 
     @GetMapping({ "/unidad-funcional/{id}" })
-	public ResponseEntity<Ufs> getUfsById(@PathVariable Integer id) {
-		Ufs ufs = (Ufs) this.ufsRepository.findById(id).orElseThrow(() -> {
+	public ResponseEntity<UnidadFuncional> getUfsById(@PathVariable Integer id) {
+		UnidadFuncional ufs = (UnidadFuncional) this.ufsRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("ID " + id + " NO ENCONTRADO");
 		});
 		return ResponseEntity.ok(ufs);
@@ -93,7 +93,7 @@ public class UfsController {
 
 	@DeleteMapping({ "/unidad-funcional/{id}" })
 	public ResponseEntity<?> deleteContenidoUfs(@PathVariable Integer id) {
-		Ufs ufs = (Ufs) this.ufsRepository.findById(id).orElseThrow(() -> {
+		UnidadFuncional ufs = (UnidadFuncional) this.ufsRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("La función no exite con el id:" + id);
 		});
 		LogSistema log = new LogSistema();
@@ -101,7 +101,7 @@ public class UfsController {
 		log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
 		log.setIdAccion(ufs.getId());
 		log.setDescripcion(ufs.toString());
-		log.setTabla(Ufs.class.toString());
+		log.setTabla(UnidadFuncional.class.toString());
 		this.logService.saveLog(log);
 		this.ufsRepository.deleteById(ufs.getId());
 		Map<String, Boolean> response = new HashMap();

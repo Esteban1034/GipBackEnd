@@ -28,12 +28,12 @@ public class SubFuncionController {
     
 
 
-    @GetMapping({"/Subfuncion"})
+    @GetMapping({"/subfuncion"})
         public ResponseEntity<List<Subfuncion>> getAllSubfunciones() {
         List<Subfuncion> subfunciones = subfuncionService.getAllSubfunciones();
         return ResponseEntity.ok(subfunciones);
     }
-     @PostMapping("/Subfuncion")
+     @PostMapping("/subfuncion")
     public ResponseEntity<Subfuncion> createSubfuncion(@RequestBody Subfuncion subfuncion) {
         Subfuncion createdSubfuncion = subfuncionService.createSubfuncion(subfuncion);
         return new ResponseEntity<>(createdSubfuncion, HttpStatus.CREATED);

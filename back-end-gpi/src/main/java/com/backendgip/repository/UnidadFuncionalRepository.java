@@ -3,10 +3,10 @@ package com.backendgip.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.backendgip.model.Ufs;
+import com.backendgip.model.UnidadFuncional;
 
 @Repository
-public interface UfsRepository extends CrudRepository<Ufs, Integer> {
+public interface UnidadFuncionalRepository extends CrudRepository<UnidadFuncional, Integer> {
 
     boolean existsByNombre(String nombre);
 

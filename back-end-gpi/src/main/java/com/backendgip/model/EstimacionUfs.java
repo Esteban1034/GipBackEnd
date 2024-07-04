@@ -84,7 +84,6 @@ public class EstimacionUfs implements Serializable {
     public String toString() {
         return "EstimacionUfs [id=" + id + ", fechaCreacion=" + fechaCreacion + ", proyecto=" + proyecto + ", modelo="
                 + modelo + "]";
-    }
-    
+    }   
 
 }
