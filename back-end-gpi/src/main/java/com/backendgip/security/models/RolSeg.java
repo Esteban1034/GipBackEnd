@@ -101,8 +101,6 @@ public class RolSeg {
 		return "Rol [rolId=" + rolId + ", rolNombre=" + rolNombre + ", submenuRoles=" + submenuRoles + "]";
 	}
     
-    
-    
 }
 
 

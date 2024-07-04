@@ -167,7 +167,6 @@ public class RecursoActividadController {
 
 		while (var6.hasNext()) {
 			RecursoActividad ra = (RecursoActividad) var6.next();
-			// System.out.println(ra.getFecha());
 		}
 
 		return fpush;

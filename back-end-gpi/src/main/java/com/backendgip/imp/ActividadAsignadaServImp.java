@@ -81,9 +81,6 @@ public class ActividadAsignadaServImp implements ActividadAsignadaService {
 			maxDate = actividad.getFechaFin();
 		}
 
-		System.out.println("Actividad " + actividad.getFechaFin());
-		System.out.println("MaxDate " + maxDate);
-		System.out.println("Act proy" + actividadesByProyect);
 		Iterator var5 = actividadesByProyect.iterator();
 
 		while (var5.hasNext()) {

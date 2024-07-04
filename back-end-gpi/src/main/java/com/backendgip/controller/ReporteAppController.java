@@ -70,7 +70,6 @@ public class ReporteAppController {
             Empleado e = (Empleado) var9.next();
             List<ReporteTiempo> reportesT = this.getReportesBetweenFechaInicioAndFechaFinAndEmpleados(fechaI, fechaF,
                     e);
-            System.out.println(reportesT.size());
             List<String> proyectosXReporte = new ArrayList();
             Iterator var13 = reportesT.iterator();
 
@@ -228,7 +227,6 @@ public class ReporteAppController {
                 proyectos.add(p);
             } catch (Exception e) {
                 System.out.println("ERROR --> getProyectosBetweenFechaInicioAndFechaFin");
-                System.out.println(p);
                 System.out.println(e.getMessage());
             }
         }
@@ -323,7 +321,6 @@ public class ReporteAppController {
                 reportes.add(reporte);
             } catch (Exception e) {
                 System.out.println("ERROR --> findAllReportesTiemposClientes");
-                System.out.println(proyecto);
                 System.out.println(e.getMessage());
             }
         }
@@ -345,7 +342,6 @@ public class ReporteAppController {
                 }
             } catch (Exception e) {
                 System.out.println("ERROR --> getHorasConsumidasReporteTiempoCliente");
-                System.out.println(reporte);
                 System.out.println(e.getMessage());
             }
         }
@@ -367,7 +363,6 @@ public class ReporteAppController {
                 }
             } catch (Exception e) {
                 System.out.println("ERROR --> getPorcentajeReporteTiempoCliente");
-                System.out.println(reporte);
                 System.out.println(e.getMessage());
             }
         }

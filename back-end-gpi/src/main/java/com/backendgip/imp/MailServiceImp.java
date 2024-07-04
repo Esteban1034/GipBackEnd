@@ -54,7 +54,6 @@ public class MailServiceImp implements MailService {
 				mimeMessage.setSubject(subjectMail);
 				mimeMessage.setContent(messageMail, "text/html; charset=utf-8");
 				Transport.send(mimeMessage);
-				System.out.println("Done");
 			} catch (MessagingException var9) {
 
 				System.out.println("ERROR SENDING MAIL: " + var9.getMessage());
