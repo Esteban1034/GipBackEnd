@@ -1,5 +1,8 @@
 package com.backendgip.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +16,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.EstimacionMantenimiento;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
+import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.model.Subfuncion;
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.repository.FuncionRepository;
+import com.backendgip.repository.MantenimientoUnidadRepository;
 import com.backendgip.repository.UnidadFuncionalRepository;
 import com.backendgip.service.FuncionService;
+import com.backendgip.service.MantenimientoPesoHoraService;
+import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.SubFuncionService;
+import com.backendgip.service.UnidadFuncionalService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -30,6 +40,12 @@ public class SubFuncionController {
 
     @Autowired
     private SubFuncionService subfuncionService;
+    @Autowired
+    private MantenimientoUnidadService mantenimientoUnidadService;
+    @Autowired
+    private MantenimientoPesoHoraService mantenimientoPesoHoraService;
+    @Autowired
+    private UnidadFuncionalService unidadFuncionalService;
     @Autowired
     private FuncionService funcionService;
     @Autowired
@@ -58,18 +74,57 @@ public class SubFuncionController {
     }
 
     @GetMapping("/subfuncion/estimacion/{idEstimacion}")
-    public ResponseEntity<List<Subfuncion>> findByEstimacionUfs(@PathVariable Integer idEstimacion) {
+    public ResponseEntity<List<EstimacionMantenimiento>> findByEstimacionUfs(@PathVariable Integer idEstimacion) {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(idEstimacion)
-                .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + idEstimacion));
-        
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Estimación no encontrada con el id: " + idEstimacion));
+
+        List<UnidadFuncional> unidadFuncional = unidadFuncionalService.findByEstimacionUfs(estimacion);
+        List<MantenimientoUnidad> mantenimientoUnidad = mantenimientoUnidadService.getMantenimientos();
         List<Subfuncion> subfunciones = subfuncionService.findByEstimacionUfs(estimacion);
-        
-        if (subfunciones.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontraron Subfunciones para la estimación con id:" + idEstimacion);
+        List<EstimacionMantenimiento> estimacionList = new ArrayList<>();
+
+        for (UnidadFuncional uf : unidadFuncional) {
+            Map<String, Integer> cantidadMantenimiento = new HashMap<>();
+            for (MantenimientoUnidad mantenimiento : mantenimientoUnidad) {
+                cantidadMantenimiento.put(mantenimiento.getNombre(), 0);
+            }
+
+            for (Subfuncion subfuncion : subfunciones) {
+                String nombreMantenimiento = subfuncion.getMantenimientoUnidad().getNombre();
+                Integer idUfs = subfuncion.getFuncion().getUnidadFuncional().getId();
+
+                if (idUfs.equals(uf.getId())) {
+                    cantidadMantenimiento.put(nombreMantenimiento, cantidadMantenimiento.get(nombreMantenimiento) + 1);
+                }
+            }
+
+            for (MantenimientoUnidad mantenimiento : mantenimientoUnidad) {
+                Integer cantidad = cantidadMantenimiento.get(mantenimiento.getNombre());
+                if (cantidad != 0) {
+                    EstimacionMantenimiento estimacionMantenimiento = new EstimacionMantenimiento();
+                    estimacionMantenimiento.setUnidadFuncional(uf);
+                    estimacionMantenimiento.setMantenimientoUnidad(mantenimiento);
+                    estimacionMantenimiento.setCantidadUnidad(cantidad);
+                    estimacionList.add(estimacionMantenimiento);
+                }
+            }
         }
 
-        return ResponseEntity.ok(subfunciones);
-        
+        for (EstimacionMantenimiento estimacionMantenimiento : estimacionList) {
+            Integer peso = estimacionMantenimiento.getMantenimientoUnidad().getPeso();
+            Integer cantidadUnidad = estimacionMantenimiento.getCantidadUnidad();
+            estimacionMantenimiento.setMantenimientoPesoHora(mantenimientoPesoHoraService.buscarPeso(peso));
+            Integer cantidadHora = cantidadUnidad * estimacionMantenimiento.getMantenimientoPesoHora().getHora().intValue();
+            estimacionMantenimiento.setCantidadHora(cantidadHora);
+        }
+
+        if (estimacionList.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No se encontraron Subfunciones para la estimación con id:" + idEstimacion);
+        }
+
+        return ResponseEntity.ok(estimacionList);
     }
 
 }

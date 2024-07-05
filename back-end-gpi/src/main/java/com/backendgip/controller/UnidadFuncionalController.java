@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ContenidoUfs;
+import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.UnidadFuncional;
+import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.repository.UnidadFuncionalRepository;
 import com.backendgip.service.LogSistemaService;
 import com.backendgip.service.UnidadFuncionalService;
@@ -33,27 +35,38 @@ import com.backendgip.service.UnidadFuncionalService;
 @RequestMapping({ "/api" })
 public class UnidadFuncionalController {
 
-    @Autowired
-    private UnidadFuncionalService ufsService;
-    @Autowired
+	@Autowired
+	private UnidadFuncionalService ufsService;
+	@Autowired
 	private LogSistemaService logService;
-    @Autowired
-    private UnidadFuncionalRepository ufsRepository;
-    
-    public UnidadFuncionalController(){
-    }
+	@Autowired
+	private UnidadFuncionalRepository ufsRepository;
+	@Autowired
+	private EstimacionesUfsRepository estimacionesUfsRepository;
 
-    @GetMapping({"/unidad-funcional"})
-    public List<UnidadFuncional> getUfs(){
-        return this.ufsService.getUfs();
-    }
+	public UnidadFuncionalController() {
+	}
 
-    @PostMapping({"/unidad-funcional"})
-    public ResponseEntity<?> saveUfs(@RequestBody UnidadFuncional ufs){
-        if(this.ufsRepository.existsByNombre(ufs.getNombre()) /*|| this.ufsRepository.existsById(ufs.getId())*/){
-            return ResponseEntity.badRequest().body("Esta Unidad funcional ya existe");
-        }else{
-            LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+	@GetMapping({ "/unidad-funcional" })
+	public List<UnidadFuncional> getUfs() {
+		return this.ufsService.getUfs();
+	}
+
+	@GetMapping({ "/unidad-funcional/estimacionufs/{idEstimacion}" })
+	public List<UnidadFuncional> findByEstimacionUfs(@PathVariable Integer idEstimacion) {
+		EstimacionUfs estimacion = estimacionesUfsRepository.findById(idEstimacion)
+				.orElseThrow(
+						() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + idEstimacion));
+
+		return ufsService.findByEstimacionUfs(estimacion);
+	}
+
+	@PostMapping({ "/unidad-funcional" })
+	public ResponseEntity<?> saveUfs(@RequestBody UnidadFuncional ufs) {
+		if (this.ufsRepository.existsByNombre(ufs.getNombre()) /* || this.ufsRepository.existsById(ufs.getId()) */) {
+			return ResponseEntity.badRequest().body("Esta Unidad funcional ya existe");
+		} else {
+			LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
 			UnidadFuncional createdUfs = this.ufsService.saveUfs(ufs);
 			LogSistema log = new LogSistema();
 			log.setAccion("CREATE");
@@ -63,10 +76,10 @@ public class UnidadFuncionalController {
 			log.setDescripcion(createdUfs.toString());
 			this.logService.saveLog(log);
 			return ResponseEntity.ok(createdUfs);
-        }
-    }
+		}
+	}
 
-    @PutMapping({ "/unidad-funcional/{id}" })
+	@PutMapping({ "/unidad-funcional/{id}" })
 	public ResponseEntity<?> updateUfs(@PathVariable Integer id, @RequestBody UnidadFuncional UfsDetails) {
 		UnidadFuncional ufs = (UnidadFuncional) this.ufsRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("No se ha encontrado la unidad funcional con el id: " + id);
@@ -83,7 +96,7 @@ public class UnidadFuncionalController {
 		return ResponseEntity.ok(updatedUfs);
 	}
 
-    @GetMapping({ "/unidad-funcional/{id}" })
+	@GetMapping({ "/unidad-funcional/{id}" })
 	public ResponseEntity<UnidadFuncional> getUfsById(@PathVariable Integer id) {
 		UnidadFuncional ufs = (UnidadFuncional) this.ufsRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("ID " + id + " NO ENCONTRADO");

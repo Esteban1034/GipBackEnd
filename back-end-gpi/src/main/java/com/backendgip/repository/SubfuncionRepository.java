@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.backendgip.model.Subfuncion;
+import com.backendgip.model.UnidadFuncional;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
 

@@ -39,5 +39,4 @@ public class SubfuncionServiceImpl implements SubFuncionService {
     public List<Subfuncion> findByEstimacionUfs(EstimacionUfs estimacionUfs) {
         return subfuncionRepository.findByFuncion_UnidadFuncional_EstimacionUfs(estimacionUfs);
     }
-
 }

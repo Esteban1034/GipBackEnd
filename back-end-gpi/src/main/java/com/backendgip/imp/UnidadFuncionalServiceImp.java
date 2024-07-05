@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.Cliente;
+import com.backendgip.model.EstimacionUfs;
+import com.backendgip.model.Subfuncion;
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.repository.UnidadFuncionalRepository;
 import com.backendgip.service.UnidadFuncionalService;
@@ -39,5 +41,10 @@ public class UnidadFuncionalServiceImp implements UnidadFuncionalService {
 			return new ResourceNotFoundException("Cliente no existe con el ID" + idUfs);
 		});
 	}
+
+    @Override
+    public List<UnidadFuncional> findByEstimacionUfs(EstimacionUfs estimacionUfs) {
+        return ufsRepository.findByEstimacionUfs(estimacionUfs);
+    }
     
 }
