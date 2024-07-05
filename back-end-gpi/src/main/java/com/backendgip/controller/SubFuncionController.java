@@ -117,6 +117,8 @@ public class SubFuncionController {
             estimacionMantenimiento.setMantenimientoPesoHora(mantenimientoPesoHoraService.buscarPeso(peso));
             Integer cantidadHora = cantidadUnidad * estimacionMantenimiento.getMantenimientoPesoHora().getHora().intValue();
             estimacionMantenimiento.setCantidadHora(cantidadHora);
+            Integer cantidadPeso = cantidadUnidad * estimacionMantenimiento.getMantenimientoUnidad().getPeso().intValue();
+            estimacionMantenimiento.setCantidadPeso(cantidadPeso);
         }
 
         if (estimacionList.isEmpty()) {

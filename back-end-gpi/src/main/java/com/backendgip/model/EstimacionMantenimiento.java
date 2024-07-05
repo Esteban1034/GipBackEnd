@@ -3,21 +3,24 @@ package com.backendgip.model;
 public class EstimacionMantenimiento {
 
     private UnidadFuncional unidadFuncional;
-    private MantenimientoUnidad mantenimientoUnidad ;
+    private MantenimientoUnidad mantenimientoUnidad;
     private MantenimientoPesoHora mantenimientoPesoHora;
     private Integer cantidadUnidad;
     private Integer cantidadHora;
+    private Integer cantidadPeso;
 
     public EstimacionMantenimiento() {
     }
 
     public EstimacionMantenimiento(UnidadFuncional unidadFuncional, MantenimientoUnidad mantenimientoUnidad,
-            MantenimientoPesoHora mantenimientoPesoHora, Integer cantidadUnidad, Integer cantidadHora) {
+            MantenimientoPesoHora mantenimientoPesoHora, Integer cantidadUnidad, Integer cantidadHora,
+            Integer cantidadPeso) {
         this.unidadFuncional = unidadFuncional;
         this.mantenimientoUnidad = mantenimientoUnidad;
         this.mantenimientoPesoHora = mantenimientoPesoHora;
         this.cantidadUnidad = cantidadUnidad;
         this.cantidadHora = cantidadHora;
+        this.cantidadPeso = cantidadPeso;
     }
 
     public UnidadFuncional getUnidadFuncional() {
@@ -60,12 +63,19 @@ public class EstimacionMantenimiento {
         this.cantidadHora = cantidadHora;
     }
 
+    public Integer getCantidadPeso() {
+        return cantidadPeso;
+    }
+
+    public void setCantidadPeso(Integer cantidadPeso) {
+        this.cantidadPeso = cantidadPeso;
+    }
 
     @Override
     public String toString() {
         return "EstimacionMantenimiento [unidadFuncional=" + unidadFuncional + ", mantenimientoUnidad="
                 + mantenimientoUnidad + ", mantenimientoPesoHora=" + mantenimientoPesoHora + ", cantidadUnidad="
-                + cantidadUnidad + ", cantidadHora=" + cantidadHora + "]";
+                + cantidadUnidad + ", cantidadHora=" + cantidadHora + ", cantidadPeso=" + cantidadPeso + "]";
     }
-    
+
 }
