@@ -5,7 +5,8 @@
 
 package com.backendgip.imp;
 
-
+import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.EstadoEmpleado;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
 import com.backendgip.repository.EstimacionesUfsRepository;
@@ -20,29 +21,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class FuncionesServiceImp implements FuncionService {
 
-
-	@Autowired
+    @Autowired
     private FuncionRepository funcionRepository;
 
     public List<Funcion> geFuncions() {
         return (List<Funcion>) funcionRepository.findAll();
     }
 
-
     public Funcion saFuncion(Funcion funcion) {
         return funcionRepository.save(funcion);
     }
 
-    
-
     public void deleteFuncion(Funcion funcion) {
         funcionRepository.delete(funcion);
     }
+
     public Funcion sFuncion(Funcion funcion) {
         return funcionRepository.save(funcion);
     }
-    
 
+    public Funcion getFuncionById(Integer id) {
+		return (Funcion) this.funcionRepository.findById(id).orElseThrow(() -> {
+			return new ResourceNotFoundException("No se ha encontrado el recurso solicitado.");
+		});
+	}
 
- 
 }

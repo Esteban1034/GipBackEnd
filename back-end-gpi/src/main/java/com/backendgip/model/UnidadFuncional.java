@@ -27,7 +27,7 @@ public class UnidadFuncional implements Serializable {
 	private String nombre;
 	@ManyToOne
     @JoinColumn(name = "fk_estimacion")
-    private EstimacionUfs estimacion_ufs;
+    private EstimacionUfs estimacionUfs;
 
 	public UnidadFuncional() {
 	}
@@ -35,7 +35,7 @@ public class UnidadFuncional implements Serializable {
 	public UnidadFuncional(Integer id, String nombre, EstimacionUfs estimacion_ufs) {
 		this.id = id;
 		this.nombre = nombre;
-		this.estimacion_ufs = estimacion_ufs;
+		this.estimacionUfs = estimacionUfs;
 	}
 
 	public static long getSerialversionuid() {
@@ -58,17 +58,17 @@ public class UnidadFuncional implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public EstimacionUfs getEstimacion_ufs() {
-		return estimacion_ufs;
-	}
-
-	public void setEstimacion_ufs(EstimacionUfs estimacion_ufs) {
-		this.estimacion_ufs = estimacion_ufs;
-	}
-
 	@Override
 	public String toString() {
-		return "UnidadFuncional [id=" + id + ", nombre=" + nombre + ", estimacion_ufs=" + estimacion_ufs + "]";
+		return "UnidadFuncional [id=" + id + ", nombre=" + nombre + ", estimacionUfs=" + estimacionUfs + "]";
+	}
+
+	public EstimacionUfs getEstimacionUfs() {
+		return estimacionUfs;
+	}
+
+	public void setEstimacion_ufs(EstimacionUfs estimacionUfs) {
+		this.estimacionUfs = estimacionUfs;
 	}
 	
 }
