@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
-import com.backendgip.model.ContenidoUfs;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.model.UnidadFuncional;
@@ -61,23 +60,20 @@ public class UnidadFuncionalController {
 		return ufsService.findByEstimacionUfs(estimacion);
 	}
 
-	@PostMapping({ "/unidad-funcional" })
-	public ResponseEntity<?> saveUfs(@RequestBody UnidadFuncional ufs) {
-		if (this.ufsRepository.existsByNombre(ufs.getNombre()) /* || this.ufsRepository.existsById(ufs.getId()) */) {
-			return ResponseEntity.badRequest().body("Esta Unidad funcional ya existe");
-		} else {
-			LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
-			UnidadFuncional createdUfs = this.ufsService.saveUfs(ufs);
-			LogSistema log = new LogSistema();
-			log.setAccion("CREATE");
-			log.setFechaHora(new Date());
-			log.setTabla(UnidadFuncional.class.toString());
-			log.setIdAccion(createdUfs.getId());
-			log.setDescripcion(createdUfs.toString());
-			this.logService.saveLog(log);
-			return ResponseEntity.ok(createdUfs);
-		}
-	}
+	@PostMapping("/unidad-funcional")
+	public ResponseEntity<?> saveUfs(@RequestBody UnidadFuncional ufs) { 
+        LocalDate fechaCreacion = LocalDate.now(ZoneId.of("America/Bogota"));
+        UnidadFuncional createdUfs = ufsService.saveUfs(ufs);
+        LogSistema log = new LogSistema();
+        log.setAccion(ufs.getId() == null ? "CREATE" : "UPDATE");
+        log.setFechaHora(new Date());
+        log.setTabla(UnidadFuncional.class.toString());
+        log.setIdAccion(createdUfs.getId());
+        log.setDescripcion(createdUfs.toString());
+        logService.saveLog(log);
+
+        return ResponseEntity.ok(createdUfs);
+    }
 
 	@PutMapping({ "/unidad-funcional/{id}" })
 	public ResponseEntity<?> updateUfs(@PathVariable Integer id, @RequestBody UnidadFuncional UfsDetails) {

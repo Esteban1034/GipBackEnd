@@ -2,8 +2,8 @@ package com.backendgip.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,20 +19,16 @@ import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.EstimacionMantenimiento;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
+import com.backendgip.model.MantenimientoPesoHora;
 import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.model.Subfuncion;
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.repository.FuncionRepository;
-import com.backendgip.repository.MantenimientoUnidadRepository;
-import com.backendgip.repository.UnidadFuncionalRepository;
-import com.backendgip.service.FuncionService;
 import com.backendgip.service.MantenimientoPesoHoraService;
 import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.SubFuncionService;
 import com.backendgip.service.UnidadFuncionalService;
-
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")
@@ -47,11 +43,11 @@ public class SubFuncionController {
     @Autowired
     private UnidadFuncionalService unidadFuncionalService;
     @Autowired
-    private FuncionService funcionService;
-    @Autowired
     private FuncionRepository funcionRepository;
     @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
+    @Autowired
+    private MantenimientoPesoHoraService pesoHoraService;
 
     @GetMapping({ "/subfuncion" })
     public ResponseEntity<List<Subfuncion>> getAllSubfunciones() {
@@ -64,6 +60,20 @@ public class SubFuncionController {
         Subfuncion createdSubfuncion = subfuncionService.createSubfuncion(subfuncion);
         return new ResponseEntity<>(createdSubfuncion, HttpStatus.CREATED);
     }
+
+    @GetMapping("/subfuncion/obtenerHoras/{peso}")
+    public ResponseEntity<?> obtenerHoras(@PathVariable Integer peso) {
+    try {
+        MantenimientoPesoHora pesoMantenimiento = pesoHoraService.buscarPeso(peso);
+        if (pesoMantenimiento != null) {
+            return ResponseEntity.ok(pesoMantenimiento);
+        } else {
+            return ResponseEntity.badRequest().body("No se encontró el peso a buscar");
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar el peso: " + e.getMessage());
+    }
+}
 
     @GetMapping({ "/subfuncion/{idFuncion}" })
     public List<Subfuncion> findByFuncion(@PathVariable Integer idFuncion) {

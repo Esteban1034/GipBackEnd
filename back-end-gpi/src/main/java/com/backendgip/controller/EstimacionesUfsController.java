@@ -1,22 +1,26 @@
 package com.backendgip.controller;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.repository.EstimacionesUfsRepository;
-import com.backendgip.service.EmpleadoService;
 import com.backendgip.service.EstimacionesUfsService;
 import com.backendgip.service.LogSistemaService;
-import com.backendgip.service.ProyectoService;
-import com.backendgip.service.UnidadFuncionalService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -33,6 +37,12 @@ public class EstimacionesUfsController {
     public ResponseEntity<List<EstimacionUfs>> getEstimaciones() {
         List<EstimacionUfs> estimaciones = estimacionesUfsService.getEstimaciones();
         return ResponseEntity.ok(estimaciones);
+    }
+
+    @PostMapping("/estimaciones")
+    public ResponseEntity<EstimacionUfs> saveEstimacionIn(@RequestBody EstimacionUfs estimacionUfs) {
+        EstimacionUfs saveestimacion = estimacionesUfsService.saveEstimacionIn(estimacionUfs);
+        return new ResponseEntity<>(saveestimacion, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/estimaciones/{id}")
@@ -58,7 +68,6 @@ public class EstimacionesUfsController {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
         return ResponseEntity.ok(estimacion);
-    }
-    
+    } 
 }
 
