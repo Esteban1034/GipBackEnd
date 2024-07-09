@@ -14,22 +14,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "analisis_diseno")
-public class AnalisisDiseno implements Serializable {
+@Table(name = "tipo_actividades_complementarias")
+public class TipoActividadComplementaria implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_analisis_diseno")
+	@Column(name = "pk_propuesta")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "nombre")
 	private String nombre;
-	@Column(name = "horas")
-	private Integer horas;
-	@Column(name = "porcentaje")
-	private Integer porcentaje;
 
-	public AnalisisDiseno() {
+	public TipoActividadComplementaria() {
 	}
+
+    public TipoActividadComplementaria(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 
     public Integer getId() {
         return id;
@@ -47,26 +48,9 @@ public class AnalisisDiseno implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getHoras() {
-        return horas;
+    @Override
+    public String toString() {
+        return "TipoActividadComplementaria [id=" + id + ", nombre=" + nombre + "]";
     }
 
-    public void setHoras(Integer horas) {
-        this.horas = horas;
-    }
-
-    public Integer getPorcentaje() {
-        return porcentaje;
-    }
-
-    public void setPorcentaje(Integer porcentaje) {
-        this.porcentaje = porcentaje;
-    }
-
-    public AnalisisDiseno(Integer id, String nombre, Integer horas, Integer porcentaje) {
-        this.id = id;
-        this.nombre = nombre;
-        this.horas = horas;
-        this.porcentaje = porcentaje;
-    }
 }
