@@ -80,4 +80,10 @@ public class ClienteServiceImp implements ClienteService {
 	public Cliente findByNombre(String nombre) {
 		return this.clienteRepository.findByNombre(nombre);
 	}
+
+	@Override
+	public List<Cliente> findClientesWithProyectosInEstadoPRP() {
+		return clienteRepository.findClientesWithProyectosInEstadoPRP();
+	}
+	
 }

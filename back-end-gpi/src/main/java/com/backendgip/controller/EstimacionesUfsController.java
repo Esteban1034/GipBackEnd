@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.Empleado;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
 import com.backendgip.repository.EstimacionesUfsRepository;
@@ -40,9 +41,20 @@ public class EstimacionesUfsController {
     }
 
     @PostMapping("/estimaciones")
-    public ResponseEntity<EstimacionUfs> saveEstimacionIn(@RequestBody EstimacionUfs estimacionUfs) {
-        EstimacionUfs saveestimacion = estimacionesUfsService.saveEstimacionIn(estimacionUfs);
-        return new ResponseEntity<>(saveestimacion, HttpStatus.CREATED);
+    public ResponseEntity<?> saveEstimacionIn(@RequestBody EstimacionUfs estimacionUfs) {
+        if(estimacionesUfsRepository.existsByProyectoId(estimacionUfs.getProyecto().getId())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este proyecto ya tiene una estimación asignada");
+        }else{
+            EstimacionUfs savEstimacion = estimacionesUfsService.saveEstimacionIn(estimacionUfs);
+            LogSistema log = new LogSistema();
+			log.setAccion("CREATE");
+			log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+			log.setTabla(Empleado.class.toString());
+			log.setIdAccion(savEstimacion.getId());
+			log.setDescripcion(savEstimacion.toString());
+			this.logService.saveLog(log);
+			return ResponseEntity.ok(savEstimacion);
+        }
     }
 
     @DeleteMapping("/estimaciones/{id}")

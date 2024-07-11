@@ -12,6 +12,8 @@ import java.util.List;
 public interface SubFuncionService {
 
  Subfuncion createSubfuncion(Subfuncion subfuncion);
+
+    List<Subfuncion> findByFuncionId(Integer funcionId);
     List<Subfuncion> getAllSubfunciones();
     List<Subfuncion> findByFuncion(Funcion funcion);
     List<Subfuncion> findByEstimacionUfs(EstimacionUfs estimacionUfs);

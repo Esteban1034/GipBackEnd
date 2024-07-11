@@ -46,4 +46,9 @@ public class FuncionesServiceImp implements FuncionService {
 		});
 	}
 
+    @Override
+    public List<Funcion> findByUnidadFuncionalId(Integer UnidadFuncionalId) {
+        return funcionRepository.findByUnidadFuncionalId(UnidadFuncionalId);
+    }
+
 }

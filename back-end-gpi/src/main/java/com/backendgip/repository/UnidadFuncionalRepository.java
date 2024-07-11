@@ -10,7 +10,11 @@ import java.util.List;
 
 @Repository
 public interface UnidadFuncionalRepository extends CrudRepository<UnidadFuncional, Integer> {
+
+    List<UnidadFuncional> findByEstimacionUfsId(Integer estimacionId);
     
     boolean existsByNombre(String nombre);
+
     List<UnidadFuncional> findByEstimacionUfs(EstimacionUfs estimacionUfs);
+
 }

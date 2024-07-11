@@ -7,7 +7,10 @@ package com.backendgip.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +37,8 @@ public class EstimacionUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_modelo")
     private Modelo modelo;
+    @OneToMany(mappedBy = "estimacionUfs", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UnidadFuncional> unidadesFuncionales;
 
     public EstimacionUfs() {
     }

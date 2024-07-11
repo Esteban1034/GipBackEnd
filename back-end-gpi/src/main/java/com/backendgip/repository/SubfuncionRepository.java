@@ -12,6 +12,7 @@ import com.backendgip.model.Funcion;
 
 @Repository
 public interface SubfuncionRepository  extends CrudRepository<Subfuncion, Integer> {
+    List<Subfuncion> findByFuncionId(Integer funcionId);
     List<Subfuncion> findByFuncion(Funcion funcion);
     List<Subfuncion> findByFuncion_UnidadFuncional_EstimacionUfs(EstimacionUfs estimacionUfs);
 }

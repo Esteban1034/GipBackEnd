@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.model.EstimacionUfs;
+
 public interface UnidadFuncionalService {
+
+    List<UnidadFuncional> findByEstimacionUfsId(Integer estimacionId);
 
     List<UnidadFuncional> getUfs();
 

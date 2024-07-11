@@ -12,6 +12,8 @@ import com.backendgip.repository.SubfuncionRepository;
 import com.backendgip.service.EstimacionesUfsService;
 import com.backendgip.service.SubFuncionService;
 
+import net.bytebuddy.asm.Advice.Return;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,10 @@ public class SubfuncionServiceImpl implements SubFuncionService {
     @Override
     public List<Subfuncion> findByEstimacionUfs(EstimacionUfs estimacionUfs) {
         return subfuncionRepository.findByFuncion_UnidadFuncional_EstimacionUfs(estimacionUfs);
+    }
+
+    @Override
+    public List<Subfuncion> findByFuncionId(Integer funcionId) {
+        return subfuncionRepository.findByFuncionId(funcionId);
     }
 }

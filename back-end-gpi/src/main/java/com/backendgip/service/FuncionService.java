@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface FuncionService {
 
+    List<Funcion> findByUnidadFuncionalId(Integer UnidadFuncionalId);
+
     List<Funcion> geFuncions();
 
     Funcion sFuncion(Funcion funcion);

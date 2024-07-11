@@ -350,6 +350,8 @@ public class ProyectoController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
+
+    
     @GetMapping({"/proyectos/proyectos-by-codigo-cliente/{codigo}/{idCliente}"})
     public ResponseEntity<?> findByCodigoAndCliente(@PathVariable String codigo, @PathVariable Integer idCliente) {
         Cliente cliente = this.clienteService.getClienteById(idCliente);

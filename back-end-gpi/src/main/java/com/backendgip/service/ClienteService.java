@@ -11,8 +11,12 @@ import com.backendgip.model.SectorCliente;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+
 public interface ClienteService {
 	List<Cliente> getClientes();
+
+	List<Cliente> findClientesWithProyectosInEstadoPRP();
 
 	Cliente saveCliente(Cliente cliente);
 

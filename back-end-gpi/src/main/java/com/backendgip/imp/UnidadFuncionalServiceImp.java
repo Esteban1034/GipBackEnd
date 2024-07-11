@@ -46,5 +46,10 @@ public class UnidadFuncionalServiceImp implements UnidadFuncionalService {
     public List<UnidadFuncional> findByEstimacionUfs(EstimacionUfs estimacionUfs) {
         return ufsRepository.findByEstimacionUfs(estimacionUfs);
     }
+
+    @Override
+    public List<UnidadFuncional> findByEstimacionUfsId(Integer estimacionId) {
+        return ufsRepository.findByEstimacionUfsId(estimacionId);
+    }
     
 }

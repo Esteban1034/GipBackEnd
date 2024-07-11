@@ -159,6 +159,11 @@ public class ClienteController {
 		Empleado gerente = this.empleadoService.getEmpleadoById(idGerente);
 		return ResponseEntity.ok(this.clienteService.findByGerenteCuenta(gerente));
 	}
+	
+	@GetMapping({"/clientes/by-proyectos-prp"})
+	public List<Cliente> getClientesWithProyectosInEstadoPRP(){
+		return clienteService.findClientesWithProyectosInEstadoPRP();
+	}
 
 	@GetMapping({ "/clientes/reportes/find-by-sector-gerente/{idSector}/{idGerente}" })
 	public ResponseEntity<?> findBySectorAndGerenteCuenta(@PathVariable Integer idSector,
