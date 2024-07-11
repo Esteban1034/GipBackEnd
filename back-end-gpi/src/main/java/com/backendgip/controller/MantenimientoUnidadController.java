@@ -81,6 +81,7 @@ public class MantenimientoUnidadController {
     
     @PostMapping("/eliminar-unidad/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteUnidad(@PathVariable Integer id) {
+        
         this.mantenimientoUnidadService.deleteById(id);
         Map<String, Boolean> response = new HashMap();
 		response.put("deleted", Boolean.TRUE);

@@ -16,89 +16,81 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actividades_complementarias")
+@Table(name = "actividad_complementarias")
 public class ActividadesComplementarias implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "pk_Actividad")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name = "fk_actividades_estimacion")
-	private ActividadesEstimacion actividadesEstimacion;
+	@JoinColumn(name = "fk_pk_estimacion")
+	private EstimacionUfs estimacion;
 	@ManyToOne
-	@JoinColumn(name = "fk_propuesta")
-	private Propuesta propuesta;
-	@ManyToOne
-	@JoinColumn(name = "fk_analisis_diseno")
-	private AnalisisDiseno analisisDiseno;
-	@ManyToOne
-	@JoinColumn(name = "fk_elaboracion")
-	private Elaboracion elaboracion;
-	@ManyToOne
-	@JoinColumn(name = "fk_transicion")
-	private Transicion transicion;
+	@JoinColumn(name = "fk_pk_tipo_actividad")
+	private TipoActividadComplementaria tipoActividad;
+	@Column(name = "nombre")
+	private String nombre;
+	@Column(name = "horas")
+	private Integer horas;
+	@Column(name = "porcentaje")
+	private Integer porcentaje;
 
 	public ActividadesComplementarias() {
+	}
+
+	public ActividadesComplementarias(Integer id, EstimacionUfs estimacion, TipoActividadComplementaria tipoActividad,
+			String nombre, Integer horas, Integer porcentaje) {
+		this.id = id;
+		this.estimacion = estimacion;
+		this.tipoActividad = tipoActividad;
+		this.nombre = nombre;
+		this.horas = horas;
+		this.porcentaje = porcentaje;
 	}
 
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public ActividadesEstimacion getActividadesEstimacion() {
-		return actividadesEstimacion;
+	public EstimacionUfs getEstimacion() {
+		return estimacion;
+	}
+	public void setEstimacion(EstimacionUfs estimacion) {
+		this.estimacion = estimacion;
+	}
+	public TipoActividadComplementaria getTipoActividad() {
+		return tipoActividad;
+	}
+	public void setTipoActividad(TipoActividadComplementaria tipoActividad) {
+		this.tipoActividad = tipoActividad;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Integer getHoras() {
+		return horas;
+	}
+	public void setHoras(Integer horas) {
+		this.horas = horas;
+	}
+	public Integer getPorcentaje() {
+		return porcentaje;
+	}
+	public void setPorcentaje(Integer porcentaje) {
+		this.porcentaje = porcentaje;
 	}
 
-	public void setActividadesEstimacion(ActividadesEstimacion actividadesEstimacion) {
-		this.actividadesEstimacion = actividadesEstimacion;
+	@Override
+	public String toString() {
+		return "ActividadesComplementarias [id=" + id + ", estimacion=" + estimacion + ", tipoActividad="
+				+ tipoActividad + ", nombre=" + nombre + ", horas=" + horas + ", porcentaje=" + porcentaje + "]";
 	}
 
-	public Propuesta getPropuesta() {
-		return propuesta;
-	}
-
-	public void setPropuesta(Propuesta propuesta) {
-		this.propuesta = propuesta;
-	}
-
-	public AnalisisDiseno getAnalisisDiseno() {
-		return analisisDiseno;
-	}
-
-	public void setAnalisisDiseno(AnalisisDiseno analisisDiseno) {
-		this.analisisDiseno = analisisDiseno;
-	}
-
-	public Elaboracion getElaboracion() {
-		return elaboracion;
-	}
-
-	public void setElaboracion(Elaboracion elaboracion) {
-		this.elaboracion = elaboracion;
-	}
-
-	public Transicion getTransicion() {
-		return transicion;
-	}
-
-	public void setTransicion(Transicion transicion) {
-		this.transicion = transicion;
-	}
-
-	public ActividadesComplementarias(Integer id, ActividadesEstimacion actividadesEstimacion, Propuesta propuesta,
-			AnalisisDiseno analisisDiseno, Elaboracion elaboracion, Transicion transicion) {
-		this.id = id;
-		this.actividadesEstimacion = actividadesEstimacion;
-		this.propuesta = propuesta;
-		this.analisisDiseno = analisisDiseno;
-		this.elaboracion = elaboracion;
-		this.transicion = transicion;
-	}
-	
-	
 }
