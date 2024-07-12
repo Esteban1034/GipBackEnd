@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.model.ActividadesComplementarias;
 import com.backendgip.model.LogSistema;
-import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.service.ActividadesComplementariasService;
 import com.backendgip.service.LogSistemaService;
 
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @Transactional
