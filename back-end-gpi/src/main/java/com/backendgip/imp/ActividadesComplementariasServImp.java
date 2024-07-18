@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ActividadesComplementarias;
+import com.backendgip.model.EstimacionUfs;
 import com.backendgip.repository.ActividadesComplementariasRepository;
 
 import com.backendgip.service.ActividadesComplementariasService;
@@ -35,6 +36,11 @@ public class ActividadesComplementariasServImp implements ActividadesComplementa
         return (ActividadesComplementarias) this.actividadesComplementariasRepository.findById(id).orElseThrow(() -> {
 			return new ResourceNotFoundException("No se ha encontrado la actividad con el id:" + id);
 		});
+    }
+
+    @Override
+    public List<ActividadesComplementarias> getActividadesEstimacion(EstimacionUfs estimacion) {
+      return this.actividadesComplementariasRepository.findByEstimacion(estimacion);
     }
 
 }

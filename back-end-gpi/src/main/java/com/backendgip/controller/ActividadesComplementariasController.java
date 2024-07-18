@@ -13,8 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ActividadesComplementarias;
+import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
+import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.service.ActividadesComplementariasService;
 import com.backendgip.service.LogSistemaService;
 
@@ -32,12 +35,26 @@ public class ActividadesComplementariasController {
     private ActividadesComplementariasService actividadesComplementariasService;
     @Autowired
 	private LogSistemaService logService;
+    @Autowired
+    private EstimacionesUfsRepository estimacionesUfsRepository;
 
     @GetMapping("/obtener-actividades")
     public List<ActividadesComplementarias> obtenerActividades() {
         return this.actividadesComplementariasService.getActividades();
     }
 
+    @GetMapping("/obtener-actividades/estimacion/{id}")
+    public ResponseEntity<?> obtenerActividadesEstimacion(@PathVariable Integer id){
+        EstimacionUfs estimacion = this.estimacionesUfsRepository.findById(id).orElseThrow(() -> {
+			return new ResourceNotFoundException("Estimacion no encontrada con id:" + id);
+		});
+        List<ActividadesComplementarias> actividades = this.actividadesComplementariasService.getActividadesEstimacion(estimacion);
+        if(actividades != null){
+            return ResponseEntity.ok(actividades);
+        }else{
+            return ResponseEntity.badRequest().body("No se encontro actividades con esta estimacion"+ estimacion.getProyecto().getNombre());
+        }
+    }
     @PostMapping("/crear-actividades")
     public ResponseEntity<?> guardaractividades(@RequestBody List<ActividadesComplementarias> actividades) {
         List<ActividadesComplementarias> listaActividades = new ArrayList<>();
