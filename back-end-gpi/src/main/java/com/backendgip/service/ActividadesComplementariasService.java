@@ -17,5 +17,6 @@ public interface ActividadesComplementariasService {
     ActividadesComplementarias getById(Integer id);
 
     List<ActividadesComplementarias> getActividadesEstimacion(EstimacionUfs estimacion);
+    List<ActividadesComplementarias> findByEstimacion (EstimacionUfs estimacion);
 
 }

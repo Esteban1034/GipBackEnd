@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendgip.exception.ResourceNotFoundException;
+import com.backendgip.model.ActividadesComplementarias;
+import com.backendgip.model.EstimacionContenido;
 import com.backendgip.model.EstimacionMantenimiento;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
@@ -25,6 +27,8 @@ import com.backendgip.model.Subfuncion;
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.repository.EstimacionesUfsRepository;
 import com.backendgip.repository.FuncionRepository;
+import com.backendgip.service.ActividadesComplementariasService;
+import com.backendgip.service.FuncionService;
 import com.backendgip.service.MantenimientoPesoHoraService;
 import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.SubFuncionService;
@@ -37,6 +41,8 @@ public class SubFuncionController {
     @Autowired
     private SubFuncionService subfuncionService;
     @Autowired
+    private ActividadesComplementariasService actividadesComplementariasService;
+    @Autowired
     private MantenimientoUnidadService mantenimientoUnidadService;
     @Autowired
     private MantenimientoPesoHoraService mantenimientoPesoHoraService;
@@ -44,6 +50,8 @@ public class SubFuncionController {
     private UnidadFuncionalService unidadFuncionalService;
     @Autowired
     private FuncionRepository funcionRepository;
+    @Autowired
+    private FuncionService funcionService;
     @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
     @Autowired
@@ -139,6 +147,25 @@ public class SubFuncionController {
         return ResponseEntity.ok(estimacionList);
     }
 
-    
+    @GetMapping("/subfuncion/contenidoestimacion/{idEstimacion}")
+    public ResponseEntity<EstimacionContenido> findContenidoEstimacion(@PathVariable Integer idEstimacion) {
+        EstimacionContenido estimacionContenido = new EstimacionContenido();
+        EstimacionUfs estimacion = estimacionesUfsRepository.findById(idEstimacion)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Estimación no encontrada con el id: " + idEstimacion));
+
+        List<UnidadFuncional> unidadFuncional = unidadFuncionalService.findByEstimacionUfs(estimacion);
+        List<Subfuncion> subfunciones = subfuncionService.findByEstimacionUfs(estimacion);
+        List<Funcion> funcion = funcionService.findByEstimacionUfs(estimacion);
+        List<ActividadesComplementarias> actividad = actividadesComplementariasService.findByEstimacion(estimacion);
+
+        estimacionContenido.setActividades(actividad);
+        estimacionContenido.setEstimacion(estimacion);
+        estimacionContenido.setFuncion(funcion);
+        estimacionContenido.setSubFuncion(subfunciones);
+        estimacionContenido.setUnidadFuncional(unidadFuncional);
+        
+        return ResponseEntity.ok(estimacionContenido);
+    }
 
 }
