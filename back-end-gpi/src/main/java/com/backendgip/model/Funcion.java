@@ -32,8 +32,6 @@ public class Funcion implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_unidad_funcional")
     private UnidadFuncional unidadFuncional;
-    @OneToMany(mappedBy = "funcion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Subfuncion> subfunciones;
 
     public Funcion() {
     }

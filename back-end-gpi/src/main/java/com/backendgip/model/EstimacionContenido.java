@@ -1,14 +1,16 @@
 package com.backendgip.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class EstimacionContenido {
+public class EstimacionContenido  implements Serializable{
 
     public EstimacionUfs estimacion;
     public List<ActividadesComplementarias> actividades;
     public List<Subfuncion> subFuncion;
     public List<Funcion> funcion;
     public List<UnidadFuncional> unidadFuncional;
+    
     
     public EstimacionContenido() {
     }

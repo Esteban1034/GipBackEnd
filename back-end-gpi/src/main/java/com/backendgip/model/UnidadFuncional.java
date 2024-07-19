@@ -32,8 +32,7 @@ public class UnidadFuncional implements Serializable {
 	@ManyToOne
     @JoinColumn(name = "fk_estimacion")
     private EstimacionUfs estimacionUfs;
-	@OneToMany(mappedBy = "unidadFuncional", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Funcion> funciones;
+
 
 	public UnidadFuncional() {
 	}

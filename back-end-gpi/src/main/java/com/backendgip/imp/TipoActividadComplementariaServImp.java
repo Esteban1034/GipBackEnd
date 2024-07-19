@@ -19,5 +19,10 @@ public class TipoActividadComplementariaServImp implements TipoActividadCompleme
     public List<TipoActividadComplementaria> getActividades() {
         return (List<TipoActividadComplementaria>) this.tipoActividadRespository.findAll();
     }
+
+    @Override
+    public TipoActividadComplementaria getTipoActividadNombre(String nombre) {
+        return this.tipoActividadRespository.findByNombre(nombre);
+    }
     
 }

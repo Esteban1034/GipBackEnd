@@ -7,4 +7,6 @@ import com.backendgip.model.TipoActividadComplementaria;
 public interface TipoActividadComplementariaService {
  
     List<TipoActividadComplementaria> getActividades();
+
+    TipoActividadComplementaria getTipoActividadNombre(String nombre);
 }

@@ -7,10 +7,7 @@ package com.backendgip.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,59 +34,80 @@ public class EstimacionUfs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_modelo")
     private Modelo modelo;
-    @OneToMany(mappedBy = "estimacionUfs", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UnidadFuncional> unidadesFuncionales;
+    @ManyToOne
+    @JoinColumn(name = "fk_empleado")
+    private Empleado empleado;
+    
 
     public EstimacionUfs() {
     }
 
-    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto, Modelo modelo) {
+
+    public EstimacionUfs(Integer id, LocalDate fechaCreacion, Proyecto proyecto, Modelo modelo, Empleado empleado) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.proyecto = proyecto;
         this.modelo = modelo;
+        this.empleado = empleado;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
 
     public Integer getId() {
         return id;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
+
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
 
     public Proyecto getProyecto() {
         return proyecto;
     }
 
+
     public void setProyecto(Proyecto proyecto) {
         this.proyecto = proyecto;
     }
+
 
     public Modelo getModelo() {
         return modelo;
     }
 
+
     public void setModelo(Modelo modelo) {
         this.modelo = modelo;
     }
 
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+
     @Override
     public String toString() {
         return "EstimacionUfs [id=" + id + ", fechaCreacion=" + fechaCreacion + ", proyecto=" + proyecto + ", modelo="
-                + modelo + "]";
-    }   
+                + modelo + ", empleado=" + empleado + "]";
+    }
+
+    
 
 }
