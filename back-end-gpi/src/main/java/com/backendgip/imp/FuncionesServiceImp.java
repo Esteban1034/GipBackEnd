@@ -29,15 +29,11 @@ public class FuncionesServiceImp implements FuncionService {
         return (List<Funcion>) funcionRepository.findAll();
     }
 
-    public Funcion saFuncion(Funcion funcion) {
-        return funcionRepository.save(funcion);
-    }
-
     public void deleteFuncion(Funcion funcion) {
         funcionRepository.delete(funcion);
     }
 
-    public Funcion sFuncion(Funcion funcion) {
+    public Funcion createFuncion(Funcion funcion) {
         return funcionRepository.save(funcion);
     }
 

@@ -34,7 +34,7 @@ public class Subfuncion implements Serializable {
     @Column(name = "porcentaje_contruccion")
     private Integer porcentajeVConstruccion;
     @Column(name = "porcentaje_diseño")
-    private Integer porcentajeVDiseño;
+    private Integer porcentajeVDiseno;
     @Column(name = "porcentaje_pruebas")
     private Integer porcentajePruebas;
 
@@ -44,7 +44,7 @@ public class Subfuncion implements Serializable {
 
 
     public Subfuncion(Integer id, String nombre, Funcion funcion, MantenimientoUnidad mantenimientoUnidad,
-            String nombreCasoDeUso, Integer porcentajeVConstruccion, Integer porcentajeVDiseño,
+            String nombreCasoDeUso, Integer porcentajeVConstruccion, Integer porcentajeVDiseno,
             Integer porcentajePruebas) {
         this.id = id;
         this.nombre = nombre;
@@ -52,7 +52,7 @@ public class Subfuncion implements Serializable {
         this.mantenimientoUnidad = mantenimientoUnidad;
         this.nombreCasoDeUso = nombreCasoDeUso;
         this.porcentajeVConstruccion = porcentajeVConstruccion;
-        this.porcentajeVDiseño = porcentajeVDiseño;
+        this.porcentajeVDiseno = porcentajeVDiseno;
         this.porcentajePruebas = porcentajePruebas;
     }
 
@@ -122,13 +122,13 @@ public class Subfuncion implements Serializable {
     }
 
 
-    public Integer getPorcentajeVDiseño() {
-        return porcentajeVDiseño;
+    public Integer getPorcentajeVDiseno() {
+        return porcentajeVDiseno;
     }
 
 
-    public void setPorcentajeVDiseño(Integer porcentajeVDiseño) {
-        this.porcentajeVDiseño = porcentajeVDiseño;
+    public void setPorcentajeVDiseno(Integer porcentajeVDiseno) {
+        this.porcentajeVDiseno = porcentajeVDiseno;
     }
 
 
@@ -146,7 +146,7 @@ public class Subfuncion implements Serializable {
     public String toString() {
         return "Subfuncion [id=" + id + ", nombre=" + nombre + ", funcion=" + funcion + ", mantenimientoUnidad="
                 + mantenimientoUnidad + ", nombreCasoDeUso=" + nombreCasoDeUso + ", porcentajeVConstruccion="
-                + porcentajeVConstruccion + ", porcentajeVDiseño=" + porcentajeVDiseño + ", porcentajePruebas="
+                + porcentajeVConstruccion + ", porcentajeVDiseno=" + porcentajeVDiseno + ", porcentajePruebas="
                 + porcentajePruebas + "]";
     }
 }

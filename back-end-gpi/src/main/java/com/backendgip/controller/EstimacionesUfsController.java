@@ -3,6 +3,7 @@ package com.backendgip.controller;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,74 +64,73 @@ public class EstimacionesUfsController {
 
     @PostMapping("/estimaciones")
     public ResponseEntity<?> saveEstimacionIn(@RequestBody EstimacionContenido estimacion) {
-        
-        ActividadesComplementarias actividadesComplementarias = new ActividadesComplementarias();
-        
-        TipoActividadComplementaria tipoActividad = new TipoActividadComplementaria();
-        
-        UnidadFuncional unidad = new UnidadFuncional();
 
-        Funcion funcion = new Funcion();
-
-        Subfuncion subFuncion = new Subfuncion();
-        
-        if(estimacionesUfsRepository.existsByProyectoId(estimacion.getEstimacion().getProyecto().getId())){
+        if(estimacionesUfsRepository.existsByProyectoId(estimacion.getEstimacion().getProyecto().getId()))
+        {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este proyecto ya tiene una estimación asignada");
-        }else{
-            EstimacionUfs savEstimacion = estimacionesUfsService.saveEstimacionIn(estimacion.getEstimacion());
-            LogSistema log = new LogSistema();
-			log.setAccion("CREATE");
-			log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-			log.setTabla(Empleado.class.toString());
-			log.setIdAccion(savEstimacion.getId());
-			log.setDescripcion(savEstimacion.toString());
-			this.logService.saveLog(log);
-            for(int i = 0; i< estimacion.actividades.size(); i++){
-                actividadesComplementarias = estimacion.actividades.get(i);
-                actividadesComplementarias.setEstimacion(savEstimacion);
-                ActividadesComplementarias actividadCreada = this.actividadesComplementariasService.saveActividad(actividadesComplementarias);
-			    log.setAccion("CREATE");
-			    log.setTabla(ActividadesComplementarias.class.toString());
-			    log.setIdAccion(actividadCreada.getId());
-			    log.setDescripcion(actividadCreada.toString());
-			    this.logService.saveLog(log);
-            }
-            for(int i=0; i < estimacion.unidadFuncional.size(); i++){
-                unidad = estimacion.unidadFuncional.get(i);
-                unidad.setEstimacion_ufs(savEstimacion);
-                UnidadFuncional unidadCreada = this.unidadFuncionalService.saveUfs(unidad);
-			    log.setAccion("CREATE");
-			    log.setTabla(UnidadFuncional.class.toString());
-			    log.setIdAccion(unidadCreada.getId());
-			    log.setDescripcion(unidadCreada.toString());
-			    this.logService.saveLog(log);
-                for(int j = 0; j< estimacion.funcion.size(); j++){
-                    funcion = estimacion.funcion.get(j);
-                    if(funcion.getUnidadFuncional().getId() == unidad.getId()){
-                        funcion.setUnidadFuncional(unidadCreada);
-                        Funcion funcionCreada = this.funcionService.sFuncion(funcion);
-			            log.setAccion("CREATE");
-			            log.setTabla(Funcion.class.toString());
-			            log.setIdAccion(funcionCreada.getId());
-			            log.setDescripcion(funcionCreada.toString());
-			            this.logService.saveLog(log);
-                        for(int k = 0; k < estimacion.subFuncion.size(); k++){
-                            subFuncion = estimacion.subFuncion.get(k);
-                            if (funcion.getId() == subFuncion.getFuncion().getId()) {
-                                subFuncion.setFuncion(funcionCreada);
-                                Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(subFuncion);
-                                log.setAccion("CREATE");
-			                    log.setTabla(Funcion.class.toString());
-			                    log.setIdAccion(funcionCreada.getId());
-			                    log.setDescripcion(funcionCreada.toString());
-			                    this.logService.saveLog(log);
-                            }
-                        }
-                    }
-                }
-            }
-            return ResponseEntity.ok("la estimacion con el id: \t"+savEstimacion.getId()+"\t fue creada correctamente");
         }
+
+        EstimacionUfs savEstimacion = estimacionesUfsService.saveEstimacionIn(estimacion.getEstimacion());
+        LogSistema log = new LogSistema();
+        log.setAccion("CREATE");
+        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+        log.setTabla(Empleado.class.toString());
+        log.setIdAccion(savEstimacion.getId());
+        log.setDescripcion(savEstimacion.toString());
+        this.logService.saveLog(log);
+
+        estimacion.getActividades().forEach(actividad -> {
+            actividad.setEstimacion(savEstimacion);
+            ActividadesComplementarias actividadCreada = this.actividadesComplementariasService
+                    .saveActividad(actividad);
+            log.setAccion("CREATE");
+            log.setTabla(ActividadesComplementarias.class.toString());
+            log.setIdAccion(actividadCreada.getId());
+            log.setDescripcion(actividadCreada.toString());
+            this.logService.saveLog(log);
+        });
+
+        estimacion.getUnidadFuncional().forEach(unidad -> {
+            unidad.setEstimacion_ufs(savEstimacion);
+            UnidadFuncional unidadCreada = this.unidadFuncionalService.saveUfs(unidad);
+            log.setAccion("CREATE");
+            log.setTabla(UnidadFuncional.class.toString());
+            log.setIdAccion(unidadCreada.getId());
+            log.setDescripcion(unidadCreada.toString());
+            this.logService.saveLog(log);
+
+            List<Funcion> funcionesDeUnidad = estimacion.getFuncion().stream()
+                    .filter(funcion -> funcion.getUnidadFuncional().getId().equals(unidad.getId()))
+                    .collect(Collectors.toList());
+
+            funcionesDeUnidad.forEach(funcion -> {
+                Integer temporalFuncion = funcion.getId();
+                funcion.setId(null);
+                funcion.setUnidadFuncional(unidadCreada);
+                Funcion funcionCreada = this.funcionService.createFuncion(funcion);
+                log.setAccion("CREATE");
+                log.setTabla(Funcion.class.toString());
+                log.setIdAccion(funcionCreada.getId());
+                log.setDescripcion(funcionCreada.toString());
+                this.logService.saveLog(log);
+
+                List<Subfuncion> subfuncionesDeFuncion = estimacion.getSubFuncion().stream()
+                        .filter(subfuncion -> subfuncion.getFuncion().getId().equals(temporalFuncion))
+                        .collect(Collectors.toList());
+
+                subfuncionesDeFuncion.forEach(subFuncion -> {
+                    subFuncion.setFuncion(funcionCreada);
+                    Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(subFuncion);
+                    log.setAccion("CREATE");
+                    log.setTabla(Subfuncion.class.toString());
+                    log.setIdAccion(subfuncionCreada.getId());
+                    log.setDescripcion(subfuncionCreada.toString());
+                    this.logService.saveLog(log);
+                });
+            });
+        });
+
+        return ResponseEntity.ok(savEstimacion);
     }
 
     @DeleteMapping("/estimaciones/{id}")
@@ -156,6 +156,5 @@ public class EstimacionesUfsController {
         EstimacionUfs estimacion = estimacionesUfsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
         return ResponseEntity.ok(estimacion);
-    } 
+    }
 }
-

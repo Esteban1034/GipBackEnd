@@ -12,7 +12,7 @@ public interface FuncionService {
 
     List<Funcion> geFuncions();
 
-    Funcion sFuncion(Funcion funcion);
+    Funcion createFuncion(Funcion funcion);
 
     Funcion getFuncionById(Integer id);
 

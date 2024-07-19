@@ -49,7 +49,7 @@ public class FuncionController {
 
     @PostMapping("/funciones")
     public ResponseEntity<Funcion> saveFuncion(@RequestBody Funcion funcion) {
-        Funcion savedFuncion = funcionService.sFuncion(funcion);
+        Funcion savedFuncion = funcionService.createFuncion(funcion);
         return new ResponseEntity<>(savedFuncion, HttpStatus.CREATED);
     }
 
