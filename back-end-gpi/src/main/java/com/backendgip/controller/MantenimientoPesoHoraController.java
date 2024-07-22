@@ -79,8 +79,8 @@ public class MantenimientoPesoHoraController {
     }
 
     @PostMapping("/editar-peso-hora")
-    public ResponseEntity<MantenimientoPesoHora> editarUnidad(@RequestBody MantenimientoPesoHora mantenimiento) {
-        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.buscarPeso(mantenimiento.getPeso());
+    public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoPesoHora mantenimiento) {
+        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.buscarPeso(mantenimiento.getId());
         LogSistema log = new LogSistema();
         log.setAccion("UPDATE");
         log.setFechaHora(new Date());
