@@ -28,6 +28,10 @@ public class SubfuncionServiceImpl implements SubFuncionService {
         return subfuncionRepository.save(subfuncion);
     }
 
+    public void deleteSubfuncion(Subfuncion subfuncion) {
+        subfuncionRepository.delete(subfuncion);
+    }
+
     public List<Subfuncion> getAllSubfunciones() {
         return (List<Subfuncion>) subfuncionRepository.findAll();
     }
