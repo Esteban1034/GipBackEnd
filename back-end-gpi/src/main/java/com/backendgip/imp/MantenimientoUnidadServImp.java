@@ -46,4 +46,9 @@ public class MantenimientoUnidadServImp implements MantenimientoUnidadService {
     public void deleteById(Integer id) {
       this.mantenimineMantenimientoUnidadRepository.deleteById(id);
     }
+
+    @Override
+    public MantenimientoUnidad findByPeso(Integer peso) {
+      return this.mantenimineMantenimientoUnidadRepository.findByPeso(peso);
+    }
 }

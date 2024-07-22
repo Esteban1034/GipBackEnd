@@ -18,4 +18,6 @@ public interface MantenimientoUnidadService {
 
     void deleteById(Integer id);
 
+    MantenimientoUnidad findByPeso(Integer peso);
+
 }

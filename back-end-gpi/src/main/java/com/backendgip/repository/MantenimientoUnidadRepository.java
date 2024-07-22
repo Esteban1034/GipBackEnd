@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface MantenimientoUnidadRepository extends CrudRepository<MantenimientoUnidad, Integer> {
     MantenimientoUnidad findByNombre(String nombre);
+
+    MantenimientoUnidad findByPeso(Integer peso);
+
 }

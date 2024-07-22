@@ -17,6 +17,7 @@ import com.backendgip.model.LogSistema;
 import com.backendgip.model.MantenimientoPesoHora;
 import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.service.MantenimientoPesoHoraService;
+import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.LogSistemaService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,8 @@ public class MantenimientoPesoHoraController {
 
     @Autowired
     private MantenimientoPesoHoraService mantenimientoPesoHoraService;
+    @Autowired
+    private MantenimientoUnidadService mantenimientoUnidadService;
     @Autowired
     private LogSistemaService logService;
 
@@ -56,16 +59,22 @@ public class MantenimientoPesoHoraController {
             return ResponseEntity.badRequest()
                     .body("No se puede crear el peso y hora, el peso asiganado ya es existente");
         } else {
-            MantenimientoPesoHora createPesoHora = this.mantenimientoPesoHoraService
+            if(mantenimientoPeso.getHora() != null && mantenimientoPeso.getPeso() != null){
+                MantenimientoPesoHora createPesoHora = this.mantenimientoPesoHoraService
                     .saveMantenimientoPesoHora(mantenimientoPeso);
-            LogSistema log = new LogSistema();
-            log.setAccion("CREATE");
-            log.setFechaHora(new Date());
-            log.setTabla(MantenimientoUnidad.class.toString());
-            log.setIdAccion(createPesoHora.getId());
-            log.setDescripcion(createPesoHora.toString());
-            this.logService.saveLog(log);
-            return ResponseEntity.ok(createPesoHora);
+                LogSistema log = new LogSistema();
+                log.setAccion("CREATE");
+                log.setFechaHora(new Date());
+                log.setTabla(MantenimientoUnidad.class.toString());
+                log.setIdAccion(createPesoHora.getId());
+                log.setDescripcion(createPesoHora.toString());
+                this.logService.saveLog(log);
+                return ResponseEntity.ok(createPesoHora);
+            }else{
+                return ResponseEntity.badRequest()
+                    .body("No se puede crear el peso y hora, hay valores vacios");
+            }
+            
         }
     }
 
@@ -86,11 +95,18 @@ public class MantenimientoPesoHoraController {
     }
 
     @PostMapping("/eliminar-peso-hora/{id}")
-    public ResponseEntity<Map<String, Boolean>> deletePesoHora(@PathVariable Integer id) {
-        this.mantenimientoPesoHoraService.deleteById(id);
+    public ResponseEntity<?> deletePesoHora(@PathVariable Integer id) {
+        MantenimientoPesoHora pesoyhora = mantenimientoPesoHoraService.buscarPeso(id);
+        MantenimientoUnidad unidad = mantenimientoUnidadService.findByPeso(pesoyhora.getPeso());
         Map<String, Boolean> response = new HashMap();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        if (unidad != null) {
+            return ResponseEntity.badRequest()
+            .body("Hay una unidad de programacion asignada");
+        }else{
+            this.mantenimientoPesoHoraService.deleteById(id);
+            response.put("deleted", Boolean.TRUE);
+            return ResponseEntity.ok(response);
+        }
     }
 
 }

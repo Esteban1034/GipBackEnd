@@ -29,7 +29,7 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
 
     @Override
     public MantenimientoPesoHora buscarPeso(Integer peso) {
-        return mantenimientoPesoHoraRepository.findByPeso(peso);
+        return mantenimientoPesoHoraRepository.findById(peso).orElse(null);
     }
 
 

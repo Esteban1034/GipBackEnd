@@ -51,7 +51,8 @@ public class MantenimientoUnidadController {
         if(this.mantenimientoUnidadService.validarNombre(mantenimientoUnidad.getNombre())){
             return ResponseEntity.badRequest().body("No se puede crear la unidad, el nombre ya existe");
         }else{
-           MantenimientoUnidad createUnidad = this.mantenimientoUnidadService.saveMantenimientoUnd(mantenimientoUnidad);
+            if(mantenimientoUnidad.getNombre()!= null && mantenimientoUnidad.getPeso() != null){
+                MantenimientoUnidad createUnidad = this.mantenimientoUnidadService.saveMantenimientoUnd(mantenimientoUnidad);
 			LogSistema log = new LogSistema();
 			log.setAccion("CREATE");
 			log.setFechaHora(new Date());
@@ -60,6 +61,10 @@ public class MantenimientoUnidadController {
 			log.setDescripcion(createUnidad.toString());
 			this.logService.saveLog(log);
 			return ResponseEntity.ok(createUnidad);
+            }else{
+                return ResponseEntity.badRequest().body("No se puede crear la unidad, hay valores vacios");
+            }
+           
         }
     }
 
