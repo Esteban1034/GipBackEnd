@@ -21,6 +21,7 @@ import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.model.Novedad;
 import com.backendgip.service.MantenimientoPesoHoraService;
 import com.backendgip.service.MantenimientoUnidadService;
+import com.backendgip.service.SubFuncionService;
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.FuncionService;
 import com.backendgip.service.LogSistemaService;
@@ -36,7 +37,7 @@ public class MantenimientoUnidadController {
     @Autowired
     private MantenimientoUnidadService mantenimientoUnidadService;
     @Autowired
-    private MantenimientoPesoHoraService mantenimientoPesoHoraService;
+    private SubFuncionService subFuncionService;
     @Autowired
 	private LogSistemaService logService;
 
@@ -86,7 +87,7 @@ public class MantenimientoUnidadController {
     
     @PostMapping("/eliminar-unidad/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteUnidad(@PathVariable Integer id) {
-        
+        MantenimientoUnidad unidad = mantenimientoUnidadService.getMantenimientoUndById(id);
         this.mantenimientoUnidadService.deleteById(id);
         Map<String, Boolean> response = new HashMap();
 		response.put("deleted", Boolean.TRUE);

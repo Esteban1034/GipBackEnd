@@ -21,6 +21,7 @@ import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.LogSistemaService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -78,9 +79,9 @@ public class MantenimientoPesoHoraController {
         }
     }
 
-    @PostMapping("/editar-peso-hora")
+    @PutMapping("/editar-peso-hora")
     public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoPesoHora mantenimiento) {
-        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.buscarPeso(mantenimiento.getId());
+        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.findById(mantenimiento.getId());
         LogSistema log = new LogSistema();
         log.setAccion("UPDATE");
         log.setFechaHora(new Date());
@@ -96,7 +97,7 @@ public class MantenimientoPesoHoraController {
 
     @PostMapping("/eliminar-peso-hora/{id}")
     public ResponseEntity<?> deletePesoHora(@PathVariable Integer id) {
-        MantenimientoPesoHora pesoyhora = mantenimientoPesoHoraService.buscarPeso(id);
+        MantenimientoPesoHora pesoyhora = mantenimientoPesoHoraService.findById(id);
         MantenimientoUnidad unidad = mantenimientoUnidadService.findByPeso(pesoyhora.getPeso());
         Map<String, Boolean> response = new HashMap();
         if (unidad != null) {

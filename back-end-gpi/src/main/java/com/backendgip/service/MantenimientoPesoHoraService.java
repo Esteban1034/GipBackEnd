@@ -10,6 +10,8 @@ public interface MantenimientoPesoHoraService {
     
     MantenimientoPesoHora buscarPeso(Integer peso);
 
+    MantenimientoPesoHora findById(Integer id);
+
     MantenimientoPesoHora saveMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora);
 
     void deleteById(Integer id);

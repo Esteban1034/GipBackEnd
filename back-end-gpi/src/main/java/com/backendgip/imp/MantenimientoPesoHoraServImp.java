@@ -29,7 +29,7 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
 
     @Override
     public MantenimientoPesoHora buscarPeso(Integer peso) {
-        return mantenimientoPesoHoraRepository.findById(peso).orElse(null);
+        return mantenimientoPesoHoraRepository.findByPeso(peso);
     }
 
 
@@ -46,5 +46,11 @@ public class MantenimientoPesoHoraServImp implements MantenimientoPesoHoraServic
     @Override
     public void deleteById(Integer id) {
       this.mantenimientoPesoHoraRepository.deleteById(id);
+    }
+
+
+    @Override
+    public MantenimientoPesoHora findById(Integer id) {
+      return mantenimientoPesoHoraRepository.findById(id).orElseThrow(null);
     }
 }

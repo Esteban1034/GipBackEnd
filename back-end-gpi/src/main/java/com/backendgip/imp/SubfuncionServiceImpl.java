@@ -4,6 +4,7 @@ package com.backendgip.imp;
 import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.Funcion;
+import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.model.Subfuncion;
 import com.backendgip.model.UnidadFuncional;
 import com.backendgip.repository.EstimacionesUfsRepository;
@@ -49,5 +50,10 @@ public class SubfuncionServiceImpl implements SubFuncionService {
     @Override
     public List<Subfuncion> findByFuncionId(Integer funcionId) {
         return subfuncionRepository.findByFuncionId(funcionId);
+    }
+
+    @Override
+    public List<Subfuncion> findByMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
+        return subfuncionRepository.findByMantenimientoUnidad(mantenimientoUnidad);
     }
 }
