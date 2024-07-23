@@ -9,6 +9,8 @@ import com.backendgip.model.TipoActividadComplementaria;
 import com.backendgip.repository.TipoActividadComplementariaRespository;
 import com.backendgip.service.TipoActividadComplementariaService;
 
+import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ImplementationDefinition.Optional;
+
 @Service
 public class TipoActividadComplementariaServImp implements TipoActividadComplementariaService{
 
@@ -23,6 +25,27 @@ public class TipoActividadComplementariaServImp implements TipoActividadCompleme
     @Override
     public TipoActividadComplementaria getTipoActividadNombre(String nombre) {
         return this.tipoActividadRespository.findByNombre(nombre);
+        
+    }
+
+    @Override
+    public TipoActividadComplementaria saveActividad(TipoActividadComplementaria tipoActividadComplementaria) {
+        return this.tipoActividadRespository.save(tipoActividadComplementaria);
+    }
+
+    @Override
+    public TipoActividadComplementaria getActividadById(Integer id) {
+        java.util.Optional<TipoActividadComplementaria> optionalActividad = this.tipoActividadRespository.findById(id);
+        if (optionalActividad.isPresent()) {
+            return optionalActividad.get();
+        } else {
+            throw new RuntimeException("Actividad no encontrada para el ID :: " + id);
+        }
+    }
+
+    @Override
+    public void deleteActividad(Integer id) {
+        tipoActividadRespository.deleteById(id);
     }
     
 }
