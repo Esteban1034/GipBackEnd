@@ -16,5 +16,5 @@ public interface SubfuncionRepository  extends CrudRepository<Subfuncion, Intege
     List<Subfuncion> findByFuncionId(Integer funcionId);
     List<Subfuncion> findByFuncion(Funcion funcion);
     List<Subfuncion> findByFuncion_UnidadFuncional_EstimacionUfs(EstimacionUfs estimacionUfs);
-    List<Subfuncion> findByMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad);
+    
 }

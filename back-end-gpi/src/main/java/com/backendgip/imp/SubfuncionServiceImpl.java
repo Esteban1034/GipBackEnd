@@ -53,7 +53,9 @@ public class SubfuncionServiceImpl implements SubFuncionService {
     }
 
     @Override
-    public List<Subfuncion> findByMantenimientoUnidad(MantenimientoUnidad mantenimientoUnidad) {
-        return subfuncionRepository.findByMantenimientoUnidad(mantenimientoUnidad);
+    public Subfuncion findById(Subfuncion subfuncion) {
+        return subfuncionRepository.findBySubfuncion(subfuncion);
     }
+
+    
 }

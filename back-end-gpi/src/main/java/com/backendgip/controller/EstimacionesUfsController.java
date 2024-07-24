@@ -148,7 +148,7 @@ public class EstimacionesUfsController {
         return ResponseEntity.ok(savEstimacion);
     }
 
-    @PutMapping("/estimaciones")
+    @PostMapping("/estimaciones/editar")
     public ResponseEntity<?> updateEstimaciones(@RequestBody EstimacionContenido estimacion){
 
         LogSistema log = new LogSistema();
@@ -158,8 +158,20 @@ public class EstimacionesUfsController {
 					return new ResourceNotFoundException(" No existe la estimacion con el id: " + estimacion.estimacion.getId());
 				});
 
+                log.setAccion("UPDATE");
+                log.setDescripcion(estimaciones.toString());
+                log.setIdAccion(estimaciones.getId());
+                log.setTabla(estimaciones.getClass().toString());
+                this.logService.saveLog(log);
+                estimaciones.setEmpleado(estimacion.estimacion.getEmpleado());
+                estimaciones.setFechaCreacion(estimacion.estimacion.getFechaCreacion());
+                estimaciones.setModelo(estimacion.estimacion.getModelo());
+                estimaciones.setProyecto(estimacion.estimacion.getProyecto());
+                EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
+
         EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimaciones.getId());
         Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividades.iterator();
+
         while (iteratorActividades.hasNext()) {
             ActividadesComplementarias obj1 = iteratorActividades.next();
             boolean found = false;
@@ -179,7 +191,7 @@ public class EstimacionesUfsController {
     
                 actividadesComplementariasService.deleteActividad(obj1.getId());
             }
-        }
+        }                
 
         Iterator<UnidadFuncional> iteratorUnidad = estimacionesBD.unidadFuncional.iterator();
         while (iteratorUnidad.hasNext()) {
@@ -201,6 +213,7 @@ public class EstimacionesUfsController {
                 unidadFuncionalService.deleteUfs(obj1);
             }
         }
+        
 
         Iterator<Funcion> iteratorFuncion = estimacionesBD.funcion.iterator();
         while (iteratorFuncion.hasNext()) {
@@ -244,20 +257,41 @@ public class EstimacionesUfsController {
             }
         }
 
-		log.setAccion("UPDATE");
-		log.setDescripcion(estimaciones.toString());
-		log.setIdAccion(estimaciones.getId());
-		log.setTabla(estimaciones.getClass().toString());
-		this.logService.saveLog(log);
-		estimaciones.setEmpleado(estimacion.estimacion.getEmpleado());
-        estimaciones.setFechaCreacion(estimacion.estimacion.getFechaCreacion());
-        estimaciones.setModelo(estimacion.estimacion.getModelo());
-        estimaciones.setProyecto(estimacion.estimacion.getProyecto());
-		EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
+        Iterator<UnidadFuncional> iteratorUnidadUpdate = estimacion.unidadFuncional.iterator();
+        while (iteratorUnidadUpdate.hasNext()) {
+            UnidadFuncional obj1 = iteratorUnidadUpdate.next();
+            boolean found = false;
+            for (UnidadFuncional obj2 : estimacionesBD.unidadFuncional) {
+                if (obj1.getId() == obj2.getId()) {
+                    UnidadFuncional unidadUpdate = this.unidadFuncionalRepository.findById(obj1.getId()).orElseThrow(null);
+                    log.setAccion("UPDATE");
+                    log.setDescripcion(unidadUpdate.toString());
+                    log.setIdAccion(unidadUpdate.getId());
+                    log.setTabla(unidadUpdate.getClass().toString());
+                    this.logService.saveLog(log);
+                    unidadUpdate.setEstimacion_ufs(updatedestimacion);
+                    unidadUpdate.setNombre(obj1.getNombre());
+                    UnidadFuncional updatedUnidad = this.unidadFuncionalService.saveUfs(unidadUpdate);
+                    updateFuncion(estimacion, updatedUnidad, updatedUnidad.getId());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                obj1.setEstimacion_ufs(updatedestimacion);
+                UnidadFuncional unidadCreada = this.unidadFuncionalService.saveUfs(obj1);
+                log.setAccion("CREATE");
+                log.setTabla(ActividadesComplementarias.class.toString());
+                log.setIdAccion(obj1.getId());
+                log.setDescripcion(obj1.toString());
+                this.logService.saveLog(log);
+                updateFuncion(estimacion, unidadCreada, obj1.getId());
+            }
+        }
 
         estimacion.actividades.forEach(actividad ->{
-            ActividadesComplementarias actividadUpdate = this.actividadesComplementariasService.getById(actividad.getId());
-            if(actividadUpdate != null){
+            if(actividad.getId() != null){
+                ActividadesComplementarias actividadUpdate = this.actividadesComplementariasService.getById(actividad.getId());
                 log.setAccion("UPDATE");
                 log.setDescripcion(actividadUpdate.toString());
                 log.setIdAccion(actividadUpdate.getId());
@@ -280,101 +314,93 @@ public class EstimacionesUfsController {
                 this.logService.saveLog(log);
                 
             }
-        });
-
-        estimacion.unidadFuncional.forEach(unidad ->{
-            UnidadFuncional unidadUpdate = this.unidadFuncionalRepository.findById(unidad.getId()).orElseThrow(null);
-            if(unidadUpdate != null){
-                log.setAccion("UPDATE");
-                log.setDescripcion(unidadUpdate.toString());
-                log.setIdAccion(unidadUpdate.getId());
-                log.setTabla(unidadUpdate.getClass().toString());
-                this.logService.saveLog(log);
-                unidadUpdate.setEstimacion_ufs(updatedestimacion);
-                unidadUpdate.setNombre(unidad.getNombre());
-                UnidadFuncional updatedactividad = this.unidadFuncionalService.saveUfs(unidadUpdate);
-                updateFuncion(estimacion, updatedactividad, unidad.getId());
-            }else{
-                unidadUpdate.setEstimacion_ufs(updatedestimacion);
-                UnidadFuncional unidadCreada = this.unidadFuncionalService.saveUfs(unidadUpdate);
-                log.setAccion("CREATE");
-                log.setTabla(ActividadesComplementarias.class.toString());
-                log.setIdAccion(unidadCreada.getId());
-                log.setDescripcion(unidadCreada.toString());
-                this.logService.saveLog(log);
-                updateFuncion(estimacion, unidadCreada, unidad.getId());
-            }
-        });
-				
+        });	
         return ResponseEntity.ok(updatedestimacion);
     }
 
     public void updateFuncion(EstimacionContenido estimacion, UnidadFuncional unidad, Integer unidadId){
         LogSistema log = new LogSistema();
-
+        EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimacion.estimacion.getId());
         List<Funcion> funcionesDeUnidad = estimacion.getFuncion().stream()
                     .filter(funcion -> funcion.getUnidadFuncional().getId().equals(unidadId))
                     .collect(Collectors.toList());
 
-        funcionesDeUnidad.forEach(funcion -> {
-            Funcion funcionUpdate = this.funcionService.getFuncionById(funcion.getId());
-            if(funcionUpdate != null){
-                log.setAccion("UPDATE");
-                log.setDescripcion(funcionUpdate.toString());
-                log.setIdAccion(funcionUpdate.getId());
-                log.setTabla(funcionUpdate.getClass().toString());
-                this.logService.saveLog(log);
-                funcionUpdate.setUnidadFuncional(funcion.getUnidadFuncional());
-                funcionUpdate.setNombre(funcion.getNombre());
-                Funcion funcionEditada = this.funcionService.createFuncion(funcionUpdate);
-                updateSubFuncion(estimacion, funcion.getId(), funcionEditada);
-            }else{
-                Integer temporalFuncion = funcion.getId();
-                funcion.setId(null);
-                funcion.setUnidadFuncional(unidad);
-                Funcion funcionCreada = this.funcionService.createFuncion(funcion);
-                log.setAccion("CREATE");
-                log.setTabla(Funcion.class.toString());
-                log.setIdAccion(funcionCreada.getId());
-                log.setDescripcion(funcionCreada.toString());
-                this.logService.saveLog(log);
-                updateSubFuncion(estimacion, temporalFuncion, funcionCreada);
-            }
-        });
+                    Iterator<Funcion> iteratorFuncionUpdate = funcionesDeUnidad.iterator();
+                    while (iteratorFuncionUpdate.hasNext()) {
+                        Funcion obj1 = iteratorFuncionUpdate.next();
+                        boolean found = false;
+                        for (Funcion obj2 : estimacionesBD.funcion) {
+                            if (obj1.getId() == obj2.getId()) {
+                                Funcion funcionUpdate = this.funcionService.getFuncionById(obj1.getId());
+                                log.setAccion("UPDATE");
+                                log.setDescripcion(funcionUpdate.toString());
+                                log.setIdAccion(funcionUpdate.getId());
+                                log.setTabla(funcionUpdate.getClass().toString());
+                                this.logService.saveLog(log);
+                                funcionUpdate.setUnidadFuncional(obj1.getUnidadFuncional());
+                                funcionUpdate.setNombre(obj1.getNombre());
+                                Funcion funcionEditada = this.funcionService.createFuncion(funcionUpdate);
+                                updateSubFuncion(estimacion, obj1.getId(), funcionEditada);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            Integer temporalFuncion = obj1.getId();
+                            obj1.setId(null);
+                            obj1.setUnidadFuncional(unidad);
+                            Funcion funcionCreada = this.funcionService.createFuncion(obj1);
+                            log.setAccion("CREATE");
+                            log.setTabla(Funcion.class.toString());
+                            log.setIdAccion(funcionCreada.getId());
+                            log.setDescripcion(funcionCreada.toString());
+                            this.logService.saveLog(log);
+                           updateSubFuncion(estimacion, temporalFuncion, funcionCreada);
+                        }
+                    }
     }
 
     public void updateSubFuncion(EstimacionContenido estimacion, Integer id, Funcion funcion){
         LogSistema log = new LogSistema();
+        EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimacion.estimacion.getId());
         List<Subfuncion> subfuncionesDeFuncion = estimacion.getSubFuncion().stream()
                         .filter(subfuncion -> subfuncion.getFuncion().getId().equals(id))
                         .collect(Collectors.toList());
-
-                subfuncionesDeFuncion.forEach(subFuncion -> {
-                    Subfuncion subfuncionUpdate = this.subfuncionRepository.findById(id).orElseThrow(null);
-                    if(subfuncionUpdate != null){
-                        log.setAccion("UPDATE");
-                        log.setDescripcion(subfuncionUpdate.toString());
-                        log.setIdAccion(subfuncionUpdate.getId());
-                        log.setTabla(subfuncionUpdate.getClass().toString());
-                        this.logService.saveLog(log);
-                        subfuncionUpdate.setFuncion(funcion);
-                        subfuncionUpdate.setMantenimientoUnidad(subFuncion.getMantenimientoUnidad());
-                        subfuncionUpdate.setNombre(subFuncion.getNombre());
-                        subfuncionUpdate.setNombreCasoDeUso(subFuncion.getNombreCasoDeUso());
-                        subfuncionUpdate.setPorcentajePruebas(subFuncion.getPorcentajePruebas());
-                        subfuncionUpdate.setPorcentajeVConstruccion(subFuncion.getPorcentajeVConstruccion());
-                        subfuncionUpdate.setPorcentajeVDiseno(subFuncion.getPorcentajeVDiseno());
-                        Subfuncion editSubfuncion = this.subFuncionService.createSubfuncion(subfuncionUpdate);
-                    }else{
-                        subFuncion.setFuncion(funcion);
-                        Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(subFuncion);
-                        log.setAccion("CREATE");
-                        log.setTabla(Subfuncion.class.toString());
-                        log.setIdAccion(subfuncionUpdate.getId());
-                        log.setDescripcion(subfuncionUpdate.toString());
-                        this.logService.saveLog(log);
-                    }
-                });
+                
+                        Iterator<Subfuncion> iteratorSubFuncionUpdate = subfuncionesDeFuncion.iterator();
+                        while (iteratorSubFuncionUpdate.hasNext()) {
+                            Subfuncion obj1 = iteratorSubFuncionUpdate.next();
+                            boolean found = false;
+                            for (Subfuncion obj2 : estimacionesBD.subFuncion) {
+                                if (obj1.getId() == obj2.getId()) {
+                                    Subfuncion subfuncionUpdate = this.subfuncionRepository.findById(obj1.getId()).orElseThrow(null);
+                                    log.setAccion("UPDATE");
+                                    log.setDescripcion(subfuncionUpdate.toString());
+                                    log.setIdAccion(subfuncionUpdate.getId());
+                                    log.setTabla(subfuncionUpdate.getClass().toString());
+                                    this.logService.saveLog(log);
+                                    subfuncionUpdate.setFuncion(funcion);
+                                    subfuncionUpdate.setMantenimientoUnidad(obj1.getMantenimientoUnidad());
+                                    subfuncionUpdate.setNombre(obj1.getNombre());
+                                    subfuncionUpdate.setNombreCasoDeUso(obj1.getNombreCasoDeUso());
+                                    subfuncionUpdate.setPorcentajePruebas(obj1.getPorcentajePruebas());
+                                    subfuncionUpdate.setPorcentajeVConstruccion(obj1.getPorcentajeVConstruccion());
+                                    subfuncionUpdate.setPorcentajeVDiseno(obj1.getPorcentajeVDiseno());
+                                    Subfuncion editSubfuncion = this.subFuncionService.createSubfuncion(subfuncionUpdate);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                obj1.setFuncion(funcion);
+                                Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(obj1);
+                                log.setAccion("CREATE");
+                                log.setTabla(Subfuncion.class.toString());
+                                log.setIdAccion(subfuncionCreada.getId());
+                                log.setDescripcion(subfuncionCreada.toString());
+                                this.logService.saveLog(log);
+                            }
+                        }
     }
 
 

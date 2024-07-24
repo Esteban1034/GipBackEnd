@@ -19,5 +19,5 @@ public interface SubFuncionService {
     List<Subfuncion> findByFuncion(Funcion funcion);
     List<Subfuncion> findByEstimacionUfs(EstimacionUfs estimacionUfs);
     void deleteSubfuncion(Subfuncion subfuncion);
-    List<Subfuncion> findByMantenimientoUnidad(MantenimientoUnidad mantenimiento);
+    Subfuncion findById(Subfuncion subfuncion);
 }
