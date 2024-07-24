@@ -28,6 +28,7 @@ import com.backendgip.service.FuncionService;
 import com.backendgip.service.LogSistemaService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -70,7 +71,7 @@ public class MantenimientoUnidadController {
         }
     }
 
-    @PostMapping("/editar-unidad")
+    @PutMapping("/editar-unidad")
     public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoUnidad mantenimiento) {
         if (mantenimiento.getNombre() != null && mantenimiento.getPeso() != null) {
             MantenimientoUnidad unidad = this.mantenimientoUnidadService.getMantenimientoUndById(mantenimiento.getId());
