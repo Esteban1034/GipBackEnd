@@ -52,6 +52,19 @@ public class TipoActividadComplementariaController {
         return new ResponseEntity<>(nuevaActividad, HttpStatus.CREATED);
     }
 
+    @PutMapping("/actualizar-actividad/{id}")
+    public ResponseEntity<TipoActividadComplementaria> actualizarActividad(
+            @PathVariable Integer id, @RequestBody TipoActividadComplementaria actividad) {
+        TipoActividadComplementaria actividadExistente = tipoActividadComplementariaService.getActividadById(id);
+        if (actividadExistente == null) {
+            throw new ResourceNotFoundException("Actividad no encontrada con id: " + id);
+        }
+
+        actividad.setId(id); 
+        TipoActividadComplementaria actividadActualizada = tipoActividadComplementariaService.saveActividad(actividad);
+        return new ResponseEntity<>(actividadActualizada, HttpStatus.OK);
+    }
+
     @DeleteMapping("/eliminar-actividad/{id}")
     public ResponseEntity<?> eliminarActividad(@PathVariable Integer id) {
         System.out.println(id);
