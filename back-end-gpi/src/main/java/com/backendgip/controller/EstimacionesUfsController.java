@@ -170,12 +170,18 @@ public class EstimacionesUfsController {
                 EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
 
         EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimaciones.getId());
-        Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividades.iterator();
+                       
 
-        while (iteratorActividades.hasNext()) {
-            ActividadesComplementarias obj1 = iteratorActividades.next();
+        
+        
+
+        
+        
+        Iterator<Subfuncion> iteratorSubFuncion = estimacionesBD.subFuncion.iterator();
+        while (iteratorSubFuncion.hasNext()) {
+            Subfuncion obj1 = iteratorSubFuncion.next();
             boolean found = false;
-            for (ActividadesComplementarias obj2 : estimacion.actividades) {
+            for (Subfuncion obj2 : estimacion.subFuncion) {
                 if (obj1.getId() == obj2.getId()) {
                     found = true;
                     break;
@@ -184,36 +190,13 @@ public class EstimacionesUfsController {
             if (!found) {
                 log.setAccion("DELETE");
                 log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-                log.setTabla(UnidadFuncional.class.toString());
+                log.setTabla(Funcion.class.toString());
                 log.setIdAccion(obj1.getId());
                 log.setDescripcion(obj1.toString());
                 logService.saveLog(log);
-    
-                actividadesComplementariasService.deleteActividad(obj1.getId());
-            }
-        }                
-
-        Iterator<UnidadFuncional> iteratorUnidad = estimacionesBD.unidadFuncional.iterator();
-        while (iteratorUnidad.hasNext()) {
-            UnidadFuncional obj1 = iteratorUnidad.next();
-            boolean found = false;
-            for (UnidadFuncional obj2 : estimacion.unidadFuncional) {
-                if (obj1.getId() == obj2.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                log.setAccion("DELETE");
-                log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-                log.setTabla(ActividadesComplementarias.class.toString());
-                log.setIdAccion(obj1.getId());
-                log.setDescripcion(obj1.toString());
-                logService.saveLog(log);
-                unidadFuncionalService.deleteUfs(obj1);
+                subFuncionService.deleteSubfuncion(obj1);
             }
         }
-        
 
         Iterator<Funcion> iteratorFuncion = estimacionesBD.funcion.iterator();
         while (iteratorFuncion.hasNext()) {
@@ -236,11 +219,12 @@ public class EstimacionesUfsController {
             }
         }
         
-        Iterator<Subfuncion> iteratorSubFuncion = estimacionesBD.subFuncion.iterator();
-        while (iteratorSubFuncion.hasNext()) {
-            Subfuncion obj1 = iteratorSubFuncion.next();
+        Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividades.iterator();
+
+        while (iteratorActividades.hasNext()) {
+            ActividadesComplementarias obj1 = iteratorActividades.next();
             boolean found = false;
-            for (Subfuncion obj2 : estimacion.subFuncion) {
+            for (ActividadesComplementarias obj2 : estimacion.actividades) {
                 if (obj1.getId() == obj2.getId()) {
                     found = true;
                     break;
@@ -249,11 +233,33 @@ public class EstimacionesUfsController {
             if (!found) {
                 log.setAccion("DELETE");
                 log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-                log.setTabla(Funcion.class.toString());
+                log.setTabla(UnidadFuncional.class.toString());
                 log.setIdAccion(obj1.getId());
                 log.setDescripcion(obj1.toString());
                 logService.saveLog(log);
-                subFuncionService.deleteSubfuncion(obj1);
+    
+                actividadesComplementariasService.deleteActividad(obj1.getId());
+            }
+        }
+
+        Iterator<UnidadFuncional> iteratorUnidad = estimacionesBD.unidadFuncional.iterator();
+        while (iteratorUnidad.hasNext()) {
+            UnidadFuncional obj1 = iteratorUnidad.next();
+            boolean found = false;
+            for (UnidadFuncional obj2 : estimacion.unidadFuncional) {
+                if (obj1.getId() == obj2.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                log.setAccion("DELETE");
+                log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+                log.setTabla(ActividadesComplementarias.class.toString());
+                log.setIdAccion(obj1.getId());
+                log.setDescripcion(obj1.toString());
+                logService.saveLog(log);
+                unidadFuncionalService.deleteUfs(obj1);
             }
         }
 
