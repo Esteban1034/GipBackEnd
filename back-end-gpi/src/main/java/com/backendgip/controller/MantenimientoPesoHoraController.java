@@ -60,7 +60,7 @@ public class MantenimientoPesoHoraController {
             return ResponseEntity.badRequest()
                     .body("No se puede crear el peso y hora, el peso asiganado ya es existente");
         } else {
-            if(mantenimientoPeso.getHora() != null || mantenimientoPeso.getPeso() != null){
+            if(mantenimientoPeso.getHora() != null && mantenimientoPeso.getPeso() != null){
                 MantenimientoPesoHora createPesoHora = this.mantenimientoPesoHoraService
                     .saveMantenimientoPesoHora(mantenimientoPeso);
                 LogSistema log = new LogSistema();
@@ -81,7 +81,7 @@ public class MantenimientoPesoHoraController {
 
     @PutMapping("/editar-peso-hora")
     public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoPesoHora mantenimiento) {
-        if (mantenimiento.getHora() != null || mantenimiento.getPeso() != null) {
+        if (mantenimiento.getHora() != null && mantenimiento.getPeso() != null) {
             MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.findById(mantenimiento.getId());
             LogSistema log = new LogSistema();
             log.setAccion("UPDATE");
