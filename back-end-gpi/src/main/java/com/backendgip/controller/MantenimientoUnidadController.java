@@ -19,6 +19,7 @@ import com.backendgip.model.LogSistema;
 import com.backendgip.model.MantenimientoPesoHora;
 import com.backendgip.model.MantenimientoUnidad;
 import com.backendgip.model.Novedad;
+import com.backendgip.model.Subfuncion;
 import com.backendgip.service.MantenimientoPesoHoraService;
 import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.SubFuncionService;
@@ -70,9 +71,10 @@ public class MantenimientoUnidadController {
     }
 
     @PostMapping("/editar-unidad")
-    public ResponseEntity<MantenimientoUnidad> editarUnidad(@RequestBody MantenimientoUnidad mantenimiento) {
-        MantenimientoUnidad unidad = this.mantenimientoUnidadService.getMantenimientoUndById(mantenimiento.getId());
-        LogSistema log = new LogSistema();
+    public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoUnidad mantenimiento) {
+        if (mantenimiento.getNombre() != null && mantenimiento.getPeso() != null) {
+            MantenimientoUnidad unidad = this.mantenimientoUnidadService.getMantenimientoUndById(mantenimiento.getId());
+            LogSistema log = new LogSistema();
 			log.setAccion("UPDATE");
 			log.setFechaHora(new Date());
 			log.setTabla(MantenimientoUnidad.class.toString());
@@ -83,6 +85,10 @@ public class MantenimientoUnidadController {
         unidad.setPeso(mantenimiento.getPeso());
         MantenimientoUnidad editUnidad = this.mantenimientoUnidadService.saveMantenimientoUnd(unidad);
         return ResponseEntity.ok(editUnidad);
+        }else{
+            return ResponseEntity.badRequest().body("No se actualizo correctamente, hay campos vacios");
+        }
+        
     }
     
     @PostMapping("/eliminar-unidad/{id}")

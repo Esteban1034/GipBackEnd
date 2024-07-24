@@ -51,9 +51,4 @@ public class MantenimientoUnidadServImp implements MantenimientoUnidadService {
     public MantenimientoUnidad findByPeso(Integer peso) {
       return this.mantenimineMantenimientoUnidadRepository.findByPeso(peso);
     }
-
-    @Override
-    public MantenimientoUnidad findById(Integer id) {
-      return this.mantenimineMantenimientoUnidadRepository.findById(id).orElseThrow(null);
-    }
 }

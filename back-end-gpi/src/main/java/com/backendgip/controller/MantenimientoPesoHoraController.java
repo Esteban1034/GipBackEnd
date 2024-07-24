@@ -81,18 +81,23 @@ public class MantenimientoPesoHoraController {
 
     @PutMapping("/editar-peso-hora")
     public ResponseEntity<?> editarUnidad(@RequestBody MantenimientoPesoHora mantenimiento) {
-        MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.findById(mantenimiento.getId());
-        LogSistema log = new LogSistema();
-        log.setAccion("UPDATE");
-        log.setFechaHora(new Date());
-        log.setTabla(MantenimientoPesoHora.class.toString());
-        log.setIdAccion(peso.getId());
-        log.setDescripcion(peso.toString());
-        this.logService.saveLog(log);
-        peso.setHora(mantenimiento.getHora());
-        peso.setPeso(mantenimiento.getPeso());
-        MantenimientoPesoHora editPesoHora = this.mantenimientoPesoHoraService.saveMantenimientoPesoHora(peso);
-        return ResponseEntity.ok(editPesoHora);
+        if (mantenimiento.getHora() != null && mantenimiento.getPeso() != null) {
+            MantenimientoPesoHora peso = this.mantenimientoPesoHoraService.findById(mantenimiento.getId());
+            LogSistema log = new LogSistema();
+            log.setAccion("UPDATE");
+            log.setFechaHora(new Date());
+            log.setTabla(MantenimientoPesoHora.class.toString());
+            log.setIdAccion(peso.getId());
+            log.setDescripcion(peso.toString());
+            this.logService.saveLog(log);
+            peso.setHora(mantenimiento.getHora());
+            peso.setPeso(mantenimiento.getPeso());
+            MantenimientoPesoHora editPesoHora = this.mantenimientoPesoHoraService.saveMantenimientoPesoHora(peso);
+            return ResponseEntity.ok(editPesoHora);
+        }else{
+            return ResponseEntity.badRequest().body("No se actualizo correctamente, hay campos vacios");
+        }
+        
     }
 
     @PostMapping("/eliminar-peso-hora/{id}")
