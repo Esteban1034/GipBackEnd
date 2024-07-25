@@ -32,7 +32,7 @@ public class ActividadesComplementarias implements Serializable {
 	@Column(name = "nombre")
 	private String nombre;
 	@Column(name = "horas")
-	private Integer horas;
+	private Double horas;
 	@Column(name = "porcentaje")
 	private Integer porcentaje;
 
@@ -40,7 +40,7 @@ public class ActividadesComplementarias implements Serializable {
 	}
 
 	public ActividadesComplementarias(Integer id, EstimacionUfs estimacion, TipoActividadComplementaria tipoActividad,
-			String nombre, Integer horas, Integer porcentaje) {
+			String nombre, Double horas, Integer porcentaje) {
 		this.id = id;
 		this.estimacion = estimacion;
 		this.tipoActividad = tipoActividad;
@@ -74,10 +74,10 @@ public class ActividadesComplementarias implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Integer getHoras() {
+	public Double getHoras() {
 		return horas;
 	}
-	public void setHoras(Integer horas) {
+	public void setHoras(Double horas) {
 		this.horas = horas;
 	}
 	public Integer getPorcentaje() {
