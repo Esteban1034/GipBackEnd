@@ -51,11 +51,5 @@ public class SubfuncionServiceImpl implements SubFuncionService {
     public List<Subfuncion> findByFuncionId(Integer funcionId) {
         return subfuncionRepository.findByFuncionId(funcionId);
     }
-
-    @Override
-    public Subfuncion findById(Subfuncion subfuncion) {
-        return subfuncionRepository.findBySubfuncion(subfuncion);
-    }
-
     
 }

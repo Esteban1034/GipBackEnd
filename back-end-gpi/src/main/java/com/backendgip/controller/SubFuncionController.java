@@ -140,7 +140,7 @@ public class SubFuncionController {
         return ResponseEntity.ok(estimacionList);
     }
 
-    @GetMapping("/subfuncion/estimacionnueva")
+    @PostMapping("/subfuncion/estimacionnueva")
     public ResponseEntity<List<EstimacionMantenimiento>> calcularCantidades(@RequestBody EstimacionContenido estimacionContenido) {
     
         List<UnidadFuncional> unidadFuncional = estimacionContenido.getUnidadFuncional();
