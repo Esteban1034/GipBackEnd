@@ -10,11 +10,17 @@ import com.backendgip.model.Empleado;
 import com.backendgip.model.SectorCliente;
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClienteRepository extends CrudRepository<Cliente, Integer> {
+	
+	@Query("SELECT DISTINCT c FROM Cliente c JOIN Proyecto p ON c.id = p.cliente.id WHERE p.etapa.id = 1")
+	List<Cliente> findClientesWithProyectosInEstadoPRP();
+
 	boolean existsByNomenclatura(String nomenclatura);
 
 	Cliente findByNombre(String nombre);

@@ -73,11 +73,17 @@ public class ClienteServiceImp implements ClienteService {
 			List<Cliente> c = this.clienteRepository.findByFechaCreacion(f);
 			clientes.addAll(c);
 		}
-
+		
 		return clientes;
 	}
 
 	public Cliente findByNombre(String nombre) {
 		return this.clienteRepository.findByNombre(nombre);
 	}
+
+	@Override
+	public List<Cliente> findClientesWithProyectosInEstadoPRP() {
+		return clienteRepository.findClientesWithProyectosInEstadoPRP();
+	}
+	
 }

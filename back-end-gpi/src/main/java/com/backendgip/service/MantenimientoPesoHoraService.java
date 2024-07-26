@@ -1,0 +1,20 @@
+package com.backendgip.service;
+
+import java.util.List;
+
+import com.backendgip.model.MantenimientoPesoHora;
+
+public interface MantenimientoPesoHoraService {
+    
+    List<MantenimientoPesoHora> getPesoHora();
+    
+    MantenimientoPesoHora buscarPeso(Integer peso);
+
+    MantenimientoPesoHora findById(Integer id);
+
+    MantenimientoPesoHora saveMantenimientoPesoHora(MantenimientoPesoHora mantenimientoPesoHora);
+
+    void deleteById(Integer id);
+
+    boolean validarPeso(Integer peso);
+}

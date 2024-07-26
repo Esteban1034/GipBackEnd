@@ -371,4 +371,26 @@ public class EmpleadoController {
 		List<Empleado> empleados = this.empleadoRepository.findByNombreContaining(nombre);
 		return ResponseEntity.ok(empleados);
 	}
+	
+	@GetMapping({ "/empleados/estimacion/"})
+	public List<Empleado> getDirectoresPEstimacion() {
+		List<Empleado> allEmployees = (List) this.empleadoRepository.findAll();
+		List<Empleado> DirectoresPEst = new ArrayList();
+		Iterator var7 = allEmployees.iterator();
+
+		while (var7.hasNext()) {
+			Empleado e = (Empleado) var7.next();
+			if ( e.getCargo().getId() == 1 || e.getCargo().getId() == 2 ||e.getCargo().getId() == 3 ||
+			e.getCargo().getId() == 4 || e.getCargo().getId() == 5 || e.getCargo().getId() == 8 ||
+			e.getCargo().getId() == 24 || e.getCargo().getId() == 31 ||e.getCargo().getId() == 37 ||
+			e.getCargo().getId() == 50){
+						DirectoresPEst.add(e);
+			}
+		}
+
+		return DirectoresPEst;
+	}
+
+
+	
 }
