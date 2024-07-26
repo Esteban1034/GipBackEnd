@@ -189,10 +189,8 @@ public class ProyectoServImp implements ProyectoService {
 		return this.proyectoRepository.existsByNombre(nombre);
 	}
 	
-	
 	public List<Proyecto> findByEtapa(EtapaProyecto etapa) {
 		return this.proyectoRepository.findByEtapa(etapa);
 	}
-
 
 }

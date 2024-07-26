@@ -37,10 +37,14 @@ import com.backendgip.service.RolService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -59,7 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional
-@RequestMapping({"/api"})
+@RequestMapping({ "/api" })
 public class ProyectoController {
     @Autowired
     private ProyectoService proyectoService;
@@ -109,34 +113,35 @@ public class ProyectoController {
     public ProyectoController() {
     }
 
-    @GetMapping({"/proyectos"})
+    @GetMapping({ "/proyectos" })
     public List<Proyecto> getAllProyectos() {
         return this.proyectoService.getProyectos();
     }
 
-    @GetMapping({"/proyectos/asignados/{idEmpleado}"})
+    @GetMapping({ "/proyectos/asignados/{idEmpleado}" })
     public ResponseEntity<?> findByLiderAsignado(@PathVariable Integer idEmpleado) {
         Empleado lider = this.empleadoService.getEmpleadoById(idEmpleado);
         return ResponseEntity.ok(this.proyectoService.findByLider(lider));
     }
 
-    
-    @GetMapping({"/proyectos/searchBetweenFechaInicioAndFechaFin/{fechaInicio}/{fechaFin}"})
-    public List<Proyecto> getAllProyectosFechaInicioFechaFin(@PathVariable String fechaInicio,@PathVariable String fechaFin) {
+    @GetMapping({ "/proyectos/searchBetweenFechaInicioAndFechaFin/{fechaInicio}/{fechaFin}" })
+    public List<Proyecto> getAllProyectosFechaInicioFechaFin(@PathVariable String fechaInicio,
+            @PathVariable String fechaFin) {
         LocalDate fechaI = this.stringToLocalDate(fechaInicio);
         LocalDate fechaF = this.stringToLocalDate(fechaFin);
-        return this.proyectoService.getProyectosByFechaInicioFechaFin(fechaI,fechaF);
+        return this.proyectoService.getProyectosByFechaInicioFechaFin(fechaI, fechaF);
     }
 
-    @GetMapping({"/proyectos/asignados/searchBetweenFechaInicioAndFechaFin/{fechaInicio}/{fechaFin}/{idEmpleado}"})
-    public ResponseEntity<?> findByLiderAsignadoFechaInicioFechaFin(@PathVariable String fechaInicio,@PathVariable String fechaFin,@PathVariable Integer idEmpleado) {
+    @GetMapping({ "/proyectos/asignados/searchBetweenFechaInicioAndFechaFin/{fechaInicio}/{fechaFin}/{idEmpleado}" })
+    public ResponseEntity<?> findByLiderAsignadoFechaInicioFechaFin(@PathVariable String fechaInicio,
+            @PathVariable String fechaFin, @PathVariable Integer idEmpleado) {
         Empleado lider = this.empleadoService.getEmpleadoById(idEmpleado);
         LocalDate fechaI = this.stringToLocalDate(fechaInicio);
         LocalDate fechaF = this.stringToLocalDate(fechaFin);
-        return ResponseEntity.ok(this.proyectoService.findByLiderFechaInicioFechaFin(fechaI,fechaF,lider));
+        return ResponseEntity.ok(this.proyectoService.findByLiderFechaInicioFechaFin(fechaI, fechaF, lider));
     }
 
-    @PostMapping({"/proyectos"})
+    @PostMapping({ "/proyectos" })
     public ResponseEntity<?> saveProyecto(@RequestBody Proyecto proyecto) {
         proyecto.setNombre(this.getNombreConcat(proyecto));
         proyecto.setEtapa(this.etapaService.getEtapaById(proyecto.getEtapa().getId()));
@@ -179,9 +184,9 @@ public class ProyectoController {
         }
     }
 
-    @PutMapping({"/proyectos/{id}/{creator}"})
+    @PutMapping({ "/proyectos/{id}/{creator}" })
     public ResponseEntity<?> updateProyecto(@PathVariable Integer id, @RequestBody Proyecto proyectoDetails,
-                                            @PathVariable Integer creator) {
+            @PathVariable Integer creator) {
         proyectoDetails.setEtapa(this.etapaService.getEtapaById(proyectoDetails.getEtapa().getId()));
         proyectoDetails.setEstadoPropuesta(
                 this.estadoPropuestaService.getEstadoById(proyectoDetails.getEstadoPropuesta().getId()));
@@ -190,7 +195,7 @@ public class ProyectoController {
             return new ResourceNotFoundException("Proyecto no encontrado con id: " + id);
         });
         if (this.proyectoRepository.existsByNombre(proyectoDetails.getNombre())
-            && proyecto.getId().intValue() != proyectoDetails.getId().intValue()) {
+                && proyecto.getId().intValue() != proyectoDetails.getId().intValue()) {
             return ResponseEntity.badRequest().body("¡El nombre de proyecto ya existe!");
         } else if (this.validEstadoProyecto(proyectoDetails) != null) {
             return this.validEstadoProyecto(proyectoDetails);
@@ -202,7 +207,7 @@ public class ProyectoController {
                     return this.validDatesProyecto(proyectoDetails);
                 } else if (this.validDifferentDates(proyecto, proyectoDetails)
                         || !this.actividadRepository.existsByProyecto(proyecto)
-                        && !this.facturacionRepository.existsByProyecto(proyecto)) {
+                                && !this.facturacionRepository.existsByProyecto(proyecto)) {
                     this.projectDataChange(proyectoDetails, creator);
                     proyecto.setCliente(proyectoDetails.getCliente());
                     proyecto.setCodigo(proyectoDetails.getCodigo());
@@ -266,7 +271,7 @@ public class ProyectoController {
         }
     }
 
-    @GetMapping({"/proyectos/{id}"})
+    @GetMapping({ "/proyectos/{id}" })
     public ResponseEntity<Proyecto> getProyectosById(@PathVariable Integer id) {
         Proyecto proyecto = (Proyecto) this.proyectoRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundException("ID " + id + " NO ENCONTRADO");
@@ -274,7 +279,7 @@ public class ProyectoController {
         return ResponseEntity.ok(proyecto);
     }
 
-    @DeleteMapping({"/proyectos/{id}"})
+    @DeleteMapping({ "/proyectos/{id}" })
     public ResponseEntity<?> deleteProyecto(@PathVariable Integer id) {
         Proyecto proyecto = (Proyecto) this.proyectoRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundException("Proyecto no encontrado con id: " + id);
@@ -306,7 +311,7 @@ public class ProyectoController {
         }
     }
 
-    @GetMapping({"/proyectos/reporte-tiempo/disponibles/{idEmpleado}"})
+    @GetMapping({ "/proyectos/reporte-tiempo/disponibles/{idEmpleado}" })
     public List<Proyecto> findProyectosForReporteTiempo(@PathVariable Integer idEmpleado) {
         Empleado empleado = (Empleado) this.empleadoRepository.findById(idEmpleado).orElseThrow(() -> {
             return new ResourceNotFoundException("Empleado no encontrado con id: " + idEmpleado);
@@ -316,25 +321,25 @@ public class ProyectoController {
         return proyectos;
     }
 
-    @GetMapping({"/proyectos/proyectos-by-cliente/{idCliente}"})
+    @GetMapping({ "/proyectos/proyectos-by-cliente/{idCliente}" })
     public ResponseEntity<?> findByCliente(@PathVariable Integer idCliente) {
         Cliente cliente = this.clienteService.getClienteById(idCliente);
         return ResponseEntity.ok(this.proyectoService.findByCliente(cliente));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-codigo/{codigo}"})
+    @GetMapping({ "/proyectos/proyectos-by-codigo/{codigo}" })
     public ResponseEntity<?> findByCodigo(@PathVariable String codigo) {
         return ResponseEntity.ok(this.proyectoService.findByCodigo(codigo));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-componente/{idComponente}"})
+    @GetMapping({ "/proyectos/proyectos-by-componente/{idComponente}" })
     public ResponseEntity<?> findByComponente(@PathVariable Integer idComponente) {
         ComponenteDesarrollo componente = this.componenteService.getComponenteById(idComponente);
         return ResponseEntity.ok(this.proyectoService.findByComponente(componente));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-cliente-etapa/{idCliente}/{idEtapa}"})
-    public ResponseEntity<?> findByClienteAndEtapa(@PathVariable Integer idCliente, @PathVariable Integer idEtapa){
+    @GetMapping({ "/proyectos/proyectos-by-cliente-etapa/{idCliente}/{idEtapa}" })
+    public ResponseEntity<?> findByClienteAndEtapa(@PathVariable Integer idCliente, @PathVariable Integer idEtapa) {
         Cliente cliente = clienteService.getClienteById(idCliente);
         EtapaProyecto etapaProyecto = etapaService.getEtapaById(idEtapa);
         return ResponseEntity.ok(this.proyectoService.findByClienteAndEtapa(cliente, etapaProyecto));
@@ -342,40 +347,56 @@ public class ProyectoController {
 
     @GetMapping("/proyectos/{idCliente}/etapa-prp")
     public ResponseEntity<List<Proyecto>> findByClienteIdConEtapaPRP(@PathVariable Integer idCliente) {
-    try {
-        Cliente cliente = clienteService.getClienteById(idCliente);
-        List<Proyecto> proyectos = proyectoService.findByClienteConEtapaPRP(cliente);
-        return ResponseEntity.ok(proyectos);
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        try {
+            Cliente cliente = clienteService.getClienteById(idCliente);
+            List<Proyecto> proyectos = proyectoService.findByClienteConEtapaPRP(cliente);
+            return ResponseEntity.ok(proyectos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
 
-    
-    @GetMapping({"/proyectos/proyectos-by-codigo-cliente/{codigo}/{idCliente}"})
+    @GetMapping({ "/proyectos/clientes/etapa-prp" })
+    public ResponseEntity<List<Cliente>> findByClienteEtapaPrp() {
+        try {
+            EtapaProyecto etapa = new EtapaProyecto();
+            etapa.setId(1);
+            etapa.setEtapa("PRP");
+            List<Proyecto> proyectos = this.proyectoService.findByEtapa(etapa);
+            List<Cliente> clientes = new ArrayList<>();
+            proyectos.forEach(proyecto -> clientes.add(proyecto.getCliente()));
+            Set<Cliente> clientesPrp = new HashSet<>(clientes);
+            return ResponseEntity.ok(
+                    clientesPrp.stream().sorted(Comparator.comparing(Cliente::getNombre)).collect(Collectors.toList()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping({ "/proyectos/proyectos-by-codigo-cliente/{codigo}/{idCliente}" })
     public ResponseEntity<?> findByCodigoAndCliente(@PathVariable String codigo, @PathVariable Integer idCliente) {
         Cliente cliente = this.clienteService.getClienteById(idCliente);
         return ResponseEntity.ok(this.proyectoService.findByCodigoAndCliente(codigo, cliente));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-codigo-componente/{codigo}/{idComponente}"})
+    @GetMapping({ "/proyectos/proyectos-by-codigo-componente/{codigo}/{idComponente}" })
     public ResponseEntity<?> findByCodigoAndComponente(@PathVariable String codigo,
-                                                       @PathVariable Integer idComponente) {
+            @PathVariable Integer idComponente) {
         ComponenteDesarrollo componente = this.componenteService.getComponenteById(idComponente);
         return ResponseEntity.ok(this.proyectoService.findByCodigoAndComponente(codigo, componente));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-codigo-cliente-componente/{codigo}/{idCliente}/{idComponente}"})
+    @GetMapping({ "/proyectos/proyectos-by-codigo-cliente-componente/{codigo}/{idCliente}/{idComponente}" })
     public ResponseEntity<?> findByCodigoAndClienteAndComponente(@PathVariable String codigo,
-                                                                 @PathVariable Integer idCliente, @PathVariable Integer idComponente) {
+            @PathVariable Integer idCliente, @PathVariable Integer idComponente) {
         Cliente cliente = this.clienteService.getClienteById(idCliente);
         ComponenteDesarrollo componente = this.componenteService.getComponenteById(idComponente);
         return ResponseEntity.ok(this.proyectoService.findByCodigoAndClienteAndComponente(codigo, cliente, componente));
     }
 
-    @GetMapping({"/proyectos/proyectos-by-componente-cliente/{idComponente}/{idCliente}"})
+    @GetMapping({ "/proyectos/proyectos-by-componente-cliente/{idComponente}/{idCliente}" })
     public ResponseEntity<?> findByComponenteAndCliente(@PathVariable Integer idComponente,
-                                                        @PathVariable Integer idCliente) {
+            @PathVariable Integer idCliente) {
         ComponenteDesarrollo componente = this.componenteService.getComponenteById(idComponente);
         Cliente cliente = this.clienteService.getClienteById(idCliente);
         return ResponseEntity.ok(this.proyectoService.findByComponenteAndCliente(componente, cliente));
@@ -388,7 +409,7 @@ public class ProyectoController {
             return proyecto.getEtapa().getId() == 2
                     ? "REG-CRN-" + proyecto.getCliente().getNomenclatura() + "-" + proyecto.getCodigo()
                     : "REG-" + proyecto.getEtapa().getEtapa() + "-" + proyecto.getCliente().getNomenclatura() + "-"
-                    + proyecto.getCodigo();
+                            + proyecto.getCodigo();
         }
     }
 
@@ -424,13 +445,13 @@ public class ProyectoController {
         } else {
             return proyecto.getEtapa().getEtapa().equalsIgnoreCase("CRN")
                     && estadosPRP.toString().contains(proyecto.getEstadoProyecto().toString())
-                    ? ResponseEntity.badRequest()
-                    .body("El estado seleccionado no corresponde con la etapa selecionada.")
-                    : null;
+                            ? ResponseEntity.badRequest()
+                                    .body("El estado seleccionado no corresponde con la etapa selecionada.")
+                            : null;
         }
     }
 
-    @PostMapping({"/proyectos/internos"})
+    @PostMapping({ "/proyectos/internos" })
     public ResponseEntity<?> saveProyectoInt(@RequestBody Proyecto proyecto) {
         LocalDate fechaActual = LocalDate.now(ZoneId.of("America/Bogota"));
         if (proyecto.getFechaInicio().isAfter(proyecto.getFechaFin())) {
@@ -449,9 +470,9 @@ public class ProyectoController {
         }
     }
 
-    @PutMapping({"/proyectos/internos/{idProyecto}"})
+    @PutMapping({ "/proyectos/internos/{idProyecto}" })
     public ResponseEntity<?> updateProyectoInt(@PathVariable Integer idProyecto,
-                                               @RequestBody Proyecto proyectoDetails) {
+            @RequestBody Proyecto proyectoDetails) {
         Proyecto proyecto = this.proyectoService.getProyectoById(idProyecto);
         proyecto.setCliente(proyectoDetails.getCliente());
         proyecto.setCodigo(proyectoDetails.getCodigo());
@@ -482,7 +503,7 @@ public class ProyectoController {
         }
     }
 
-    @DeleteMapping({"/proyectos/internos/{idProyecto}"})
+    @DeleteMapping({ "/proyectos/internos/{idProyecto}" })
     public ResponseEntity<?> deleteProyectoInt(@PathVariable Integer idProyecto) {
         Proyecto proyecto = this.proyectoService.getProyectoById(idProyecto);
         if (this.reporteTiempoService.findByProyecto(proyecto).size() > 0) {
@@ -518,12 +539,14 @@ public class ProyectoController {
                     this.mailService.sendSimpleMail(
                             this.empleadoService.getEmpleadoById(proyecto.getLider().getId()).getEmail(),
                             "ASIGNADO A PROYECTO " + proyecto.getNombre() + "-" + proyecto.getDescripcion(),
-                            "Buen Dia.<br><br> Usted a sido asignado como lider al proyecto " + proyecto.getNombre() + "-"
+                            "Buen Dia.<br><br> Usted a sido asignado como lider al proyecto " + proyecto.getNombre()
+                                    + "-"
                                     + proyecto.getDescripcion() + "<br><br>" + ca + MsgLider);
                 } else if (oldProyecto.getEtapa().getId().equals(2) && proyecto.getEtapa().getId().equals(1)) {
                     this.mailService.sendSimpleMail(oldProyecto.getLider().getEmail(),
                             "REMOVIDO DE PROYECTO " + proyecto.getNombre() + "-" + proyecto.getDescripcion(),
-                            "Buen Dia.<br><br> Usted a sido Removido como lider del proyecto " + proyecto.getNombre() + "-"
+                            "Buen Dia.<br><br> Usted a sido Removido como lider del proyecto " + proyecto.getNombre()
+                                    + "-"
                                     + proyecto.getDescripcion()
                                     + " Por favor revisar.<br><br><br>Gerencia De Proyectos Y Servicios.<br>Its Solution SAS.");
                 } else if (proyecto.getEtapa().getId().equals(2) && oldProyecto.getEtapa().getId().equals(2)
@@ -531,24 +554,28 @@ public class ProyectoController {
                     MsgLider = this.tableCrnProject(proyecto);
                     this.mailService.sendSimpleMail(oldProyecto.getLider().getEmail(),
                             "REMOVIDO DE PROYECTO " + proyecto.getNombre() + "-" + proyecto.getDescripcion(),
-                            "Buen Dia.<br><br> Usted a sido Removido como lider del proyecto " + proyecto.getNombre() + "-"
+                            "Buen Dia.<br><br> Usted a sido Removido como lider del proyecto " + proyecto.getNombre()
+                                    + "-"
                                     + proyecto.getDescripcion()
                                     + " Por favor revisar.<br><br><br>Gerencia De Proyectos Y Servicios.<br>Its Solution SAS.");
                     this.mailService.sendSimpleMail(
                             this.empleadoService.getEmpleadoById(proyecto.getLider().getId()).getEmail(),
                             "ASIGNADO A PROYECTO " + proyecto.getNombre() + "-" + proyecto.getDescripcion(),
-                            "Buen Dia.<br><br> Usted a sido asignado como lider al proyecto " + proyecto.getNombre() + "-"
+                            "Buen Dia.<br><br> Usted a sido asignado como lider al proyecto " + proyecto.getNombre()
+                                    + "-"
                                     + proyecto.getDescripcion() + "<br><br>" + ca + MsgLider);
                 } else {
                     if (proyecto.getEtapa().getId().equals(2) && proyecto.getLider().getId().equals(creator)) {
                         this.mailService.sendSimpleMail(this.empleadoService.getEmpleadoById(creator).getEmail(),
-                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-" + oldProyecto.getDescripcion(),
+                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-"
+                                        + oldProyecto.getDescripcion(),
                                 ca + "Se" + mod + MsgPrp);
                     }
 
                     if (proyecto.getEtapa().getId().equals(2) && !proyecto.getLider().getId().equals(creator)) {
                         this.mailService.sendSimpleMail(this.empleadoService.getEmpleadoById(creator).getEmail(),
-                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-" + oldProyecto.getDescripcion(),
+                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-"
+                                        + oldProyecto.getDescripcion(),
                                 ca + this.empleadoService.getEmpleadoById(creator).getNombre() + mod + MsgPrp);
                     }
                 }
@@ -558,11 +585,13 @@ public class ProyectoController {
                 for (int i = 0; i < LGerentes.size(); ++i) {
                     if (((EmpleadoRol) LGerentes.get(i)).getEmpleado().getId() == creator) {
                         this.mailService.sendSimpleMail(((EmpleadoRol) LGerentes.get(i)).getEmpleado().getEmail(),
-                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-" + oldProyecto.getDescripcion(),
+                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-"
+                                        + oldProyecto.getDescripcion(),
                                 ca + "Se" + mod + MsgPrp);
                     } else {
                         this.mailService.sendSimpleMail(((EmpleadoRol) LGerentes.get(i)).getEmpleado().getEmail(),
-                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-" + oldProyecto.getDescripcion(),
+                                "CAMBIO DATOS DE PROYECTO " + oldProyecto.getNombre() + "-"
+                                        + oldProyecto.getDescripcion(),
                                 ca + this.empleadoService.getEmpleadoById(creator).getNombre() + mod + MsgPrp);
                     }
                 }
@@ -651,7 +680,8 @@ public class ProyectoController {
                     this.c = true;
                 }
 
-                if (oldProyecto.getLider() == null || !oldProyecto.getLider().getId().equals(proyecto.getLider().getId())) {
+                if (oldProyecto.getLider() == null
+                        || !oldProyecto.getLider().getId().equals(proyecto.getLider().getId())) {
                     Table = Table + "        <tr>\r\n          <td> lider Del Proyecto </td>\r\n          <td>"
                             + this.empleadoService.getEmpleadoById(proyecto.getLider().getId()).getNombre()
                             + "</td>\r\n        </tr>\r\n";
@@ -779,13 +809,13 @@ public class ProyectoController {
         return Table;
     }
 
-    @GetMapping({"/proyectos/proyectos-by-Etapa/{idEtapa}"})
-    public ResponseEntity<?> findByEtapa(@PathVariable Integer idEtapa){
+    @GetMapping({ "/proyectos/proyectos-by-Etapa/{idEtapa}" })
+    public ResponseEntity<?> findByEtapa(@PathVariable Integer idEtapa) {
         EtapaProyecto etapa = this.etapaService.getEtapaById(idEtapa);
-     //   System.out.println(etapa);
-      //  System.out.println(idEtapa);
-       return ResponseEntity.ok(this.proyectoService.findByEtapa(etapa));
-      //  return ResponseEntity.ok(this.etapaService.getEtapaById(idEtapa));
+        // System.out.println(etapa);
+        // System.out.println(idEtapa);
+        return ResponseEntity.ok(this.proyectoService.findByEtapa(etapa));
+        // return ResponseEntity.ok(this.etapaService.getEtapaById(idEtapa));
     }
 
 }
