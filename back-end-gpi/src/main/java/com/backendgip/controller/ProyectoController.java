@@ -350,7 +350,10 @@ public class ProyectoController {
         try {
             Cliente cliente = clienteService.getClienteById(idCliente);
             List<Proyecto> proyectos = proyectoService.findByClienteConEtapaPRP(cliente);
-            return ResponseEntity.ok(proyectos);
+            return ResponseEntity.ok(proyectos.stream()
+                    .filter(p -> p.getEstadoPropuesta() != null && (p.getEstadoPropuesta().getId() == 1 ||
+                            p.getEstadoPropuesta().getId() == 3))
+                    .collect(Collectors.toList()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -363,6 +366,10 @@ public class ProyectoController {
             etapa.setId(1);
             etapa.setEtapa("PRP");
             List<Proyecto> proyectos = this.proyectoService.findByEtapa(etapa);
+            proyectos = proyectos.stream()
+                    .filter(p -> p.getEstadoPropuesta() != null && (p.getEstadoPropuesta().getId() == 1 ||
+                            p.getEstadoPropuesta().getId() == 3))
+                    .collect(Collectors.toList());
             List<Cliente> clientes = new ArrayList<>();
             proyectos.forEach(proyecto -> clientes.add(proyecto.getCliente()));
             Set<Cliente> clientesPrp = new HashSet<>(clientes);

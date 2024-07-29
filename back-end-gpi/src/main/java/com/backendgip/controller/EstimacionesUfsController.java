@@ -170,12 +170,6 @@ public class EstimacionesUfsController {
                 EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
 
         EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimaciones.getId());
-                       
-
-        
-        
-
-        
         
         Iterator<Subfuncion> iteratorSubFuncion = estimacionesBD.subFuncion.iterator();
         while (iteratorSubFuncion.hasNext()) {
