@@ -106,6 +106,8 @@ public class EstimacionesUfsController {
         });
 
         estimacion.getUnidadFuncional().forEach(unidad -> {
+            Integer temporalUnidad = unidad.getId();
+            unidad.setId(null);
             unidad.setEstimacion_ufs(savEstimacion);
             UnidadFuncional unidadCreada = this.unidadFuncionalService.saveUfs(unidad);
             log.setAccion("CREATE");
@@ -115,7 +117,7 @@ public class EstimacionesUfsController {
             this.logService.saveLog(log);
 
             List<Funcion> funcionesDeUnidad = estimacion.getFuncion().stream()
-                    .filter(funcion -> funcion.getUnidadFuncional().getId().equals(unidad.getId()))
+                    .filter(funcion -> funcion.getUnidadFuncional().getId().equals(temporalUnidad))
                     .collect(Collectors.toList());
 
             funcionesDeUnidad.forEach(funcion -> {
@@ -149,28 +151,30 @@ public class EstimacionesUfsController {
     }
 
     @PostMapping("/estimaciones/editar")
-    public ResponseEntity<?> updateEstimaciones(@RequestBody EstimacionContenido estimacion){
+    public ResponseEntity<?> updateEstimaciones(@RequestBody EstimacionContenido estimacion) {
 
         LogSistema log = new LogSistema();
 
-        EstimacionUfs estimaciones = (EstimacionUfs) this.estimacionesUfsRepository.findById(estimacion.estimacion.getId())
-				.orElseThrow(() -> {
-					return new ResourceNotFoundException(" No existe la estimacion con el id: " + estimacion.estimacion.getId());
-				});
+        EstimacionUfs estimaciones = (EstimacionUfs) this.estimacionesUfsRepository
+                .findById(estimacion.estimacion.getId())
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException(
+                            " No existe la estimacion con el id: " + estimacion.estimacion.getId());
+                });
 
-                log.setAccion("UPDATE");
-                log.setDescripcion(estimaciones.toString());
-                log.setIdAccion(estimaciones.getId());
-                log.setTabla(estimaciones.getClass().toString());
-                this.logService.saveLog(log);
-                estimaciones.setEmpleado(estimacion.estimacion.getEmpleado());
-                estimaciones.setFechaCreacion(estimacion.estimacion.getFechaCreacion());
-                estimaciones.setModelo(estimacion.estimacion.getModelo());
-                estimaciones.setProyecto(estimacion.estimacion.getProyecto());
-                EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
+        log.setAccion("UPDATE");
+        log.setDescripcion(estimaciones.toString());
+        log.setIdAccion(estimaciones.getId());
+        log.setTabla(estimaciones.getClass().toString());
+        this.logService.saveLog(log);
+        estimaciones.setEmpleado(estimacion.estimacion.getEmpleado());
+        estimaciones.setFechaCreacion(estimacion.estimacion.getFechaCreacion());
+        estimaciones.setModelo(estimacion.estimacion.getModelo());
+        estimaciones.setProyecto(estimacion.estimacion.getProyecto());
+        EstimacionUfs updatedestimacion = this.estimacionesUfsService.saveEstimacionIn(estimaciones);
 
-        EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimaciones.getId());
-        
+        EstimacionContenido estimacionesBD = findContenidoEstimacion(estimaciones.getId());
+
         Iterator<Subfuncion> iteratorSubFuncion = estimacionesBD.subFuncion.iterator();
         while (iteratorSubFuncion.hasNext()) {
             Subfuncion obj1 = iteratorSubFuncion.next();
@@ -212,7 +216,7 @@ public class EstimacionesUfsController {
                 funcionService.deleteFuncion(obj1);
             }
         }
-        
+
         Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividades.iterator();
 
         while (iteratorActividades.hasNext()) {
@@ -231,7 +235,7 @@ public class EstimacionesUfsController {
                 log.setIdAccion(obj1.getId());
                 log.setDescripcion(obj1.toString());
                 logService.saveLog(log);
-    
+
                 actividadesComplementariasService.deleteActividad(obj1.getId());
             }
         }
@@ -263,7 +267,8 @@ public class EstimacionesUfsController {
             boolean found = false;
             for (UnidadFuncional obj2 : estimacionesBD.unidadFuncional) {
                 if (obj1.getId() == obj2.getId()) {
-                    UnidadFuncional unidadUpdate = this.unidadFuncionalRepository.findById(obj1.getId()).orElseThrow(null);
+                    UnidadFuncional unidadUpdate = this.unidadFuncionalRepository.findById(obj1.getId())
+                            .orElseThrow(null);
                     log.setAccion("UPDATE");
                     log.setDescripcion(unidadUpdate.toString());
                     log.setIdAccion(unidadUpdate.getId());
@@ -289,9 +294,10 @@ public class EstimacionesUfsController {
             }
         }
 
-        estimacion.actividades.forEach(actividad ->{
-            if(actividad.getId() != null){
-                ActividadesComplementarias actividadUpdate = this.actividadesComplementariasService.getById(actividad.getId());
+        estimacion.actividades.forEach(actividad -> {
+            if (actividad.getId() != null) {
+                ActividadesComplementarias actividadUpdate = this.actividadesComplementariasService
+                        .getById(actividad.getId());
                 log.setAccion("UPDATE");
                 log.setDescripcion(actividadUpdate.toString());
                 log.setIdAccion(actividadUpdate.getId());
@@ -302,108 +308,107 @@ public class EstimacionesUfsController {
                 actividadUpdate.setNombre(actividad.getNombre());
                 actividadUpdate.setPorcentaje(actividad.getPorcentaje());
                 actividadUpdate.setTipoActividad(actividad.getTipoActividad());
-                ActividadesComplementarias updatedactividad = this.actividadesComplementariasService.saveActividad(actividadUpdate);
-            }else{
+                ActividadesComplementarias updatedactividad = this.actividadesComplementariasService
+                        .saveActividad(actividadUpdate);
+            } else {
                 actividad.setEstimacion(updatedestimacion);
                 ActividadesComplementarias actividadCreada = this.actividadesComplementariasService
-                    .saveActividad(actividad);
+                        .saveActividad(actividad);
                 log.setAccion("CREATE");
                 log.setTabla(ActividadesComplementarias.class.toString());
                 log.setIdAccion(actividadCreada.getId());
                 log.setDescripcion(actividadCreada.toString());
                 this.logService.saveLog(log);
-                
+
             }
-        });	
+        });
         return ResponseEntity.ok(updatedestimacion);
     }
 
-    public void updateFuncion(EstimacionContenido estimacion, UnidadFuncional unidad, Integer unidadId){
+    public void updateFuncion(EstimacionContenido estimacion, UnidadFuncional unidad, Integer unidadId) {
         LogSistema log = new LogSistema();
-        EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimacion.estimacion.getId());
+        EstimacionContenido estimacionesBD = findContenidoEstimacion(estimacion.estimacion.getId());
         List<Funcion> funcionesDeUnidad = estimacion.getFuncion().stream()
-                    .filter(funcion -> funcion.getUnidadFuncional().getId().equals(unidadId))
-                    .collect(Collectors.toList());
+                .filter(funcion -> funcion.getUnidadFuncional().getId().equals(unidadId))
+                .collect(Collectors.toList());
 
-                    Iterator<Funcion> iteratorFuncionUpdate = funcionesDeUnidad.iterator();
-                    while (iteratorFuncionUpdate.hasNext()) {
-                        Funcion obj1 = iteratorFuncionUpdate.next();
-                        boolean found = false;
-                        for (Funcion obj2 : estimacionesBD.funcion) {
-                            if (obj1.getId() == obj2.getId()) {
-                                Funcion funcionUpdate = this.funcionService.getFuncionById(obj1.getId());
-                                log.setAccion("UPDATE");
-                                log.setDescripcion(funcionUpdate.toString());
-                                log.setIdAccion(funcionUpdate.getId());
-                                log.setTabla(funcionUpdate.getClass().toString());
-                                this.logService.saveLog(log);
-                                funcionUpdate.setUnidadFuncional(obj1.getUnidadFuncional());
-                                funcionUpdate.setNombre(obj1.getNombre());
-                                Funcion funcionEditada = this.funcionService.createFuncion(funcionUpdate);
-                                updateSubFuncion(estimacion, obj1.getId(), funcionEditada);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            Integer temporalFuncion = obj1.getId();
-                            obj1.setId(null);
-                            obj1.setUnidadFuncional(unidad);
-                            Funcion funcionCreada = this.funcionService.createFuncion(obj1);
-                            log.setAccion("CREATE");
-                            log.setTabla(Funcion.class.toString());
-                            log.setIdAccion(funcionCreada.getId());
-                            log.setDescripcion(funcionCreada.toString());
-                            this.logService.saveLog(log);
-                           updateSubFuncion(estimacion, temporalFuncion, funcionCreada);
-                        }
-                    }
+        Iterator<Funcion> iteratorFuncionUpdate = funcionesDeUnidad.iterator();
+        while (iteratorFuncionUpdate.hasNext()) {
+            Funcion obj1 = iteratorFuncionUpdate.next();
+            boolean found = false;
+            for (Funcion obj2 : estimacionesBD.funcion) {
+                if (obj1.getId() == obj2.getId()) {
+                    Funcion funcionUpdate = this.funcionService.getFuncionById(obj1.getId());
+                    log.setAccion("UPDATE");
+                    log.setDescripcion(funcionUpdate.toString());
+                    log.setIdAccion(funcionUpdate.getId());
+                    log.setTabla(funcionUpdate.getClass().toString());
+                    this.logService.saveLog(log);
+                    funcionUpdate.setUnidadFuncional(obj1.getUnidadFuncional());
+                    funcionUpdate.setNombre(obj1.getNombre());
+                    Funcion funcionEditada = this.funcionService.createFuncion(funcionUpdate);
+                    updateSubFuncion(estimacion, obj1.getId(), funcionEditada);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Integer temporalFuncion = obj1.getId();
+                obj1.setId(null);
+                obj1.setUnidadFuncional(unidad);
+                Funcion funcionCreada = this.funcionService.createFuncion(obj1);
+                log.setAccion("CREATE");
+                log.setTabla(Funcion.class.toString());
+                log.setIdAccion(funcionCreada.getId());
+                log.setDescripcion(funcionCreada.toString());
+                this.logService.saveLog(log);
+                updateSubFuncion(estimacion, temporalFuncion, funcionCreada);
+            }
+        }
     }
 
-    public void updateSubFuncion(EstimacionContenido estimacion, Integer id, Funcion funcion){
+    public void updateSubFuncion(EstimacionContenido estimacion, Integer id, Funcion funcion) {
         LogSistema log = new LogSistema();
-        EstimacionContenido estimacionesBD =  findContenidoEstimacion(estimacion.estimacion.getId());
+        EstimacionContenido estimacionesBD = findContenidoEstimacion(estimacion.estimacion.getId());
         List<Subfuncion> subfuncionesDeFuncion = estimacion.getSubFuncion().stream()
-                        .filter(subfuncion -> subfuncion.getFuncion().getId().equals(id))
-                        .collect(Collectors.toList());
-                
-                        Iterator<Subfuncion> iteratorSubFuncionUpdate = subfuncionesDeFuncion.iterator();
-                        while (iteratorSubFuncionUpdate.hasNext()) {
-                            Subfuncion obj1 = iteratorSubFuncionUpdate.next();
-                            boolean found = false;
-                            for (Subfuncion obj2 : estimacionesBD.subFuncion) {
-                                if (obj1.getId() == obj2.getId()) {
-                                    Subfuncion subfuncionUpdate = this.subfuncionRepository.findById(obj1.getId()).orElseThrow(null);
-                                    log.setAccion("UPDATE");
-                                    log.setDescripcion(subfuncionUpdate.toString());
-                                    log.setIdAccion(subfuncionUpdate.getId());
-                                    log.setTabla(subfuncionUpdate.getClass().toString());
-                                    this.logService.saveLog(log);
-                                    subfuncionUpdate.setFuncion(funcion);
-                                    subfuncionUpdate.setMantenimientoUnidad(obj1.getMantenimientoUnidad());
-                                    subfuncionUpdate.setNombre(obj1.getNombre());
-                                    subfuncionUpdate.setNombreCasoDeUso(obj1.getNombreCasoDeUso());
-                                    subfuncionUpdate.setPorcentajePruebas(obj1.getPorcentajePruebas());
-                                    subfuncionUpdate.setPorcentajeVConstruccion(obj1.getPorcentajeVConstruccion());
-                                    subfuncionUpdate.setPorcentajeVDiseno(obj1.getPorcentajeVDiseno());
-                                    Subfuncion editSubfuncion = this.subFuncionService.createSubfuncion(subfuncionUpdate);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                obj1.setFuncion(funcion);
-                                Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(obj1);
-                                log.setAccion("CREATE");
-                                log.setTabla(Subfuncion.class.toString());
-                                log.setIdAccion(subfuncionCreada.getId());
-                                log.setDescripcion(subfuncionCreada.toString());
-                                this.logService.saveLog(log);
-                            }
-                        }
+                .filter(subfuncion -> subfuncion.getFuncion().getId().equals(id))
+                .collect(Collectors.toList());
+
+        Iterator<Subfuncion> iteratorSubFuncionUpdate = subfuncionesDeFuncion.iterator();
+        while (iteratorSubFuncionUpdate.hasNext()) {
+            Subfuncion obj1 = iteratorSubFuncionUpdate.next();
+            boolean found = false;
+            for (Subfuncion obj2 : estimacionesBD.subFuncion) {
+                if (obj1.getId() == obj2.getId()) {
+                    Subfuncion subfuncionUpdate = this.subfuncionRepository.findById(obj1.getId()).orElseThrow(null);
+                    log.setAccion("UPDATE");
+                    log.setDescripcion(subfuncionUpdate.toString());
+                    log.setIdAccion(subfuncionUpdate.getId());
+                    log.setTabla(subfuncionUpdate.getClass().toString());
+                    this.logService.saveLog(log);
+                    subfuncionUpdate.setFuncion(funcion);
+                    subfuncionUpdate.setMantenimientoUnidad(obj1.getMantenimientoUnidad());
+                    subfuncionUpdate.setNombre(obj1.getNombre());
+                    subfuncionUpdate.setNombreCasoDeUso(obj1.getNombreCasoDeUso());
+                    subfuncionUpdate.setPorcentajePruebas(obj1.getPorcentajePruebas());
+                    subfuncionUpdate.setPorcentajeVConstruccion(obj1.getPorcentajeVConstruccion());
+                    subfuncionUpdate.setPorcentajeVDiseno(obj1.getPorcentajeVDiseno());
+                    Subfuncion editSubfuncion = this.subFuncionService.createSubfuncion(subfuncionUpdate);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                obj1.setFuncion(funcion);
+                Subfuncion subfuncionCreada = this.subFuncionService.createSubfuncion(obj1);
+                log.setAccion("CREATE");
+                log.setTabla(Subfuncion.class.toString());
+                log.setIdAccion(subfuncionCreada.getId());
+                log.setDescripcion(subfuncionCreada.toString());
+                this.logService.saveLog(log);
+            }
+        }
     }
-
-
 
     @DeleteMapping("/estimaciones/{id}")
     public ResponseEntity<?> deleteEstimaciones(@PathVariable Integer id) {
@@ -470,9 +475,9 @@ public class EstimacionesUfsController {
         logService.saveLog(logEstimacion);
 
         estimacionesUfsService.deleteEstimaciones(estimacion);
-Map<String, Boolean> response = new HashMap();
-			response.put("deleted", Boolean.TRUE);
-			return ResponseEntity.ok(response);
+        Map<String, Boolean> response = new HashMap();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/estimaciones/{id}")
@@ -481,7 +486,7 @@ Map<String, Boolean> response = new HashMap();
                 .orElseThrow(() -> new ResourceNotFoundException("Estimación no encontrada con el id: " + id));
         return ResponseEntity.ok(estimacion);
     }
-    
+
     @GetMapping("/estimaciones/contenidoestimacion/{idEstimacion}")
     public EstimacionContenido findContenidoEstimacion(@PathVariable Integer idEstimacion) {
         EstimacionContenido estimacionContenido = new EstimacionContenido();
@@ -499,7 +504,7 @@ Map<String, Boolean> response = new HashMap();
         estimacionContenido.setFuncion(funcion);
         estimacionContenido.setSubFuncion(subfunciones);
         estimacionContenido.setUnidadFuncional(unidadFuncional);
-        
+
         return estimacionContenido;
     }
 
