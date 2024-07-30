@@ -23,6 +23,9 @@ import com.backendgip.model.Subfuncion;
 import com.backendgip.service.MantenimientoPesoHoraService;
 import com.backendgip.service.MantenimientoUnidadService;
 import com.backendgip.service.SubFuncionService;
+
+import lombok.val;
+
 import com.backendgip.service.EsfuerzoService;
 import com.backendgip.service.FuncionService;
 import com.backendgip.service.LogSistemaService;
@@ -93,8 +96,14 @@ public class MantenimientoUnidadController {
     }
     
     @PostMapping("/eliminar-unidad/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteUnidad(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteUnidad(@PathVariable Integer id) {
         MantenimientoUnidad unidad = mantenimientoUnidadService.getMantenimientoUndById(id);
+        List<Subfuncion> subfuncions = subFuncionService.getAllSubfunciones();
+        for (Subfuncion subfuncion : subfuncions) {
+            if (subfuncion.getMantenimientoUnidad().equals(unidad)) {
+                return ResponseEntity.badRequest().body("No se puede eliminar la unidad, ya está asignada a una subfunción");
+            }
+        }
         this.mantenimientoUnidadService.deleteById(id);
         Map<String, Boolean> response = new HashMap();
 		response.put("deleted", Boolean.TRUE);
