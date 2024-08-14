@@ -17,9 +17,14 @@ import com.backendgip.exception.ResourceNotFoundException;
 import com.backendgip.model.ActividadesComplementarias;
 import com.backendgip.model.EstimacionUfs;
 import com.backendgip.model.LogSistema;
+import com.backendgip.model.TipoActividadComplementaria;
+import com.backendgip.model.TipoActividadComplementariaComplemento;
 import com.backendgip.repository.EstimacionesUfsRepository;
+import com.backendgip.repository.TipoActividadComplementariaComplementoRepository;
+import com.backendgip.repository.TipoActividadComplementariaRespository;
 import com.backendgip.service.ActividadesComplementariasService;
 import com.backendgip.service.LogSistemaService;
+import com.backendgip.service.TipoActividadComplementariaComplementoServide;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +39,10 @@ public class ActividadesComplementariasController {
     @Autowired
     private ActividadesComplementariasService actividadesComplementariasService;
     @Autowired
+    private TipoActividadComplementariaComplementoServide tipoActividadComplementariaComplementoServide;
+    @Autowired
+    private TipoActividadComplementariaRespository tipoActividadComplementariaRespository;
+    @Autowired
 	private LogSistemaService logService;
     @Autowired
     private EstimacionesUfsRepository estimacionesUfsRepository;
@@ -41,6 +50,21 @@ public class ActividadesComplementariasController {
     @GetMapping("/obtener-actividades")
     public List<ActividadesComplementarias> obtenerActividades() {
         return this.actividadesComplementariasService.getActividades();
+    }
+
+    @GetMapping("/obtener-actividades-complemento/{id}")
+    public ResponseEntity<?> obtenerActividadesComplementarias(@PathVariable String id) {
+        TipoActividadComplementaria tipoActividades = tipoActividadComplementariaRespository.findByNombre(id);
+        List<TipoActividadComplementariaComplemento> actividades = this.tipoActividadComplementariaComplementoServide.getActividadesTipoActividad(tipoActividades);
+        List<String> actividadesString = new ArrayList<>();
+        if(actividades.isEmpty()){
+            return ResponseEntity.badRequest().body("no se encontraron actividades complementarias, para este tipo de actividad"+ tipoActividades.getNombre());
+        }else{
+            for(TipoActividadComplementariaComplemento complemento: actividades){
+                actividadesString.add(complemento.getNombre());
+            }
+            return ResponseEntity.ok(actividadesString);
+        }
     }
 
     @GetMapping("/obtener-actividades/estimacion/{id}")
