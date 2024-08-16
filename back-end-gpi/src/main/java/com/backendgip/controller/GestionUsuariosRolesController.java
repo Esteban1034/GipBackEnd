@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backendgip.security.models.ItemRol;
 import com.backendgip.security.models.RolSeg;
 import com.backendgip.security.models.SubItemRol;
+import com.backendgip.security.models.SubLevelItemRol;
 import com.backendgip.security.models.Submenu;
 import com.backendgip.security.models.Usuario;
 import com.backendgip.security.services.ArmaMenuRol;
@@ -69,7 +70,14 @@ public class GestionUsuariosRolesController {
 						SubItemRol subItemRol = new SubItemRol();
 						subItemRol.setSubItem(subItem);
 						subItemRol.setItemRol(itemRol);
+						subItemRol.setSubLevelItemRols(new ArrayList<>());
 						itemRol.getSubItemRol().add(subItemRol);
+						subItemRol.getSubItem().getSubLevelItems().forEach(subLevel -> {
+							SubLevelItemRol subLevelItemRol = new SubLevelItemRol();
+							subLevelItemRol.setSubLevelItem(subLevel);
+							subLevelItemRol.setSubItemRol(subItemRol);
+							subItemRol.getSubLevelItemRols().add(subLevelItemRol);
+						});
 					});
 				});
 			});
@@ -104,28 +112,41 @@ public class GestionUsuariosRolesController {
 	}
 
 	@GetMapping("/listarRoles")
-	public ResponseEntity<?> listarRoles() {
-		try {
-			List<RolSeg> roles = iRolService.listarRoles();
+public ResponseEntity<?> listarRoles() {
+    try {
+        List<RolSeg> roles = iRolService.listarRoles();
 
-			roles.forEach(rol -> {
-				rol.getSubmenuRoles().forEach(submenu -> {
-					submenu.getItemRol().forEach(itemRol -> {
-						itemRol.getSubItemRol().forEach(subitem -> {
-							subitem.setItemRol(null);
-						});
-						itemRol.setSubmenuRol(null);
-					});
-					submenu.setRol(null);
-				});
-				rol.setUsuarioRoles(null);
-			});
-			return ResponseEntity.ok(roles);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener la lista de roles");
-		}
-	}
+        roles.forEach(rol -> {
+            if (rol.getSubmenuRoles() != null) {
+                rol.getSubmenuRoles().forEach(submenu -> {
+                    if (submenu.getItemRol() != null) {
+                        submenu.getItemRol().forEach(itemRol -> {
+                            if (itemRol.getSubItemRol() != null) {
+                                itemRol.getSubItemRol().forEach(subItemRol -> {
+                                    if (subItemRol.getSubLevelItemRols() != null) {
+                                        subItemRol.getSubLevelItemRols().forEach(subLevelItemRol -> {
+                                            subLevelItemRol.setSubItemRol(null);
+                                        });
+                                    }
+                                    subItemRol.setItemRol(null);
+                                });
+                            }
+                            itemRol.setSubmenuRol(null);
+                        });
+                    }
+                    submenu.setRol(null);
+                });
+            }
+            rol.setUsuarioRoles(null);
+        });
+
+        return ResponseEntity.ok(roles);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener la lista de roles: " + e.getMessage());
+    }
+}
+
 
 	@GetMapping("/listarMenu")
 	public ResponseEntity<?> listarMenu() {
@@ -141,6 +162,9 @@ public class GestionUsuariosRolesController {
 
 				sub.getItems().forEach(item -> {
 					item.getSubItems().forEach(subitem -> {
+						subitem.getSubLevelItems().forEach(sublevelitem -> {
+							sublevelitem.setSubItem(null);
+						});
 						subitem.setItem(null);
 					});
 					item.setSubmenu(null);

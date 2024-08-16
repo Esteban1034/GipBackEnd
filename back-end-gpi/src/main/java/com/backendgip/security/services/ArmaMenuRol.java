@@ -11,6 +11,8 @@ import com.backendgip.security.models.MenuResponse;
 import com.backendgip.security.models.RolSeg;
 import com.backendgip.security.models.SubItem;
 import com.backendgip.security.models.SubItemRol;
+import com.backendgip.security.models.SubLevelItem;
+import com.backendgip.security.models.SubLevelItemRol;
 import com.backendgip.security.models.SubmenuRol;
 
 @Service
@@ -25,6 +27,9 @@ public class ArmaMenuRol {
 	@Autowired
 	ISubItemRolService iSubItemRolService;
 
+	@Autowired
+	ISubLevelItemRolService iSubLevelItemRolService;
+
 	MenuResponse menuResponse;
 
 	SubmenuRol submenuRol;
@@ -36,6 +41,8 @@ public class ArmaMenuRol {
 	List<Item> listaItems;
 
 	List<SubItem> listaSubItems;
+
+	List<SubLevelItem> listaSubLevelItems;
 
 	public List<MenuResponse> armarMenu(RolSeg rol) throws Exception {
 		listaSubmenus = submenuRolService.buscarOpcionesRol(rol);
@@ -54,6 +61,13 @@ public class ArmaMenuRol {
 				listaSubItems = new ArrayList<>();
 	
 				for (SubItemRol j : i.getSubItemRol()) {
+					SubItem subItem = j.getSubItem();
+					listaSubLevelItems = new ArrayList<>();
+
+					for(SubLevelItemRol k : j.getSubLevelItemRols()){
+						listaSubLevelItems.add(k.getSubLevelItem());
+					}
+					subItem.setSubLevelItems(listaSubLevelItems);
 					listaSubItems.add(j.getSubItem());
 				}
 				item.setSubItems(listaSubItems); 
@@ -74,6 +88,11 @@ public class ArmaMenuRol {
 
 			for (ItemRol itemRol: submenuRol.getItemRol()){
 				iSubItemRolService.eliminarSubItemsPorItem(itemRol);
+				
+				for(SubItemRol subItemRol: itemRol.getSubItemRol()){
+					iSubLevelItemRolService.eliminarSubLevelPorSubItem(subItemRol);
+
+				}
 			}
 
 			iItemRolService.eliminarItemsPorSubmenu(submenuRol);

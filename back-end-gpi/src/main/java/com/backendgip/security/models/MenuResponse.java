@@ -79,7 +79,24 @@ public class MenuResponse {
 					for (int j = 0; j < subItems.size(); j++) {
 						SubItem subItem = subItems.get(j);
 						retorno.append("{\"label\":\"").append(subItem.getLabel()).append("\", \"link\":\"")
-								.append(subItem.getLink()).append("\"}");
+								.append(subItem.getLink()).append("\"");
+
+						List<SubLevelItem> subLevelItems = subItem.getSubLevelItems();
+						if (subLevelItems != null && !subLevelItems.isEmpty()) {
+							retorno.append(", \"subLevelItems\": [");
+							for (int k = 0; k < subLevelItems.size(); k++) {
+								SubLevelItem subLevelItem = subLevelItems.get(k);
+								retorno.append("{\"label\":\"").append(subLevelItem.getLabel())
+										.append("\", \"link\":\"")
+										.append(subLevelItem.getLink()).append("\"}");
+								if (k < subLevelItems.size() - 1) {
+									retorno.append(",");
+								}
+							}
+							retorno.append("]");
+						}
+
+						retorno.append("}");
 						if (j < subItems.size() - 1) {
 							retorno.append(",");
 						}
