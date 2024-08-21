@@ -32,11 +32,11 @@ public class Subfuncion implements Serializable {
     @JoinColumn(name = "fk_complejidad")
     private MantenimientoUnidad mantenimientoUnidad;
     @Column(name = "porcentaje_contruccion")
-    private Integer porcentajeVConstruccion;
+    private double porcentajeVConstruccion;
     @Column(name = "porcentaje_diseño")
-    private Integer porcentajeVDiseno;
+    private double porcentajeVDiseno;
     @Column(name = "porcentaje_pruebas")
-    private Integer porcentajePruebas;
+    private double porcentajePruebas;
 
 
     public Subfuncion() {
@@ -44,8 +44,8 @@ public class Subfuncion implements Serializable {
 
 
     public Subfuncion(Integer id, String nombre, Funcion funcion, MantenimientoUnidad mantenimientoUnidad,
-            String nombreCasoDeUso, Integer porcentajeVConstruccion, Integer porcentajeVDiseno,
-            Integer porcentajePruebas) {
+            String nombreCasoDeUso, double porcentajeVConstruccion, double porcentajeVDiseno,
+            double porcentajePruebas) {
         this.id = id;
         this.nombre = nombre;
         this.funcion = funcion;
@@ -112,32 +112,32 @@ public class Subfuncion implements Serializable {
     }
 
 
-    public Integer getPorcentajeVConstruccion() {
+    public double getPorcentajeVConstruccion() {
         return porcentajeVConstruccion;
     }
 
 
-    public void setPorcentajeVConstruccion(Integer porcentajeVConstruccion) {
+    public void setPorcentajeVConstruccion(double porcentajeVConstruccion) {
         this.porcentajeVConstruccion = porcentajeVConstruccion;
     }
 
 
-    public Integer getPorcentajeVDiseno() {
+    public double getPorcentajeVDiseno() {
         return porcentajeVDiseno;
     }
 
 
-    public void setPorcentajeVDiseno(Integer porcentajeVDiseno) {
+    public void setPorcentajeVDiseno(double porcentajeVDiseno) {
         this.porcentajeVDiseno = porcentajeVDiseno;
     }
 
 
-    public Integer getPorcentajePruebas() {
+    public double getPorcentajePruebas() {
         return porcentajePruebas;
     }
 
 
-    public void setPorcentajePruebas(Integer porcentajePruebas) {
+    public void setPorcentajePruebas(double porcentajePruebas) {
         this.porcentajePruebas = porcentajePruebas;
     }
 
