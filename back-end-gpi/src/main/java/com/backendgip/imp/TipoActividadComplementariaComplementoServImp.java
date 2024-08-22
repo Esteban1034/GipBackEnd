@@ -21,5 +21,22 @@ public class TipoActividadComplementariaComplementoServImp implements TipoActivi
             TipoActividadComplementaria actividad) {
         return tipoActividadRespository.findByActividad(actividad);
     }
+
+    @Override
+    public TipoActividadComplementariaComplemento createActividadComplementariaComplemento(
+            TipoActividadComplementariaComplemento actividad) {
+       return tipoActividadRespository.save(actividad);
+    }
+
+
+    @Override
+    public void deleteActividadComplementaria(Integer id) {
+        tipoActividadRespository.deleteById(id);
+    }
+
+    @Override
+    public List<TipoActividadComplementariaComplemento> getATipoActividadComplementariaComplementos() {
+        return (List<TipoActividadComplementariaComplemento>) tipoActividadRespository.findAll();
+    }
     
 }

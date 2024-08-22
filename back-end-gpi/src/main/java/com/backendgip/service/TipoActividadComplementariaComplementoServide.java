@@ -9,4 +9,9 @@ public interface TipoActividadComplementariaComplementoServide {
     
     List<TipoActividadComplementariaComplemento> getActividadesTipoActividad(TipoActividadComplementaria actividad);
 
+    TipoActividadComplementariaComplemento createActividadComplementariaComplemento(TipoActividadComplementariaComplemento actividad);
+
+    void deleteActividadComplementaria(Integer id);
+
+    List<TipoActividadComplementariaComplemento> getATipoActividadComplementariaComplementos();
 }
