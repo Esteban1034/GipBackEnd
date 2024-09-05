@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actividad_agiles")
+@Table(name = "actividad_agil")
 public class ActividadesAgiles  implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -30,27 +30,16 @@ public class ActividadesAgiles  implements Serializable{
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "fk_fases")
-    private FasesAgiles fases_agiles;
-
-    @ManyToOne
     @JoinColumn(name = "fk_submenu_fases")
     private SubMenuFasesAgiles subMenuFasesAgiles;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_actividades_complemento_as400")
-    private ActividadesComplementarias actividadesComplementarias;
 
     public ActividadesAgiles() {
     }
 
-    public ActividadesAgiles(Integer id, String nombre, FasesAgiles fases_agiles, SubMenuFasesAgiles subMenuFasesAgiles,
-            ActividadesComplementarias actividadesComplementarias) {
+    public ActividadesAgiles(Integer id, String nombre, SubMenuFasesAgiles subMenuFasesAgiles) {
         this.id = id;
         this.nombre = nombre;
-        this.fases_agiles = fases_agiles;
         this.subMenuFasesAgiles = subMenuFasesAgiles;
-        this.actividadesComplementarias = actividadesComplementarias;
     }
 
     public Integer getId() {
@@ -69,14 +58,6 @@ public class ActividadesAgiles  implements Serializable{
         this.nombre = nombre;
     }
 
-    public FasesAgiles getFases_agiles() {
-        return fases_agiles;
-    }
-
-    public void setFases_agiles(FasesAgiles fases_agiles) {
-        this.fases_agiles = fases_agiles;
-    }
-
     public SubMenuFasesAgiles getSubMenuFasesAgiles() {
         return subMenuFasesAgiles;
     }
@@ -85,19 +66,9 @@ public class ActividadesAgiles  implements Serializable{
         this.subMenuFasesAgiles = subMenuFasesAgiles;
     }
 
-    public ActividadesComplementarias getActividadesComplementarias() {
-        return actividadesComplementarias;
-    }
-
-    public void setActividadesComplementarias(ActividadesComplementarias actividadesComplementarias) {
-        this.actividadesComplementarias = actividadesComplementarias;
-    }
-
     @Override
     public String toString() {
-        return "ActividadesAgiles [id=" + id + ", nombre=" + nombre + ", fases_agiles=" + fases_agiles
-                + ", subMenuFasesAgiles=" + subMenuFasesAgiles + ", actividadesComplementarias="
-                + actividadesComplementarias + "]";
+        return "ActividadesAgiles [id=" + id + ", nombre=" + nombre +   ", subMenuFasesAgiles=" + subMenuFasesAgiles + "]";
     }
 
     
