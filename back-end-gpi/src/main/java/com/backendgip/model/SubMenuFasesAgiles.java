@@ -12,16 +12,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "submenu_fases_agiles")
-public class SubMenuFasesAgiles implements Serializable{
+public class SubMenuFasesAgiles implements Serializable {
     private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "pk_propuesta")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
-	@JoinColumn(name = "fk_fases_agiles")
-    private FasesAgiles fases_agiles;
+    @JoinColumn(name = "fk_fases_agiles")
+    private FasesAgiles fasesAgiles;
 
     @Column(name = "nombre")
     private String nombre;
@@ -29,21 +30,38 @@ public class SubMenuFasesAgiles implements Serializable{
     public SubMenuFasesAgiles() {
     }
 
-    public SubMenuFasesAgiles(Integer id, FasesAgiles fases_agiles, String nombre) {
+    public SubMenuFasesAgiles(Integer id, FasesAgiles fasesAgiles, String nombre) {
         this.id = id;
-        this.fases_agiles = fases_agiles;
+        this.fasesAgiles = fasesAgiles;
+        this.nombre = nombre;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public FasesAgiles getFasesAgiles() {
+        return fasesAgiles;
+    }
+
+    public void setFasesAgiles(FasesAgiles fasesAgiles) {
+        this.fasesAgiles = fasesAgiles;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return "SubMenuFasesAgiles [id=" + id + ", fases_agiles=" + fases_agiles + ", nombre=" + nombre + "]";
+        return "SubMenuFasesAgiles [id=" + id + ", fasesAgiles=" + fasesAgiles + ", nombre=" + nombre + "]";
     }
-
-
-    
-    
-    
-
-
 }
