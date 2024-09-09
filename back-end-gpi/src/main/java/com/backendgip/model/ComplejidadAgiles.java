@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actividad_agiles")
+@Table(name = "complejidad_agiles")
 public class ComplejidadAgiles implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,19 +26,15 @@ public class ComplejidadAgiles implements Serializable {
     @Column(name = "complejidad")
     private String complejidadActividad;
     
-    @Column(name = "descripcion")
-    private String descripcionActividad;
-
     @Column(name = "hora")
     private int horaActividad;
 
     public ComplejidadAgiles() {
     }
 
-    public ComplejidadAgiles(Integer id, String complejidadActividad, String descripcionActividad, int horaActividad) {
+    public ComplejidadAgiles(Integer id, String complejidadActividad,  int horaActividad) {
         this.id = id;
         this.complejidadActividad = complejidadActividad;
-        this.descripcionActividad = descripcionActividad;
         this.horaActividad = horaActividad;
     }
 
@@ -58,14 +54,6 @@ public class ComplejidadAgiles implements Serializable {
         this.complejidadActividad = complejidadActividad;
     }
 
-    public String getDescripcionActividad() {
-        return descripcionActividad;
-    }
-
-    public void setDescripcionActividad(String descripcionActividad) {
-        this.descripcionActividad = descripcionActividad;
-    }
-
     public int getHoraActividad() {
         return horaActividad;
     }
@@ -77,7 +65,6 @@ public class ComplejidadAgiles implements Serializable {
     @Override
     public String toString() {
         return "ComplejidadAgiles [id=" + id + ", complejidadActividad=" + complejidadActividad
-                + ", descripcionActividad=" + descripcionActividad + ", horaActividad=" + horaActividad + "]";
+                + ", horaActividad=" + horaActividad + "]";
     }
-        
 }
