@@ -86,8 +86,28 @@ public class SubMenuFasesAgilesController {
         }
     }
 
+    @PutMapping("/{id}/nombre")
+    public ResponseEntity<?> updateNombre(@PathVariable Integer id, @RequestBody String nuevoNombre) {
+        SubMenuFasesAgiles subMenu = subMenuFasesAgilesService.findById(id);
+        if (subMenu != null && nuevoNombre != null && !nuevoNombre.isEmpty()) {
+            subMenu.setNombre(nuevoNombre);
+            SubMenuFasesAgiles updatedSubMenu = subMenuFasesAgilesService.save(subMenu);
+            LogSistema log = new LogSistema();
+            log.setAccion("ACTUALIZAR NOMBRE");
+            log.setFechaHora(new Date());
+            log.setTabla(SubMenuFasesAgiles.class.toString());
+            log.setIdAccion(updatedSubMenu.getId());
+            log.setDescripcion("Nombre del submenú actualizado: " + updatedSubMenu.toString());
+            logService.saveLog(log);
+
+            return ResponseEntity.ok(updatedSubMenu);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre es obligatorio y no debe estar vacío.");
+        }
+    }
+/* 
     @DeleteMapping("/eliminar-submenu/{id}")
-    public ResponseEntity<?> deleteSubMenu(@PathVariable Integer id) {
+    public ResponseEntity<?> eliminarSubMenu(@PathVariable Integer id) {
         SubMenuFasesAgiles subMenu = subMenuFasesAgilesService.findById(id);
         if (subMenu != null) {
             subMenuFasesAgilesService.deleteById(id);
@@ -102,7 +122,18 @@ public class SubMenuFasesAgilesController {
 
             return ResponseEntity.ok("Submenú eliminado exitosamente.");
         } else {
-            return ResponseEntity.badRequest().body("No se encontró el submenú con ID: " + id);
-        }
+                return ResponseEntity.badRequest().body("No se encontró el submenú con ID: " + id);
+            }
+        }  */
+        @DeleteMapping("/eliminar-submenu/{id}")
+public ResponseEntity<?> deleteSubMenu(@PathVariable Integer id) {
+    try {
+        subMenuFasesAgilesService.deleteById(id);
+        return ResponseEntity.noContent().build(); 
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la sub-fase");
     }
 }
+
+    }
+
