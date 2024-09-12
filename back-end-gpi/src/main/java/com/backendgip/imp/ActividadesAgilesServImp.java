@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backendgip.model.ActividadesAgiles;
+import com.backendgip.model.SubMenuFasesAgiles;
 import com.backendgip.repository.ActividadesAgilesRepository;
 import com.backendgip.service.ActividadesAgilesService;
 
@@ -33,6 +34,11 @@ public class ActividadesAgilesServImp implements ActividadesAgilesService{
     @Override
     public ActividadesAgiles getActividadById(Integer idActividad) {
         return actividadesAgilesRepository.findById(idActividad).orElse(null);
+    }
+
+    @Override
+    public List<ActividadesAgiles> findBySubFase(SubMenuFasesAgiles subMenuFasesAgiles) {
+       return actividadesAgilesRepository.findBySubMenuFasesAgiles(subMenuFasesAgiles);
     }
 
     
