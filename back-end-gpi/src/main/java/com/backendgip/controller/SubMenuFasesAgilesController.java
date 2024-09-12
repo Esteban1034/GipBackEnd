@@ -105,26 +105,7 @@ public class SubMenuFasesAgilesController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre es obligatorio y no debe estar vacío.");
         }
     }
-/* 
-    @DeleteMapping("/eliminar-submenu/{id}")
-    public ResponseEntity<?> eliminarSubMenu(@PathVariable Integer id) {
-        SubMenuFasesAgiles subMenu = subMenuFasesAgilesService.findById(id);
-        if (subMenu != null) {
-            subMenuFasesAgilesService.deleteById(id);
 
-            LogSistema log = new LogSistema();
-            log.setAccion("ELIMINAR");
-            log.setFechaHora(new Date());
-            log.setTabla(SubMenuFasesAgiles.class.toString());
-            log.setIdAccion(id);
-            log.setDescripcion("Submenú eliminado con ID: " + id);
-            logService.saveLog(log);
-
-            return ResponseEntity.ok("Submenú eliminado exitosamente.");
-        } else {
-                return ResponseEntity.badRequest().body("No se encontró el submenú con ID: " + id);
-            }
-        }  */
         @DeleteMapping("/eliminar-submenu/{id}")
 public ResponseEntity<?> deleteSubMenu(@PathVariable Integer id) {
     try {
