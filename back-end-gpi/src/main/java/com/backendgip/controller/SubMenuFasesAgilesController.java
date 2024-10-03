@@ -33,6 +33,11 @@ public class SubMenuFasesAgilesController {
         }
     }
 
+    @GetMapping("/filtrar-subfase/{id}")
+    public ResponseEntity<List<SubMenuFasesAgiles>> obtenerFiltrarSubfase(@PathVariable Integer id){
+        return ResponseEntity.ok(subMenuFasesAgilesService.findByFasesAgilesId(id));
+    }
+
     @GetMapping("/submenus/{id}")
     public ResponseEntity<?> getSubMenuById(@PathVariable Integer id) {
         SubMenuFasesAgiles subMenu = subMenuFasesAgilesService.findById(id);
