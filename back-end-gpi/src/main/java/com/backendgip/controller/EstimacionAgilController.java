@@ -80,7 +80,7 @@ import com.backendgip.service.EsfuerzoAgilService;
 
             
 
-            estimacion.getEstimacionAgil().forEach(actividad -> {
+            estimacion.getActiviadesAgil().forEach(actividad -> {
                 actividad.setEstimacion(savEstimacion);
                 EstimacionAgil actividadCreada = estimacionAgilService.save(actividad);
                 log.setAccion("CREATE");
@@ -90,7 +90,7 @@ import com.backendgip.service.EsfuerzoAgilService;
                 this.logService.saveLog(log);
             });
 
-            estimacion.getEsfuerzoAgil().forEach(esfuerzo -> {
+            estimacion.getEsfuerzo().forEach(esfuerzo -> {
                 esfuerzo.setEstimacion(savEstimacion);
                 EsfuerzoAgil esfuerzoCreada = esfuerzoAgilService.save(esfuerzo);
                 log.setAccion("CREATE");
@@ -100,7 +100,7 @@ import com.backendgip.service.EsfuerzoAgilService;
                 this.logService.saveLog(log);
             });
 
-            estimacion.getActividades().forEach(actividad -> {
+            estimacion.getActividadesComplementarias().forEach(actividad -> {
                 actividad.setEstimacion(savEstimacion);
                 ActividadesComplementarias actividadCreada = this.actividadesComplementariasService
                         .saveActividad(actividad);
@@ -139,12 +139,12 @@ import com.backendgip.service.EsfuerzoAgilService;
 
             ContenidoEstimacionAgil estimacionesBD = findContenidoEstimacion(estimaciones.getId());
             
-            Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividades.iterator();
+            Iterator<ActividadesComplementarias> iteratorActividades = estimacionesBD.actividadesComplementarias.iterator();
 
         while (iteratorActividades.hasNext()) {
             ActividadesComplementarias obj1 = iteratorActividades.next();
             boolean found = false;
-            for (ActividadesComplementarias obj2 : estimacion.actividades) {
+            for (ActividadesComplementarias obj2 : estimacion.actividadesComplementarias) {
                 if (obj1.getId() == obj2.getId()) {
                     found = true;
                     break;
@@ -162,11 +162,11 @@ import com.backendgip.service.EsfuerzoAgilService;
             }
         }
             
-            Iterator<EsfuerzoAgil> iteratorSubFuncion = estimacionesBD.esfuerzoAgil.iterator();
+            Iterator<EsfuerzoAgil> iteratorSubFuncion = estimacionesBD.esfuerzo.iterator();
             while (iteratorSubFuncion.hasNext()) {
                 EsfuerzoAgil obj1 = iteratorSubFuncion.next();
                 boolean found = false;
-                for (EsfuerzoAgil obj2 : estimacion.esfuerzoAgil) {
+                for (EsfuerzoAgil obj2 : estimacion.esfuerzo) {
                     if (obj1.getId() == obj2.getId()) {
                         found = true;
                         break;
@@ -183,11 +183,11 @@ import com.backendgip.service.EsfuerzoAgilService;
                 }
             }
 
-            Iterator<EstimacionAgil> iteratorEstimacion = estimacionesBD.estimacionAgil.iterator();
+            Iterator<EstimacionAgil> iteratorEstimacion = estimacionesBD.activiadesAgil.iterator();
             while (iteratorEstimacion.hasNext()) {
                 EstimacionAgil obj1 = iteratorEstimacion.next();
                 boolean found = false;
-                for (EstimacionAgil obj2 : estimacion.estimacionAgil) {
+                for (EstimacionAgil obj2 : estimacion.activiadesAgil) {
                     if (obj1.getId() == obj2.getId()) {
                         found = true;
                         break;
@@ -204,11 +204,11 @@ import com.backendgip.service.EsfuerzoAgilService;
                 }
             }
 
-            Iterator<EsfuerzoAgil> iteratorEsfuerzoUpdate = estimacion.esfuerzoAgil.iterator();
+            Iterator<EsfuerzoAgil> iteratorEsfuerzoUpdate = estimacion.esfuerzo.iterator();
             while (iteratorEsfuerzoUpdate.hasNext()) {
                 EsfuerzoAgil obj1 = iteratorEsfuerzoUpdate.next();
                 boolean found = false;
-                for (EsfuerzoAgil obj2 : estimacionesBD.esfuerzoAgil) {
+                for (EsfuerzoAgil obj2 : estimacionesBD.esfuerzo) {
                     if (obj1.getId() == obj2.getId()) {
                         EsfuerzoAgil esfuerzoUpdate = esfuerzoAgilService.findById(obj1.getId());
                         log.setAccion("UPDATE");
@@ -237,7 +237,7 @@ import com.backendgip.service.EsfuerzoAgilService;
                 }
             }
 
-            estimacion.estimacionAgil.forEach(actividad -> {
+            estimacion.activiadesAgil.forEach(actividad -> {
                 if (actividad.getId() != null) {
                     EstimacionAgil actividadUpdate = this.estimacionAgilService.findById(actividad.getId());
                     log.setAccion("UPDATE");
@@ -261,7 +261,7 @@ import com.backendgip.service.EsfuerzoAgilService;
 
                 }
             });
-            estimacion.actividades.forEach(actividad -> {
+            estimacion.actividadesComplementarias.forEach(actividad -> {
                 if (actividad.getId() != null) {
                     ActividadesComplementarias actividadUpdate = this.actividadesComplementariasService
                             .getById(actividad.getId());
@@ -369,10 +369,10 @@ import com.backendgip.service.EsfuerzoAgilService;
             List<EstimacionAgil> estimacionAgil = estimacionAgilService.findByEstimacion(estimacion);
             List<EsfuerzoAgil> esfuerzoAgil = esfuerzoAgilService.findByEstimacion(estimacion);
             List<ActividadesComplementarias> actividad = actividadesComplementariasService.findByEstimacion(estimacion);
-            estimacionContenido.setEstimacionAgil(estimacionAgil);
+            estimacionContenido.setActiviadesAgil(estimacionAgil);
             estimacionContenido.setEstimacion(estimacion);
-            estimacionContenido.setEsfuerzoAgil(esfuerzoAgil);
-            estimacionContenido.setActividades(actividad);
+            estimacionContenido.setEsfuerzo(esfuerzoAgil);
+            estimacionContenido.setActividadesComplementarias(actividad);
             return estimacionContenido;
         } 
     }
