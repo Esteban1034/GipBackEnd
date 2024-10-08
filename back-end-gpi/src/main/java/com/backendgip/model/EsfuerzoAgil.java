@@ -29,7 +29,7 @@ public class EsfuerzoAgil implements Serializable{
     private EstimacionUfs estimacion;
 
     @Column(name = "horas")
-    private Integer horas;
+    private Double horas;
 
     @Column(name = "porcentaje_desviacion")
     private Integer porcentaje;
@@ -37,7 +37,7 @@ public class EsfuerzoAgil implements Serializable{
     public EsfuerzoAgil() {
     }
 
-    public EsfuerzoAgil(Integer id, FasesAgiles fase, EstimacionUfs estimacion, Integer horas, Integer porcentaje) {
+    public EsfuerzoAgil(Integer id, FasesAgiles fase, EstimacionUfs estimacion, Double horas, Integer porcentaje) {
         this.id = id;
         this.fase = fase;
         this.estimacion = estimacion;
@@ -71,11 +71,11 @@ public class EsfuerzoAgil implements Serializable{
         this.estimacion = estimacion;
     }
 
-    public Integer getHoras() {
+    public Double getHoras() {
         return horas;
     }
 
-    public void setHoras(Integer horas) {
+    public void setHoras(Double horas) {
         this.horas = horas;
     }
 

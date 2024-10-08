@@ -25,16 +25,16 @@ public class EstimacionAgil implements Serializable{
     private EstimacionUfs estimacion;
 
     @ManyToOne
-    @JoinColumn(name = "fk_actividad_agil")
-    private ActividadesAgiles actividad;
-
-    @ManyToOne
     @JoinColumn(name = "fk_fase")
     private FasesAgiles fase;
 
     @ManyToOne
     @JoinColumn(name = "fk_subFase")
     private SubMenuFasesAgiles subfase;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_actividad_agil")
+    private ActividadesAgiles actividad;
 
     @ManyToOne
     @JoinColumn(name = "fk_complejiad")

@@ -69,7 +69,5 @@ public class EstimacionContenido  implements Serializable{
         return "EstimacionContenido [estimacion=" + estimacion + ", actividades=" + actividades + ", subFuncion="
                 + subFuncion + ", funcion=" + funcion + ", unidadFuncional=" + unidadFuncional + "]";
     }
-
-    
     
 }

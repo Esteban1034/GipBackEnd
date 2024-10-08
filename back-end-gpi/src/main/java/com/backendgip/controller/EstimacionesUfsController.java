@@ -79,8 +79,8 @@ public class EstimacionesUfsController {
     }
 
     @PostMapping("/estimaciones")
-    public ResponseEntity<?> saveEstimacionIn(@RequestBody EstimacionContenido estimacion) {
-
+    public ResponseEntity<?> saveEstimacionAgil(@RequestBody EstimacionContenido estimacion) {
+        System.out.println("ooo"+estimacion);
         if (estimacionesUfsRepository.existsByProyectoId(estimacion.getEstimacion().getProyecto().getId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este proyecto ya tiene una estimación asignada");
         }
