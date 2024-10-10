@@ -78,7 +78,16 @@ import com.backendgip.service.EsfuerzoAgilService;
             log.setDescripcion(savEstimacion.toString());
             this.logService.saveLog(log);
 
-            
+            estimacion.getActividadesComplementarias().forEach(actividad -> {
+                actividad.setEstimacion(savEstimacion);
+                ActividadesComplementarias actividadCreada = this.actividadesComplementariasService
+                        .saveActividad(actividad);
+                log.setAccion("CREATE");
+                log.setTabla(ActividadesComplementarias.class.toString());
+                log.setIdAccion(actividadCreada.getId());
+                log.setDescripcion(actividadCreada.toString());
+                this.logService.saveLog(log);
+            });
 
             estimacion.getActiviadesAgil().forEach(actividad -> {
                 actividad.setEstimacion(savEstimacion);
@@ -100,17 +109,7 @@ import com.backendgip.service.EsfuerzoAgilService;
                 this.logService.saveLog(log);
             });
 
-            estimacion.getActividadesComplementarias().forEach(actividad -> {
-                actividad.setEstimacion(savEstimacion);
-                ActividadesComplementarias actividadCreada = this.actividadesComplementariasService
-                        .saveActividad(actividad);
-                log.setAccion("CREATE");
-                log.setTabla(ActividadesComplementarias.class.toString());
-                log.setIdAccion(actividadCreada.getId());
-                log.setDescripcion(actividadCreada.toString());
-                this.logService.saveLog(log);
-            });
-
+            
             return ResponseEntity.ok(savEstimacion);
         }
 
@@ -310,6 +309,19 @@ import com.backendgip.service.EsfuerzoAgilService;
             
                         actividadesComplementariasService.deleteActividad(actividad.getId());
                     });
+                    List<EsfuerzoAgil> esfuerzo = esfuerzoAgilService.findByEstimacion(estimacion);
+
+                    esfuerzo.forEach(esfuerzoAgil -> {
+                        LogSistema log = new LogSistema();
+                        log.setAccion("DELETE");
+                        log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
+                        log.setTabla(EsfuerzoAgil.class.toString());
+                        log.setIdAccion(esfuerzoAgil.getId());
+                        log.setDescripcion(esfuerzoAgil.toString());
+                        logService.saveLog(log);
+        
+                        this.esfuerzoAgilService.deleteById(esfuerzoAgil.getId());
+                    });
 
             List<EstimacionAgil> estimacionAgil = estimacionAgilService.findByEstimacion(estimacion);
             estimacionAgil.forEach(actividad -> {
@@ -324,19 +336,7 @@ import com.backendgip.service.EsfuerzoAgilService;
                 estimacionAgilService.deleteById(actividad.getId());
             });
 
-            List<EsfuerzoAgil> esfuerzo = esfuerzoAgilService.findByEstimacion(estimacion);
-
-            esfuerzo.forEach(esfuerzoAgil -> {
-                LogSistema log = new LogSistema();
-                log.setAccion("DELETE");
-                log.setFechaHora(new Date(Calendar.getInstance().getTime().getTime()));
-                log.setTabla(EsfuerzoAgil.class.toString());
-                log.setIdAccion(esfuerzoAgil.getId());
-                log.setDescripcion(esfuerzoAgil.toString());
-                logService.saveLog(log);
-
-                this.esfuerzoAgilService.deleteById(esfuerzoAgil.getId());
-            });
+            
 
             LogSistema logEstimacion = new LogSistema();
             logEstimacion.setAccion("DELETE");
@@ -359,7 +359,7 @@ import com.backendgip.service.EsfuerzoAgilService;
             return ResponseEntity.ok(estimacion);
         }
 
-        @GetMapping("/contenidoestimacion/{id}")
+        @GetMapping("/contenidoestimacion/{idEstimacion}")
         public ContenidoEstimacionAgil findContenidoEstimacion(@PathVariable Integer idEstimacion) {
             ContenidoEstimacionAgil estimacionContenido = new ContenidoEstimacionAgil();
             EstimacionUfs estimacion = estimacionesUfsRepository.findById(idEstimacion)
